@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Status: Alpha](https://img.shields.io/badge/Status-Alpha%20Planning-yellow)]()
-[![Stack: React + Node.js](https://img.shields.io/badge/Stack-React%20%2B%20Node.js-blue)]()
+[![Stack: Hono + Next.js + Drizzle](https://img.shields.io/badge/Stack-Hono%20%2B%20Next.js%20%2B%20Drizzle-blue)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
 
 ---
@@ -52,13 +52,13 @@ Every major CMS today falls into one of two traps:
 ## Features
 
 - ✅ Web-based guided installer (no CLI required to get started)
-- ✅ Visual drag-and-drop page builder
+- ✅ Visual drag-and-drop page builder (Craftjs)
 - ✅ Block-based content editor (Hero, Rich Text, Gallery, Cards, CTA, Embed, and more)
 - ✅ Custom content types (Collections) — build your own data models
 - ✅ Theme system — install, activate, and customize themes from the admin panel
 - ✅ Extension system — Components, Modules, Plugins, Packages
 - ✅ Open REST API — public, documented, open for third-party development
-- ✅ Media library with folder organization
+- ✅ Media library with folder organization (local disk + S3 adapter)
 - ✅ Role-based access control (Super Admin, Admin, Editor, Author, Viewer)
 - ✅ SEO engine — meta tags, Open Graph, sitemap, schema markup
 - ✅ Navigation manager — multi-menu support with nested items
