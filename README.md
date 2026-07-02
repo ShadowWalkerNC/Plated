@@ -1,74 +1,134 @@
 # NexCMS
 
-**A free, open-source, self-hosted CMS built for the modern web.**
+**A guided website builder for the restaurant and hospitality industry.**
 
-> Own your stack. Own your content. Own your sites — forever.  
-> No monthly fees. No platform lock-in. No one else's rules.  
-> Server + domain = unlimited free sites.
+> Build your restaurant website in minutes — not months.  
+> Pick a template. Fill in your info. Export and deploy anywhere.  
+> Or use the online hub and manage everything from your phone.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Status: Alpha](https://img.shields.io/badge/Status-Alpha%20Planning-yellow)]()
-[![Stack: Hono + Next.js + Drizzle](https://img.shields.io/badge/Stack-Hono%20%2B%20Next.js%20%2B%20Drizzle-blue)]()
+[![Status: Phase 0](https://img.shields.io/badge/Status-Phase%200%20Planning-yellow)]()
+[![Stack: Astro + Supabase + TypeScript](https://img.shields.io/badge/Stack-Astro%20%2B%20Supabase%20%2B%20TypeScript-blue)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
 
 ---
 
 ## What Is NexCMS?
 
-NexCMS is a self-hosted content management system inspired by the install-and-own philosophy of Joomla — rebuilt from the ground up using modern web technology.
+NexCMS is a **guided website builder** built specifically for restaurants, food trucks, bars, cafés, and hospitality businesses. It walks you through every step — business info, hours, menu, social media, branding — and produces a professional, SEO-optimized website you can deploy anywhere.
 
-Drop it on any server. Add your domain. Install themes and extensions as zip packages. Build unlimited sites for free.
+It runs in two modes:
 
-Think of it as **Joomla meets modern React** — with a visual drag-and-drop page builder, a clean extension API, an open REST API anyone can build against, and zero vendor dependency.
+- **Local Builder** — download the app, build on your computer, export a deployable zip with instructions
+- **SaaS Hub** — go to nexcms.io, build and manage your site entirely in-browser from any device
 
 ---
 
 ## Why NexCMS?
 
-Every major CMS today falls into one of two traps:
-
 | Platform | Problem |
 |---|---|
-| WordPress | PHP bloat, plugin security debt, constant hosting dependency |
-| Squarespace / Wix / Webflow | Monthly fees, no code ownership, platform lock-in |
-| Strapi / Payload | Headless only — no visual front-end, developers only |
-| Ghost | Publishing/blog focused, not a general site builder |
-| Joomla (original) | Right idea, wrong era — PHP stack, dated UX |
+| WordPress | PHP bloat, plugin security debt, technical setup required |
+| Squarespace / Wix | Monthly fees, no code ownership, generic templates |
+| Custom dev | Expensive, slow, hard to maintain |
+| DIY Astro/HTML | Too technical for most restaurant owners |
 
-**NexCMS fills the gap.** You install it once. You own it. You build on it forever.
+**NexCMS fills the gap.** Pre-built hospitality templates, a coaching wizard that guides non-technical owners through every field, and full export ownership — no lock-in, no monthly fees for the local version.
 
 ---
 
 ## Core Philosophy
 
-- **Install and own.** Download the package, upload to your server, run the web-based installer. Done.
-- **Joomla-style extensions.** Components, Modules, Plugins, and Packages — installable as zip files, no code editing required.
-- **Theme as a package.** Build a theme, zip it, install it, activate it. Share it on GitHub.
-- **Open REST API.** Fully documented. Anyone can build against any NexCMS install — mobile apps, integrations, tools.
-- **No middleman, ever.** Your server. Your domain. Your data. No monthly bill, no account required.
-- **Future-proof by design.** New tools, new languages, new runtimes — NexCMS absorbs them through its extensibility layer without core changes.
+- **Guided, not overwhelming.** The wizard coaches users through each step, explains why things matter, and helps them create missing assets (like a Facebook page) on the spot.
+- **Hospitality-first.** Every template, field, and feature is designed around the needs of restaurants, food trucks, and food businesses — not generic websites.
+- **Own your output.** Export a complete, deployable Astro site you control entirely. No vendor lock-in.
+- **Two modes, one codebase.** Local Builder for power users and developers. SaaS Hub for everyone else — especially mobile-first users.
+- **Mobile-first SaaS.** The online hub is designed primarily for phones. Most restaurant owners run their business from their phone.
+
+---
+
+## Two Modes
+
+### Local Builder
+
+Download and run NexCMS locally via the CLI. A wizard UI launches in your browser at `localhost:3000`. Fill in your content, pick a template, and export.
+
+**Output:** A complete, pre-built static Astro site packaged as a zip, with a `DEPLOY_INSTRUCTIONS.md` tailored to your setup — covering Netlify, Vercel, Cloudflare Pages, and GitHub deployment. Power users can export the full Astro source and extend it with VS Code, Claude Code, or any editor.
+
+**Best for:** Developers, designers, agencies, and technical users who want full control.
+
+### SaaS Hub (nexcms.io)
+
+Go to nexcms.io, create a free account, and build your site entirely in-browser. Your site lives on NexCMS infrastructure and is accessible via `yourname.nexcms.io` or your own custom domain.
+
+**Live editing:** Change your hours, update your menu, add a special — changes go live in seconds. No rebuild required.
+
+**Best for:** Restaurant owners, non-technical users, and anyone who wants to manage their site from their phone.
 
 ---
 
 ## Features
 
-- ✅ Web-based guided installer (no CLI required to get started)
-- ✅ Visual drag-and-drop page builder (Craftjs)
-- ✅ Block-based content editor (Hero, Rich Text, Gallery, Cards, CTA, Embed, and more)
-- ✅ Custom content types (Collections) — build your own data models
-- ✅ Formula fields — safe expression engine (`mathjs`) for calculations in content
-- ✅ Theme system — install, activate, and customize themes from the admin panel
-- ✅ Extension system — Components, Modules, Plugins, Packages
-- ✅ Two-tier extensibility — JS/TS dynamic imports + WebAssembly plugin runtime
-- ✅ Open REST API — public, documented, open for third-party development
-- ✅ Media library with folder organization (local disk + S3 adapter)
-- ✅ Role-based access control (Super Admin, Admin, Editor, Author, Viewer)
-- ✅ SEO engine — meta tags, Open Graph, sitemap, schema markup
-- ✅ Navigation manager — multi-menu support with nested items
-- ✅ Webhook system — fire events on publish, form submit, media upload
-- ✅ Multi-site capable (one NexCMS install, multiple domains — Phase 4)
-- ✅ Docker self-host config
-- ✅ One-command deploy to Railway / Render / Cloudflare Workers
+- ✅ Guided onboarding wizard — coached step-by-step, not a blank form
+- ✅ Social media coaching — help creating Facebook, Instagram, Google listing if needed
+- ✅ Two-axis template system — pick a business type + a visual style independently
+- ✅ Light/Dark mode + multiple color themes per style
+- ✅ Menu builder — categories, items, prices, photos, dietary tags
+- ✅ Hours builder — day-by-day, holiday closures, food truck weekly schedules
+- ✅ Location schedule — food truck weekly location map
+- ✅ SEO auto-generation — meta tags, sitemap, robots.txt, Schema.org structured data
+- ✅ OG image generation — branded social share images from your business name and colors
+- ✅ Favicon + app icon generation — full set from your logo, all sizes
+- ✅ Image optimization — auto WebP conversion, blur-up placeholders
+- ✅ Contact and catering inquiry forms
+- ✅ Google Maps embed
+- ✅ Delivery platform links (DoorDash, Uber Eats, Grubhub)
+- ✅ Mobile-first SaaS dashboard
+- ✅ Super-admin dashboard — manage all client sites from one place
+- ✅ Live editing without rebuild (SaaS mode)
+- ✅ Custom domain support (SaaS mode)
+- ✅ Export full Astro source for developer customization (Local mode)
+- ✅ GitHub push integration (Phase 4)
+
+---
+
+## Business Types (v1 — Hospitality Focus)
+
+| Type | Key Pages | Special Sections |
+|---|---|---|
+| **Restaurant** | Home, Menu, Hours, About, Contact | Full menu, reservation link, Google Maps |
+| **Food Truck** | Home, Menu, Schedule, About, Contact | Weekly location schedule, rotating menu |
+| **Bar / Nightclub** | Home, Drinks, Events, About, Contact | Events listing, specials, age gate option |
+| **Café / Coffee Shop** | Home, Menu, Gallery, About, Contact | Featured drinks, gallery, loyalty link |
+| **Bakery / Dessert** | Home, Menu, Gallery, Order, Contact | Online order link, seasonal specials |
+| **Catering** | Home, Services, Gallery, Pricing, Contact | Catering inquiry form, service packages |
+| **Food Stand / Pop-Up** | Home, Menu, Schedule, Contact | Pop-up schedule, social-first layout |
+| **Ghost Kitchen** | Home, Menu, Order, Contact | Delivery platform links, no dine-in sections |
+
+*Phase 2 expands to: Small Business, Startup, Portfolio, Event Venue*
+
+---
+
+## Template System
+
+Every site is defined by two independent choices:
+
+### Axis 1 — Business Type
+Defines the pages, sections, and content fields your site needs. Selecting your business type determines what the wizard asks you and what pages are generated.
+
+### Axis 2 — Visual Style
+Defines look, feel, typography, and color palette — applied on top of any business type.
+
+| Style | Vibe | Best For |
+|---|---|---|
+| **Hearth** | Warm, rustic, editorial | Restaurants, cafés, hospitality |
+| **Spark** | Bold, vibrant, energetic | Food trucks, nightlife, artists |
+| **Steel** | Corporate, clean, minimal | Catering, business services |
+| **Bloom** | Bright, playful, airy | Bakeries, dessert shops, events |
+| **Obsidian** | Dark mode, moody, typographic | Bars, nightclubs, creative |
+| **Ghost** | Monochrome, magazine-style | Pop-ups, ghost kitchens, modern |
+
+Each style ships with **Light and Dark variants** plus **3+ color themes**. Business type templates define structure only — zero styling. Style templates inject CSS variables exclusively. This means 8 structures + 6 styles are maintained independently, not as 288 separate combinations.
 
 ---
 
@@ -77,331 +137,44 @@ Every major CMS today falls into one of two traps:
 | Layer | Technology | Why |
 |---|---|---|
 | **Monorepo** | Turborepo + pnpm workspaces | Parallel builds, shared config |
+| **Language** | TypeScript (all packages) | Type safety across the full codebase |
 | **Runtime (dev)** | Bun | ~4× faster installs and cold starts |
 | **Runtime (prod)** | Node.js 22 | Ecosystem stability |
-| **Backend framework** | Hono | Web-standard APIs — runs on Node, Bun, and Cloudflare Workers |
-| **Database** | PostgreSQL 16 | Reliable, self-hosted relational storage |
-| **ORM** | Drizzle ORM | TypeScript-native, closest to raw SQL, zero vendor dependency |
-| **Auth** | Self-contained JWT (`jose` + `bcrypt`) | No cloud auth services — true self-host |
-| **Media storage** | Local disk + pluggable S3 adapter | User controls where files live |
-| **Admin UI** | React 19 + Vite + Shadcn/UI | Fast SPA, accessible primitives |
-| **Admin data** | TanStack Query | Server state management |
-| **Public renderer** | Next.js 15 App Router | RSC + SSR + ISR for theme performance and SEO |
-| **Page builder** | Craftjs | Open-source, React, extensible |
-| **Extension hooks** | eventemitter3 | Tiny, typed, fast event bus |
-| **WASM runtime** | Node.js native WASM + `@wasmer/wasi` | Sandboxed plugins in any language |
-| **Formula engine** | mathjs | Safe expression evaluation for content calculations |
-| **Shared types** | `packages/types/` | Single source of truth for API contracts |
-| **Styling** | Tailwind CSS + CSS Variables | Flexible theming without conflicts |
-| **UI components** | Shadcn/UI | Accessible, unstyled primitives |
-| **Deployment** | Docker + Railway/Render + Cloudflare Workers | Flexible self-host or cloud |
-
-> **Why no Supabase?** NexCMS's core promise is zero vendor dependency. Supabase Auth and Supabase Storage are managed cloud services — using them would mean your "self-hosted" install is still calling home to a third party. NexCMS uses raw PostgreSQL, self-contained JWT auth, and local/S3 media storage so your install is truly yours.
+| **Templates** | Astro 5 | Static output + server islands, deploys anywhere |
+| **Builder UI** | React 19 + Vite + Shadcn/UI | Local wizard app (desktop-first) |
+| **SaaS frontend** | Astro 5 hybrid mode | Mobile-first, server islands for dynamic content |
+| **Database (SaaS)** | Supabase (PostgreSQL) | Managed, RLS multi-tenancy, real-time |
+| **Auth (SaaS)** | Supabase Auth | Email/password, magic link |
+| **File storage (SaaS)** | Supabase Storage | Logos, hero images, menu photos |
+| **Image processing** | sharp | WebP optimization, favicon generation, all sizes |
+| **OG image generation** | satori + sharp | Branded social images, no headless browser |
+| **SEO generation** | Native Node.js | Sitemap, robots.txt, Schema.org — zero dependencies |
+| **Styling** | Tailwind CSS + CSS Variables | Style injection without conflicts |
+| **CDN / Cache** | Cloudflare | Edge caching + cache purge on content save |
+| **SaaS hosting** | Railway | Persistent Node.js server, no cold starts |
+| **Shared types** | `packages/types/` | Single source of truth for all contracts |
 
 ---
 
-## Extension System
+## SaaS Architecture
 
-Inspired by Joomla's proven four-type extension model, rebuilt for Node.js and React.
-
-| Type | What It Does | Examples |
-|---|---|---|
-| **Component** | Full feature area with admin panel + front-end routes | NexBlog, NexShop, NexBooking |
-| **Module** | Small display unit placed in theme regions/slots | NexMenu, NexGallery, testimonials widget |
-| **Plugin** | Event-based background logic — hooks into core events | SEO auto-tagger, form email sender, spam filter |
-| **Package** | Bundled zip of multiple extensions installed together | "Restaurant Pack" = NexMenu + NexForms + NexGallery |
-
-### How It Works
-
-1. Build your extension with a `nexcms.manifest.json`
-2. Zip it up
-3. Upload via **Admin → Extensions → Install**
-4. NexCMS reads the manifest, registers hooks, and activates — no FTP, no config edits
-
-### Extension Manifest Format
-
-```json
-{
-  "name": "NexBlog",
-  "type": "component",
-  "version": "1.0.0",
-  "author": "ShadowWalkerNC",
-  "license": "MIT",
-  "runtime": "js",
-  "entrypoint": "index.js",
-  "hooks": ["onPageRender", "onContentSave"],
-  "adminPanel": true,
-  "routes": ["/blog", "/blog/:slug"]
-}
-```
-
-The `"runtime"` field controls how NexCMS loads your extension:
-
-| Value | How It Loads | Use Case |
-|---|---|---|
-| `"js"` | Dynamic ESM `import()` | JavaScript / TypeScript extensions (default) |
-| `"wasm"` | Node.js WASM runtime + `@wasmer/wasi` | Rust, Go, Python, or any language that compiles to WASM |
-
-### Available Hook Events
-
-| Hook | Fires When |
-|---|---|
-| `onPageRender` | A page is rendered to the visitor |
-| `onContentSave` | Any content item is saved |
-| `onContentPublish` | Content is published |
-| `onMediaUpload` | A media file is uploaded |
-| `onFormSubmit` | A form is submitted |
-| `onUserLogin` | A user logs in |
-| `onUserCreate` | A new user is created |
-
-Every hook receives a versioned `AppContext` object:
-
-```ts
-interface AppContext {
-  nexcms: { version: string };  // Detected by extensions for backward compat
-  site: SiteConfig;
-  request?: Request;
-  response?: ResponseBuilder;
-  data?: Record<string, unknown>;
-}
-```
-
-### First-Party Extensions (v1.0)
-
-| Extension | Type | Function |
-|---|---|---|
-| NexForms | Component | Drag-and-drop form builder with email integration |
-| NexSEO | Plugin | Meta tags, sitemap, Open Graph, schema markup |
-| NexGallery | Module | Image gallery with lazy load and lightbox |
-| NexShop | Component | Product/service listings with Stripe |
-| NexBlog | Component | Full blog engine with categories, tags, and RSS |
-| NexMenu | Component | Restaurant and food menu builder |
-| NexBooking | Component | Appointment and reservation system |
-| NexAnalytics | Plugin | Privacy-first analytics dashboard |
-| NexAI | Plugin | AI copywriting assistant (Anthropic API) |
-
----
-
-## Extensibility — Future-Proof Architecture
-
-NexCMS is designed to absorb new tools, languages, and runtimes without changes to core. Every capability lives in one of two extension tiers.
-
-### Tier 1 — Dynamic JS/TS Extensions
-
-The extension engine uses Node's native `import()` to load JS/TS extensions at runtime. When a new library, SDK, or tool becomes available — a new AI model, a new payment processor, a new analytics platform — you wrap it in an extension manifest and ship it as a zip. NexCMS core never changes.
-
-```ts
-// extension-engine/loader.ts
-for (const ext of installedExtensions) {
-  if (ext.runtime !== 'wasm') {
-    const mod = await import(ext.entrypoint);  // Dynamic ESM — any JS/TS tool
-    for (const hook of ext.hooks) {
-      eventBus.on(hook, mod.default[hook]);
-    }
-  }
-}
-```
-
-### Tier 2 — WebAssembly Plugin Runtime
-
-For extensions written in **any language** — Rust, Go, Python, Ruby, C, C++ — NexCMS runs them as sandboxed WASM modules. The host grants only the capabilities each module explicitly declares. A bad plugin cannot read the filesystem, make unauthorized network calls, or affect other extensions.
-
-```json
-{
-  "name": "NexPricer",
-  "type": "plugin",
-  "runtime": "wasm",
-  "entrypoint": "pricer.wasm",
-  "hooks": ["onFormSubmit"],
-  "exports": ["calculatePrice", "applyDiscount"]
-}
-```
-
-**What this unlocks over time:**
-
-| Future Tool | How It Integrates |
-|---|---|
-| New JS/TS SDK (any year) | Tier 1 JS extension — wrap and ship |
-| Rust performance plugin | Tier 2 WASM — compile to `.wasm`, manifest, zip |
-| Python data extension | Tier 2 WASM via Pyodide (full CPython in WASM) |
-| Go microservice logic | Tier 2 WASM — compile to WASM target |
-| New AI provider | Swap provider in `NexAI` plugin config — no core changes |
-| New payment processor | New NexShop adapter extension — no core changes |
-
----
-
-## Calculation Engine
-
-NexCMS includes a built-in calculation layer for content that requires math — pricing, quantities, nutritional data, estimates, and more.
-
-### Formula Fields in Collections
-
-Any Collection field can be a **Formula** type. Formulas are evaluated safely using `mathjs` — never `eval()`. Store the formula string in your content model, pass variables at render time.
-
-```ts
-import { evaluate } from 'mathjs';
-
-// Formula stored in Collection schema: "price * quantity * (1 - discount)"
-const total = evaluate(formula, { price: 12.50, quantity: 3, discount: 0.1 });
-// → 33.75
-```
-
-**Real-world uses:**
-- Menu item pricing with modifiers
-- Catering quote builders
-- Order total estimates with tax
-- Recipe scaling by serving count
-- Nutritional totals across ingredients
-
-### Worker Thread Calculations
-
-For heavy computations inside extensions (route optimization, statistical analysis, large dataset processing), NexCMS extensions can spawn **Node.js Worker Threads** — parallel execution that never blocks the main event loop or other site visitors.
-
-```ts
-// Inside an extension — heavy calc runs off the main thread
-import { Worker } from 'node:worker_threads';
-
-export const onFormSubmit = async (ctx: AppContext) => {
-  const worker = new Worker('./calc-worker.js', {
-    workerData: ctx.data
-  });
-  ctx.response.data = await new Promise(resolve => {
-    worker.on('message', resolve);
-  });
-};
-```
-
-### Python / Data Science (Phase 4+)
-
-Complex statistical or data science calculations can be shipped as a WASM extension using **Pyodide** (CPython compiled to WASM). Write the logic in Python using `numpy`, `scipy`, or `pandas` — ship it as a NexCMS zip. A future `NexNutrition` extension, for example, could compute full nutritional profiles from ingredient databases in Python, with no Python runtime required on the host server.
-
----
-
-## Theme System
-
-Themes are self-contained packages that define the look and feel of your site.
-
-### Theme Architecture
-
-Themes are **Next.js 15 App Router** component packages. Page components are React Server Components by default — interactive widgets (carousels, forms, search) hydrate as client islands. This ensures every theme is fast and SEO-ready out of the box.
-
-### Theme Package Structure
+The SaaS Hub runs as a **single Astro server instance** on Railway. All client sites are served from one deployment — the server reads the incoming domain, resolves the tenant from Supabase, and renders that site's content.
 
 ```
-theme-name/
-├── nexcms.theme.json     # Metadata, color tokens, font tokens, region map
-├── components/           # Page-level React Server Components
-├── layouts/              # Header, footer, sidebar, region definitions
-├── styles/               # Tailwind overrides + CSS variables
-├── assets/               # Images, icons, fonts
-└── preview.png           # Admin panel thumbnail
+User visits tacos-el-primo.nexcms.io
+        ↓
+Astro middleware reads Host header
+        ↓
+Looks up tenant in Supabase sites table
+        ↓
+Renders site with tenant's content
+        ↓
+Cloudflare caches rendered page at edge (5 min)
+        ↓
+Owner saves edit → Supabase webhook → cache purge → live in <10 seconds
 ```
 
-### Theme Regions (Module Slots)
-
-Themes define named regions where modules can be placed:
-
-`header` · `nav` · `hero` · `main` · `sidebar-left` · `sidebar-right` · `footer` · `off-canvas`
-
-### Bundled Themes (v1.0)
-
-| Theme | Style | Best For |
-|---|---|---|
-| **Hearth** | Warm, rustic, editorial | Food, cafés, hospitality |
-| **Obsidian** | Dark, minimal, typographic | Portfolio, creative, music |
-| **Steel** | Corporate, clean, grid | Business, services, SaaS |
-| **Bloom** | Bright, playful, card-based | Bakery, retail, events |
-| **Ghost** | Monochrome, magazine-style | Blog, journal, press |
-| **Spark** | Vibrant, bold, energetic | Food trucks, nightlife, artists |
-
----
-
-## Open REST API
-
-The NexCMS API is fully public and documented. Any developer can build against any NexCMS install — mobile apps, integrations, external tools.
-
-**Base URL:** `https://yourdomain.com/api/v1`
-
-### Core Endpoints
-
-```
-# Auth
-POST   /auth/login
-POST   /auth/refresh
-POST   /auth/logout
-GET    /auth/me
-
-# Pages
-GET    /pages                    — List published pages (public)
-GET    /pages/:slug              — Get page by slug (public)
-POST   /pages                    — Create page (editor)
-PUT    /pages/:id                — Update page (editor)
-POST   /pages/:id/publish        — Publish draft (editor)
-GET    /pages/:id/revisions      — Revision history (editor)
-
-# Posts (Blog)
-GET    /posts                    — List published posts (public)
-GET    /posts/:slug              — Get post by slug (public)
-POST   /posts                    — Create post (author)
-GET    /posts/categories         — List categories (public)
-
-# Collections (Custom Content Types)
-GET    /collections/:name        — List collection entries (public)
-POST   /collections/:name        — Create entry (editor)
-PUT    /collections/:name/:id    — Update entry (editor)
-
-# Media
-GET    /media                    — List media (editor)
-POST   /media/upload             — Upload file (editor)
-
-# Globals
-GET    /navigation               — Get all nav menus (public)
-GET    /navigation/:menu         — Get specific menu (public)
-GET    /settings/public          — Get public site settings (public)
-
-# Forms
-POST   /forms/submit/:id         — Submit a form (public)
-
-# Admin (auth required)
-GET    /themes                   — List themes
-POST   /themes/:name/activate    — Activate theme
-PUT    /themes/:name/customize   — Save customizations
-POST   /themes/install           — Install theme package
-
-GET    /extensions               — List extensions
-POST   /extensions/install       — Install extension package
-POST   /extensions/:name/enable  — Enable extension
-POST   /extensions/:name/disable — Disable extension
-
-GET    /webhooks                 — List webhooks
-POST   /webhooks                 — Create webhook
-```
-
-### Authentication
-
-```http
-Authorization: Bearer <your_jwt_token>
-```
-
-Read endpoints are public by default. Write operations require authentication. Configure per-endpoint visibility in site settings.
-
-### Cache Strategy
-
-All public read endpoints include `Cache-Control: public, s-maxage=60, stale-while-revalidate=3600` headers. Publishing content fires a webhook that busts the CDN/edge cache automatically. Any NexCMS install behind Cloudflare or a CDN gets edge-cached reads with zero configuration.
-
-### Webhooks
-
-Register webhooks to fire on any core event:
-
-```json
-{
-  "url": "https://your-integration.com/hook",
-  "events": ["page.published", "form.submitted"],
-  "secret": "your_signing_secret"
-}
-```
-
-Available events: `page.published`, `page.updated`, `post.published`, `media.uploaded`, `user.created`, `form.submitted`, `order.created`
+**No rebuild pipeline.** Content changes are live in under 10 seconds via Cloudflare cache purge.
 
 ---
 
@@ -410,44 +183,37 @@ Available events: `page.published`, `page.updated`, `post.published`, `media.upl
 ```
 nexcms/
 ├── packages/
-│   ├── types/              # Shared TypeScript types and API contracts
-│   ├── core/               # NexCMS engine (Hono API — runs on Node, Bun, Workers)
-│   ├── admin/              # Admin panel (React 19 SPA + Vite)
-│   ├── web/                # Public site renderer (Next.js 15 App Router)
-│   ├── cli/                # NexCMS CLI tool
-│   ├── theme-engine/       # Theme loading + injection system
-│   ├── extension-engine/   # Extension loading + hook system (eventemitter3)
-│   ├── formula-engine/     # mathjs-based safe expression evaluator
-│   ├── wasm-runtime/       # WebAssembly plugin sandbox (@wasmer/wasi)
-│   ├── client/             # JS/TS SDK for external use
-│   ├── themes/
-│   │   ├── theme-hearth/
-│   │   ├── theme-obsidian/
-│   │   ├── theme-steel/
-│   │   ├── theme-bloom/
-│   │   ├── theme-ghost/
-│   │   └── theme-spark/
-│   └── extensions/
-│       ├── ext-nexforms/
-│       ├── ext-nexseo/
-│       ├── ext-nexblog/
-│       ├── ext-nexmenu/
-│       ├── ext-nexgallery/
-│       ├── ext-nexshop/
-│       ├── ext-nexbooking/
-│       ├── ext-nexanalytics/
-│       └── ext-nexai/
-├── docs/                   # Documentation site
-├── templates/              # Premade site templates
-├── migrations/             # Core DB migrations (Drizzle)
-├── scripts/                # Build and seed scripts
-├── .github/
-│   ├── workflows/          # CI/CD (GitHub Actions)
-│   ├── ISSUE_TEMPLATE/
-│   └── PULL_REQUEST_TEMPLATE.md
-├── docker-compose.yml
+│   ├── types/              ← Single source of truth — ProjectSchema, SiteRecord, UserRecord
+│   ├── generator/          ← Core: project.json → Astro output files
+│   ├── template-engine/    ← Reads nexcms.template.json manifests, maps content slots
+│   ├── asset-tools/        ← sharp (images/favicons) + satori (OG images)
+│   ├── seo-tools/          ← Sitemap, robots.txt, meta tags, Schema.org (zero deps)
+│   ├── builder/            ← LOCAL: React + Vite wizard UI (desktop-first)
+│   ├── cli/                ← LOCAL: `nexcms` CLI — launches builder, triggers export
+│   └── saas/               ← SAAS: Astro hybrid app (mobile-first)
+│       ├── dashboard/      ← Client + admin dashboard
+│       ├── editor/         ← In-browser site editor
+│       └── renderer/       ← Tenant-aware site renderer
+├── templates/
+│   ├── restaurant/         ← Astro project scaffold + nexcms.template.json
+│   ├── food-truck/
+│   ├── bar/
+│   ├── cafe/
+│   ├── bakery/
+│   ├── catering/
+│   ├── food-stand/
+│   └── ghost-kitchen/
+├── styles/
+│   ├── hearth/             ← Tailwind config + CSS variables
+│   ├── spark/
+│   ├── steel/
+│   ├── bloom/
+│   ├── obsidian/
+│   └── ghost/
+├── docs/
 ├── turbo.json
-├── package.json
+├── pnpm-workspace.yaml
+├── AGENTS.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 └── README.md
@@ -459,120 +225,68 @@ nexcms/
 
 | Phase | Timeline | Goal |
 |---|---|---|
-| **Phase 0 — Architecture** | Now → Jul 2026 | Schema, wireframes, API contracts, manifest spec, AppContext design, GitHub setup |
-| **Phase 1 — Core Engine** | Jul → Sep 2026 | Hono API, Drizzle schema, admin panel, page builder, formula engine, first theme |
-| **Phase 2 — Extensions & Themes** | Sep → Nov 2026 | Theme engine (Next.js RSC), extension installer, JS runtime, 4 core extensions |
-| **Phase 3 — Visual Builder** | Nov 2026 → Jan 2027 | Craftjs drag-and-drop, inline editing, live preview, WASM runtime (beta) |
-| **Phase 4 — CLI & Deployment** | Q1 2027 | NexCMS CLI, Docker, multi-site, static export, Cloudflare Workers target, Pyodide WASM |
-| **Phase 5 — Community** | Q2 2027+ | Docs site, extension registry, community forum |
+| **Phase 0 — Replan** | Now → Jul 2026 | Lock ProjectSchema types, template manifest spec, Supabase schema design, monorepo scaffold, update all docs, restaurant template stub |
+| **Phase 1 — Generator Core** | Jul → Sep 2026 | `generator` + `template-engine` working. Restaurant template + Hearth style. CLI triggers export. JSON in → Astro site out. No UI yet. |
+| **Phase 2 — Local Builder** | Sep → Nov 2026 | Full wizard UI (`packages/builder/`). All 8 hospitality business types. All 6 styles. Export to zip with deploy instructions. Desktop-first. |
+| **Phase 3 — SaaS Foundation** | Nov 2026 → Feb 2027 | Supabase integration, account system, mobile-first SaaS dashboard, live editing, ISR pipeline, super-admin dashboard, custom domains |
+| **Phase 4 — SaaS Polish** | Feb → Apr 2027 | GitHub push integration, one-click Netlify/Vercel deploy, client analytics, SEO automation, form submission storage |
+| **Phase 5 — Public Launch** | Q2 2027 | nexcms.io public, docs site, pricing model, template marketplace |
 
 ---
 
-## Installation
+## Phase 0 — Definition of Done
 
-> ⚠️ NexCMS is currently in **Phase 0 — Architecture & Planning**. Installation instructions will be published when Phase 1 (Core Engine) is complete. Watch this repo for updates.
+Phase 0 is not closed until all checkpoints are complete. No production code begins until Phase 0 exits.
 
-### Planned Install Methods
+- [ ] **CP1** — `ProjectSchema` TypeScript interface locked in `packages/types/`
+- [ ] **CP2** — `nexcms.template.json` manifest spec written and documented
+- [ ] **CP3** — Supabase schema designed (all tables, RLS policies, constraints)
+- [ ] **CP4** — Monorepo scaffolded (all packages as stubs, Turborepo configured)
+- [ ] **CP5** — Architectural decisions documented in `AGENTS.md`
+- [ ] **CP6** — `README.md` and `AGENTS.md` fully updated ✅ *(this commit)*
+- [ ] **CP7** — Restaurant template stub created with `nexcms.template.json`
 
-**Web Installer (Recommended — no CLI required)**
+---
 
-```bash
-# 1. Download the latest NexCMS release zip
-# 2. Upload to your server's web root
-# 3. Navigate to https://yourdomain.com/install
-# 4. Follow the guided setup wizard
-```
+## Local Builder — Getting Started
 
-**CLI (Advanced)**
-
-```bash
-npx nexcms create my-site
-cd my-site
-nexcms dev
-```
-
-**Docker**
+> ⚠️ NexCMS is currently in **Phase 0 — Planning**. The builder will be available when Phase 1 (Generator Core) is complete.
 
 ```bash
-docker-compose up -d
+# Install and launch the local builder
+npx nexcms
+
+# Or install globally
+npm install -g nexcms
+nexcms
 ```
 
-### Server Requirements
-
-| Requirement | Minimum |
-|---|---|
-| Node.js | v22+ |
-| PostgreSQL | v16+ |
-| RAM | 512MB |
-| Storage | 2GB+ |
-| OS | Ubuntu 20.04+, Debian 11+, any Linux |
-
-Works on any VPS (DigitalOcean, Linode, Hetzner, your own hardware), Railway, Render, Cloudflare Workers, or shared hosting with Node.js support.
+**Requirements:** Node.js 22+. Nothing else — no database, no Python, no server.
 
 ---
 
 ## CLI Reference
 
 ```bash
-nexcms create <site-name>        # Scaffold a new NexCMS project
-nexcms dev                       # Start local dev server (Bun)
-nexcms build                     # Build for production
-nexcms deploy                    # Deploy to configured target
-nexcms install:theme <path>      # Install a theme from local path or URL
-nexcms install:ext <path>        # Install an extension
-nexcms db:migrate                # Run pending database migrations (Drizzle)
-nexcms db:seed                   # Seed database with sample content
-nexcms db:reset                  # Reset database (dev only)
-nexcms export                    # Export site as static files
+nexcms                    # Launch the builder wizard at localhost:3000
+nexcms new                # Start a new project
+nexcms export             # Export current project to deployable zip
+nexcms export --source    # Export full Astro source for developer customization
+nexcms preview            # Preview the built site locally
 ```
-
----
-
-## Building Extensions
-
-Anyone can build and share NexCMS extensions. Publish to GitHub, link on the community registry, and others can install your extension as a zip.
-
-See **[CONTRIBUTING.md](./CONTRIBUTING.md)** and the **Extension Developer Guide** (coming in Phase 2) for full documentation.
-
-Quick start:
-
-```bash
-nexcms create:extension my-extension --type=component
-cd my-extension
-# Edit nexcms.manifest.json
-# Set "runtime": "js" for TypeScript or "runtime": "wasm" for compiled languages
-# Build your extension
-# Zip and distribute on GitHub
-```
-
----
-
-## Building Themes
-
-Themes are Next.js 15 App Router packages with a `nexcms.theme.json` config file. Components are React Server Components by default — use client islands (`"use client"`) for interactive widgets. Anyone can build, share, and install themes.
-
-See the **Theme Developer Guide** (coming in Phase 2) for full documentation.
 
 ---
 
 ## Contributing
 
-NexCMS is open source and welcomes contributions of all kinds — bug reports, feature requests, documentation, extensions, themes, and code.
+NexCMS is open source and welcomes contributions — templates, styles, bug reports, and code.
 
 1. Fork this repo
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (Conventional Commits format)
+2. Create a feature branch: `feature/[package]-[description]`
+3. Commit using Conventional Commits format
 4. Open a pull request
 
-See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the full guide, code standards, and development setup.
-
----
-
-## Community
-
-- **GitHub Issues** — Bug reports and feature requests
-- **GitHub Discussions** — Questions, ideas, show and tell
-- **Extension Registry** — Community-built extensions and themes (coming Phase 5)
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide.
 
 ---
 
@@ -582,26 +296,7 @@ MIT — free to use, modify, and distribute. Forever.
 
 ```
 MIT License
-
 Copyright (c) 2026 Nathaniel Cowperthwaite (ShadowWalkerNC)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ```
 
 ---
@@ -611,4 +306,4 @@ SOFTWARE.
 **Nate Cowperthwaite** ([@ShadowWalkerNC](https://github.com/ShadowWalkerNC))  
 Chef. Developer. Builder of things.
 
-*NexCMS exists because no one should have to pay a monthly fee just to own a website.*
+*NexCMS exists because restaurant owners shouldn't need a developer to have a great website.*

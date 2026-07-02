@@ -10,12 +10,12 @@
 
 ```
 Project:      NexCMS
-Description:  Free, open-source, self-hosted CMS for the modern web.
-              Install once, own forever. No monthly fees, no lock-in.
-              Joomla-inspired extension model rebuilt on Node.js + React.
+Description:  Guided website builder for the restaurant and hospitality industry.
+              Two modes: Local Builder (static Astro zip export) and
+              SaaS Hub (nexcms.io — live editing, Supabase-backed, mobile-first).
 Status:       Phase 0 — Architecture & Planning
-Phase:        0 — Schema, wireframes, API contracts, manifest spec,
-              AppContext design, GitHub + monorepo setup
+Phase:        0 — Lock types, manifest spec, Supabase schema, scaffold monorepo,
+              update docs, create restaurant template stub.
 Priority:     Active — architecture phase
 Open-source:  Yes (MIT)
 Monorepo:     Yes — pnpm workspaces + Turborepo
@@ -23,31 +23,109 @@ Monorepo:     Yes — pnpm workspaces + Turborepo
 
 ---
 
+## ⚠️ CRITICAL — Product Direction
+
+This is NOT a self-hosted CMS. It is NOT a Joomla replacement. It is NOT a server you install.
+
+NexCMS is a **guided website builder** with two modes:
+1. **Local Builder** — CLI + React/Vite wizard UI, exports static Astro zip
+2. **SaaS Hub** — nexcms.io, Astro hybrid, Supabase backend, live editing, mobile-first
+
+Do NOT suggest:
+- Hono, Drizzle ORM, raw PostgreSQL, Craftjs, WASM runtime, eventemitter3, mathjs — these are from the old plan and are no longer part of this project.
+- Docker as a core requirement — the local builder has zero server dependencies.
+- Python for any build tooling — all asset/SEO tools use Node.js (see Architectural Decisions).
+
+---
+
 ## Tech Stack
 
 ```
-Language:       TypeScript (all packages)
-Monorepo:       pnpm workspaces + Turborepo
-Runtime (dev):  Bun (~4x faster installs + cold starts)
-Runtime (prod): Node.js 22 (ecosystem stability)
-Backend:        Hono (web-standard, runs on Node, Bun, Cloudflare Workers)
-Database:       PostgreSQL 16 (self-hosted, no vendor dependency)
-ORM:            Drizzle ORM (TypeScript-native, closest to raw SQL)
-Auth:           Self-contained JWT (jose + bcrypt) — no cloud auth services
-Admin UI:       React 19 + Vite + Shadcn/UI + TanStack Query
-Public site:    Next.js 15 App Router (RSC + SSR + ISR)
-Page builder:   Craftjs (open-source, React, extensible)
-Extensions:     eventemitter3 hooks + dynamic ESM import() + WASM runtime
-WASM runtime:   Node.js native WASM + @wasmer/wasi (sandboxed plugins)
-Formula engine: mathjs (safe expression evaluation, never eval())
-Styling:        Tailwind CSS + CSS Variables + Shadcn/UI
-Media:          Local disk + pluggable S3 adapter
-Deployment:     Docker + Railway/Render + Cloudflare Workers
-CI/CD:          GitHub Actions
-Shared types:   packages/types/ — single source of truth for all contracts
+Language:         TypeScript (all packages)
+Monorepo:         pnpm workspaces + Turborepo
+Runtime (dev):    Bun (~4x faster installs + cold starts)
+Runtime (prod):   Node.js 22 (ecosystem stability)
+Templates:        Astro 5 (static output for Local, hybrid mode for SaaS)
+Builder UI:       React 19 + Vite + Shadcn/UI (Local — desktop-first)
+SaaS frontend:    Astro 5 hybrid mode (mobile-first)
+Database (SaaS):  Supabase (PostgreSQL + RLS multi-tenancy)
+Auth (SaaS):      Supabase Auth (email/password, magic link)
+Storage (SaaS):   Supabase Storage (logos, hero images, media)
+Image tools:      sharp (optimization, favicons, all sizes)
+OG images:        satori + sharp (no headless browser, no Puppeteer)
+SEO tools:        Native Node.js (sitemap, robots.txt, Schema.org — zero deps)
+Styling:          Tailwind CSS + CSS Variables (style injection)
+CDN/Cache:        Cloudflare (edge cache + purge on content save)
+SaaS hosting:     Railway (persistent Node.js server)
+Shared types:     packages/types/ — single source of truth
+Forms (SaaS):     Supabase table + Resend for email notifications
+Forms (Local):    Netlify Forms or Formspree (documented in deploy instructions)
 ```
 
-> **Why no Supabase:** NexCMS's core promise is zero vendor dependency. Raw PostgreSQL + self-contained JWT + local/S3 media. No managed cloud services in the core.
+---
+
+## Architectural Decisions (LOCKED — Do Not Reverse)
+
+These decisions were made during the Phase 0 planning session on July 2, 2026.
+Do not suggest alternatives. Do not reopen these decisions without explicit owner approval.
+
+### Decision 1 — SaaS Rendering Model: Single Astro Server Instance (Option A)
+
+The SaaS Hub runs as ONE Astro server instance on Railway. All tenant sites are served
+from a single deployment. Middleware reads the Host header, resolves the tenant from
+the Supabase `sites` table, and renders that tenant's content.
+
+Cache strategy:
+- Client pages: Cloudflare edge cache, s-maxage=300, stale-while-revalidate=3600
+- On content save: Supabase webhook → /api/revalidate → Cloudflare Cache Purge API
+- Result: edits go live in <10 seconds. No rebuild pipeline. No per-site deploys.
+
+Do NOT suggest:
+- Per-site static deploys (Option B) — rejected due to rebuild lag, cost, and management complexity
+- Netlify/Vercel for SaaS site hosting — Railway + single server is the decision
+- ISR rebuild pipelines for content edits — cache purge is the mechanism, not rebuilds
+
+### Decision 2 — No Python. Node.js Tools Only.
+
+All asset processing, SEO generation, and image tooling uses Node.js packages:
+- Image optimization + favicons: `sharp` (native libvips binaries, zero system deps)
+- OG image generation: `satori` + `sharp` (JSX → SVG → PNG, no Puppeteer)
+- Sitemap, robots.txt, meta tags, Schema.org: native Node.js (zero dependencies)
+- Logo color extraction: `sharp` pixel sampling
+
+Do NOT suggest Python scripts, Pillow, PIL, or any Python-based image/SEO tooling.
+Reason: Local Builder users install via `npx nexcms` — Python may not exist on their machine.
+
+### Decision 3 — Template Decoupling: Structure vs. Style Are Separate
+
+Business type templates (restaurant, food-truck, etc.) define STRUCTURE and CONTENT SLOTS ONLY.
+They contain ZERO styling, ZERO color values, ZERO font choices.
+
+Style templates (hearth, spark, steel, etc.) inject CSS variables exclusively.
+They define colors, typography, spacing, and visual identity.
+
+This means: 8 structures + 6 styles maintained independently.
+NOT 288 combined template variants.
+
+Do NOT add styling to business type templates.
+Do NOT add content slots to style templates.
+
+### Decision 4 — Super-Admin Bypass via Supabase Service Role
+
+The super-admin (site owner/platform admin) bypasses RLS using the Supabase service role key.
+The service role key is used SERVER-SIDE ONLY in admin route handlers.
+It is NEVER exposed to the client, NEVER in environment variables accessible to the browser.
+
+RLS policies are written with `is_super_admin` JWT claim for the admin dashboard routes.
+All client-side queries use the anon key with standard RLS enforcement.
+
+### Decision 5 — Form Handling Strategy
+
+SaaS mode: Form submissions stored in Supabase `form_submissions` table.
+Email notifications via Resend (owner gets emailed on new contact/catering inquiry).
+
+Local mode: Export includes Netlify Forms or Formspree configuration.
+Deploy instructions document which form service to activate.
 
 ---
 
@@ -56,95 +134,137 @@ Shared types:   packages/types/ — single source of truth for all contracts
 ```
 nexcms/
 ├── packages/
-│   ├── types/              ← Single source of truth for all TS types + API contracts
-│   ├── core/               ← Hono API engine (runs Node, Bun, Workers)
-│   ├── admin/              ← Admin panel (React 19 SPA + Vite)
-│   ├── web/                ← Public site renderer (Next.js 15 App Router)
-│   ├── cli/                ← NexCMS CLI tool
-│   ├── theme-engine/       ← Theme loading + injection system
-│   ├── extension-engine/   ← Extension loading + eventemitter3 hooks
-│   ├── formula-engine/     ← mathjs safe expression evaluator
-│   ├── wasm-runtime/       ← WebAssembly sandbox (@wasmer/wasi)
-│   ├── client/             ← Public JS/TS SDK for external integrations
-│   ├── themes/             ← Hearth, Obsidian, Steel, Bloom, Ghost, Spark
-│   └── extensions/         ← NexForms, NexSEO, NexBlog, NexMenu, NexGallery,
-│                               NexShop, NexBooking, NexAnalytics, NexAI
-├── migrations/             ← Core DB migrations (Drizzle Kit)
-├── docs/                   ← Documentation site
-├── templates/              ← Premade site templates
-├── scripts/                ← Build + seed scripts
-├── docker-compose.yml      ← Local dev environment standard
-├── turbo.json              ← Turborepo pipeline config
-├── pnpm-workspace.yaml     ← Workspace package config
-├── CHANGELOG.md
-├── CONTRIBUTING.md
+│   ├── types/              ← ProjectSchema, SiteRecord, UserRecord, all shared types
+│   ├── generator/          ← project.json → Astro output files
+│   ├── template-engine/    ← nexcms.template.json manifest reader + slot mapper
+│   ├── asset-tools/        ← sharp + satori tooling
+│   ├── seo-tools/          ← Sitemap, robots.txt, meta, Schema.org (zero deps)
+│   ├── builder/            ← LOCAL: React 19 + Vite wizard UI (desktop-first)
+│   ├── cli/                ← LOCAL: nexcms CLI
+│   └── saas/               ← SAAS: Astro hybrid (mobile-first)
+│       ├── dashboard/
+│       ├── editor/
+│       └── renderer/
+├── templates/
+│   ├── restaurant/
+│   ├── food-truck/
+│   ├── bar/
+│   ├── cafe/
+│   ├── bakery/
+│   ├── catering/
+│   ├── food-stand/
+│   └── ghost-kitchen/
+├── styles/
+│   ├── hearth/
+│   ├── spark/
+│   ├── steel/
+│   ├── bloom/
+│   ├── obsidian/
+│   └── ghost/
+├── docs/
+├── turbo.json
+├── pnpm-workspace.yaml
+├── AGENTS.md
 └── README.md
-```
-
----
-
-## Active Agents for NexCMS
-
-```
-Always active:    COHERENCE · SECURITY · DOCS
-
-Default on-demand (most sessions will need these):
-  ARCHITECT     ← System design, package boundaries, extension API contracts,
-                  AppContext design, WASM sandbox architecture
-  ENGINEER      ← Hono API, Drizzle schema, React admin, Next.js renderer
-  DATABASE      ← Drizzle schema, migrations, PostgreSQL design
-
-Load when relevant:
-  DEVOPS        ← Docker config, Turborepo pipelines, GitHub Actions, deploy
-  QA            ← Test strategy, coverage, performance benchmarks
-  UX            ← Admin panel UX, page builder UX, installer flow
-  PRODUCT       ← Phase planning, roadmap decisions, feature scope
-  AI            ← NexAI extension, WASM runtime design, formula engine
-
-Rarely needed:
-  BUSINESS      ← Open-source licensing, extension marketplace model,
-                  community growth strategy
 ```
 
 ---
 
 ## Project-Specific Rules
 
-These extend global rules. Global Tier 1–3 rules cannot be overridden.
+1. **`packages/types/` is the single source of truth.** All TypeScript interfaces live here.
+   No package defines its own duplicate types. `ProjectSchema` is the core contract —
+   any change to it requires updating generator, template-engine, builder, and saas simultaneously.
 
-1. **Zero vendor dependency in core.** The core engine (packages/core/) must run with no managed cloud services — no Supabase, no Auth0, no cloud storage. Self-hosted PostgreSQL + local disk is the baseline. ARCHITECT has veto on any core dependency that violates this.
-2. **Monorepo discipline.** All code belongs in the correct package. Packages may only import from other packages via their published interface (not `src/` directly). New cross-package dependencies require ARCHITECT review.
-3. **Turborepo pipeline compliance.** All build, test, and lint tasks declared in `turbo.json`. No ad-hoc build steps outside the pipeline without justification.
-4. **Extension API is a public contract.** The extension manifest spec (`nexcms.manifest.json`), hook events, and `AppContext` interface are public APIs. Any breaking change requires: ARCHITECT review + major version bump + CHANGELOG entry + deprecation notice. Treat it like a published NPM package.
-5. **types package is the single source of truth.** All TypeScript interfaces and API contracts live in `packages/types/`. No package defines its own duplicate types. Violations are critical bugs.
-6. **Migrations are Drizzle-managed and forward-only.** All schema changes via Drizzle Kit migrations in `migrations/`. No raw SQL outside migrations. DATABASE agent reviews all migrations before push.
-7. **WASM runtime is sandboxed.** Extensions running in WASM must declare all capabilities in their manifest. The sandbox grants only declared capabilities. Do not expand the default capability grant without ARCHITECT + SECURITY review.
-8. **Formula engine uses mathjs, never eval().** All formula fields evaluated via `mathjs`. Never use `eval()`, `new Function()`, or any other dynamic execution for formulas. SECURITY agent hard veto on violations.
-9. **docker-compose is the dev standard.** All local development via `docker-compose up`. Do not introduce mandatory manual setup steps outside Docker.
-10. **Open-source safe.** No secrets in committed files. `.env.example` updated alongside every new env var. All dependencies must be MIT, Apache-2.0, or compatible — no GPL in the core (it would restrict commercial use of self-hosted installs).
-11. **Bun for dev, Node.js for prod.** Development tooling uses Bun. Production Docker images use Node.js 22. Do not write Bun-specific code in packages/core/ — Hono must remain runtime-agnostic.
-12. **Branch naming:** `feature/[package]-[short-description]` · `fix/[package]-[issue]` · `chore/[scope]` · `docs/[topic]`
+2. **Business type templates are structure-only.** No colors, no fonts, no visual styling
+   in any file under `templates/`. CSS variables injected by styles only. Hard rule.
+
+3. **Style templates are CSS-only.** No content logic, no Astro component changes,
+   no slot definitions in any file under `styles/`. Hard rule.
+
+4. **No Python anywhere in the build pipeline.** All tooling runs in Node.js/Bun.
+   `sharp` and `satori` cover all image and asset needs.
+
+5. **Local Builder has zero runtime dependencies beyond Node.js.**
+   No database, no server, no Python, no external API calls required to run the builder
+   or perform an export. Offline-capable for all core functionality.
+
+6. **SaaS service role key is server-side only.** Never in client bundles, never in
+   browser-accessible env vars. Use `PUBLIC_` prefix only for anon/public Supabase keys.
+
+7. **Turborepo pipeline compliance.** All build, test, lint tasks declared in `turbo.json`.
+   No ad-hoc build steps outside the pipeline.
+
+8. **Conventional Commits format required.** All commits follow:
+   `type(scope): description` — type is feat/fix/docs/chore/refactor/test.
+
+9. **Branch naming:** `feature/[package]-[short-description]` · `fix/[package]-[issue]`
+   · `chore/[scope]` · `docs/[topic]`
+
+10. **Mobile-first for SaaS, desktop-first for Local Builder.**
+    All SaaS UI components designed and tested at 390px width first.
+    Local Builder UI designed at 1280px width first.
+
+11. **Open-source safe.** No secrets in committed files. `.env.example` updated alongside
+    every new env var. All dependencies MIT or Apache-2.0 compatible.
+
+12. **Phase 0 is not closed until all 7 checkpoints are complete.**
+    Do not write production logic in generator, builder, saas, or templates until
+    Phase 0 DoD is fully checked off. See README.md for checkpoint list.
+
+---
+
+## Supabase Schema (Designed in Phase 0)
+
+```sql
+-- Core tables — designed Phase 0, implemented Phase 3
+
+users              id, email, is_super_admin, created_at
+sites              id, owner_user_id, subdomain (unique), custom_domain (unique),
+                   business_type, style_template, color_theme, mode,
+                   project_data JSONB, status, created_at, updated_at
+form_submissions   id, site_id, form_type, data JSONB, read, created_at
+media              id, site_id, filename, storage_path, url, type, size, created_at
+
+-- RLS policy intent (plain English, SQL written in Phase 3)
+-- sites: owner reads/writes own rows; super_admin reads/writes all rows
+-- form_submissions: owner reads own site submissions; public can INSERT
+-- media: owner reads/writes own site media
+-- users: users read own row; super_admin reads all
+```
 
 ---
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `JWT_SECRET` | Yes | Secret for JWT signing (min 32 chars) |
-| `JWT_REFRESH_SECRET` | Yes | Separate secret for refresh tokens |
-| `MEDIA_STORAGE` | Yes | `local` or `s3` |
-| `MEDIA_LOCAL_PATH` | If local | Absolute path to media uploads directory |
-| `S3_BUCKET` | If S3 | S3 bucket name |
-| `S3_REGION` | If S3 | AWS region |
-| `S3_ACCESS_KEY` | If S3 | AWS access key |
-| `S3_SECRET_KEY` | If S3 | AWS secret key |
-| `ANTHROPIC_API_KEY` | NexAI ext only | Claude API key — NexAI extension only |
-| `PORT` | No (default 3000) | Hono server port |
-| `NODE_ENV` | Yes | `development` or `production` |
+| Variable | Mode | Required | Description |
+|---|---|---|---|
+| `PUBLIC_SUPABASE_URL` | SaaS | Yes | Supabase project URL |
+| `PUBLIC_SUPABASE_ANON_KEY` | SaaS | Yes | Supabase anon key (client-safe) |
+| `SUPABASE_SERVICE_ROLE_KEY` | SaaS | Yes | Service role key — SERVER-SIDE ONLY |
+| `CLOUDFLARE_ZONE_ID` | SaaS | Yes | For cache purge on content save |
+| `CLOUDFLARE_API_TOKEN` | SaaS | Yes | Cloudflare API token (cache purge) |
+| `RESEND_API_KEY` | SaaS | Yes | Email notifications for form submissions |
+| `PORT` | SaaS | No (3000) | Server port |
+| `NODE_ENV` | Both | Yes | development or production |
 
-Never commit values. Always use `.env.example`. Self-hosters must be able to run NexCMS with only `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, and `MEDIA_LOCAL_PATH`.
+Never commit values. Always use `.env.example`.
+
+---
+
+## Phase 0 — Definition of Done
+
+No production code is written until all checkpoints are checked off.
+
+- [ ] CP1 — `ProjectSchema` TypeScript interface locked in `packages/types/`
+- [ ] CP2 — `nexcms.template.json` manifest spec written and documented
+- [ ] CP3 — Supabase schema designed (tables, RLS policies, constraints)
+- [ ] CP4 — Monorepo scaffolded (all packages as stubs, Turborepo configured)
+- [ ] CP5 — Architectural decisions documented in `AGENTS.md`
+- [x] CP6 — `README.md` and `AGENTS.md` fully updated ✅
+- [ ] CP7 — Restaurant template stub created with `nexcms.template.json`
+
+**Sequence:** CP1 → (CP2 + CP3 in parallel) → CP4 → (CP5 + CP6 in parallel) → CP7 → Phase 0 CLOSED
 
 ---
 
@@ -152,17 +272,14 @@ Never commit values. Always use `.env.example`. Self-hosters must be able to run
 
 ```
 Phase:              0 — Architecture & Planning
-Phase goal:         Define the complete technical foundation before writing
-                    any production code. Schema, API contracts, manifest spec,
-                    AppContext design, wireframes, monorepo scaffolding.
+Phase goal:         Lock all contracts and architectural decisions before any
+                    production code is written. Types, manifest spec, Supabase
+                    schema, monorepo scaffold, docs, template stub.
 Timeline:           Now → July 2026
-Definition of done: Drizzle schema complete. Full API contract spec written.
-                    Extension manifest spec finalized. AppContext interface
-                    designed. Admin panel wireframes complete. Monorepo
-                    scaffolding with all packages created (empty stubs ok).
-Next phase:         Phase 1 — Core Engine (Jul–Sep 2026)
-                    Hono API, Drizzle schema live, admin panel, page builder,
-                    formula engine, first theme.
+Definition of done: All 7 checkpoints above checked off.
+Next phase:         Phase 1 — Generator Core (Jul–Sep 2026)
+                    generator + template-engine packages. Restaurant template +
+                    Hearth style. CLI triggers export. No builder UI yet.
 ```
 
 ---
@@ -171,23 +288,12 @@ Next phase:         Phase 1 — Core Engine (Jul–Sep 2026)
 
 | Phase | Timeline | Goal |
 |---|---|---|
-| **0 — Architecture** | Now → Jul 2026 | Schema, wireframes, API contracts, monorepo setup |
-| **1 — Core Engine** | Jul–Sep 2026 | Hono API, Drizzle, admin panel, page builder, first theme |
-| **2 — Extensions & Themes** | Sep–Nov 2026 | Theme engine, extension installer, JS runtime, 4 core extensions |
-| **3 — Visual Builder** | Nov 2026–Jan 2027 | Craftjs drag-and-drop, WASM runtime beta |
-| **4 — CLI & Deploy** | Q1 2027 | CLI, Docker, multi-site, static export, Cloudflare Workers |
-| **5 — Community** | Q2 2027+ | Docs site, extension registry, community forum |
-
----
-
-## Known Issues / Watch List
-
-- **Phase 0 only:** No production code exists yet. All agent work in this phase is architecture, schema design, and spec writing. Do not begin implementing packages/core/ before Phase 0 is formally closed.
-- **Extension API stability:** Even in Phase 0, the extension manifest spec and AppContext interface must be treated as public API. Once finalized, changing them in Phase 1+ has downstream impact on any early third-party extension developers.
-- **WASM sandbox scope:** The WASM capability model must be fully designed in Phase 0. Expanding it post-launch is a security-sensitive operation.
-- **GPL dependency check:** Every proposed npm dependency must be license-checked. GPL or LGPL dependencies in core violate the open-source commercial promise. Run `license-checker` before finalizing any package.json.
-- **Bun vs Node boundary:** Packages/core/ is the Hono engine and must remain runtime-agnostic. Do not use Bun-native APIs (e.g., `Bun.serve`, `Bun.file`) inside core. Bun is a dev tooling choice, not a runtime requirement.
-- **Self-hosting promise:** Any architectural decision that introduces a required third-party service (auth, storage, email) without a self-hosted alternative violates the core product promise. ARCHITECT hard veto.
+| **0 — Replan** | Now → Jul 2026 | Types, manifest spec, schema, scaffold, docs, template stub |
+| **1 — Generator Core** | Jul–Sep 2026 | generator + template-engine, restaurant + hearth, CLI export |
+| **2 — Local Builder** | Sep–Nov 2026 | Full wizard UI, all 8 business types, all 6 styles, zip export |
+| **3 — SaaS Foundation** | Nov 2026–Feb 2027 | Supabase, auth, mobile dashboard, live editing, custom domains |
+| **4 — SaaS Polish** | Feb–Apr 2027 | GitHub push, one-click deploy, analytics, form storage |
+| **5 — Public Launch** | Q2 2027 | nexcms.io public, docs, pricing, template marketplace |
 
 ---
 
@@ -197,14 +303,18 @@ After loading this file, add to `DISPATCH CONFIRMED`:
 
 ```
 Project AGENTS.md: loaded — NexCMS
-Stack: TypeScript · Hono · Next.js 15 · Drizzle · PostgreSQL · Turborepo
+Stack: TypeScript · Astro 5 · Supabase · React 19 + Vite · sharp · satori · Turborepo
 Phase: 0 — Architecture & Planning (no production code yet)
-Project rules active: 12 overrides
-Vendor dependency rule: ACTIVE — no managed cloud services in core
-Extension API: public contract — design decisions are irreversible post-Phase 1
-Known issues noted: yes
+Product: Guided website builder — Local Builder (static zip) + SaaS Hub (live Supabase)
+Project rules active: 12
+Architectural decisions locked: 5 (SaaS rendering, no Python, template decoupling,
+  admin bypass, form handling)
+Phase 0 DoD: 7 checkpoints — CP6 complete, 6 remaining
+Do NOT suggest: Hono, Drizzle, raw PostgreSQL, Craftjs, WASM runtime, Python scripts,
+  Docker as core requirement, Next.js, eventemitter3, mathjs
 ```
 
 ---
 
-*Version: 1.0 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: NexCMS*
+*Version: 2.0 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: NexCMS*
+*Last updated: July 2, 2026 — Phase 0 product pivot complete*
