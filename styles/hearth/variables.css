@@ -1,0 +1,100 @@
+/* Hearth — Warm, rustic, editorial
+ * Style: Hearth injects CSS variables only.
+ * No content logic. No Astro components. No slot definitions.
+ * (Decision 3 — Template Decoupling)
+ *
+ * Variants: default (warm amber) | warm (deep mahogany) | cool (sage green)
+ */
+
+/* ── Default (Warm Amber) ──────────────────────────────── */
+[data-theme="hearth"],
+[data-theme="hearth"][data-variant="default"] {
+  /* Backgrounds */
+  --color-bg-base:     #faf7f2;
+  --color-bg-surface:  #f5f0e8;
+  --color-bg-elevated: #ede5d8;
+
+  /* Text */
+  --color-text-primary:   #1c1108;
+  --color-text-secondary: #3d2e1a;
+  --color-text-muted:     #7a5f40;
+  --color-text-inverse:   #faf7f2;
+
+  /* Brand */
+  --color-accent-primary:   #c8622a;
+  --color-accent-secondary: #e8a44a;
+  --color-accent-pale:      rgba(200, 98, 42, 0.12);
+
+  /* Borders */
+  --color-border:        #d4c4a8;
+  --color-border-subtle: #e8ddc8;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(28, 17, 8, 0.08);
+  --shadow-md: 0 4px 12px rgba(28, 17, 8, 0.12);
+  --shadow-lg: 0 8px 24px rgba(28, 17, 8, 0.16);
+
+  /* Typography */
+  --font-sans:    'Georgia', 'Times New Roman', serif;
+  --font-display: 'Georgia', 'Palatino Linotype', serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm:   0.25rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   0.75rem;
+  --radius-full: 9999px;
+}
+
+/* ── Warm (Deep Mahogany) ──────────────────────────────── */
+[data-theme="hearth"][data-variant="warm"] {
+  --color-bg-base:     #f7f0e8;
+  --color-bg-surface:  #efe4d4;
+  --color-bg-elevated: #e4d4bc;
+
+  --color-text-primary:   #180c04;
+  --color-text-secondary: #3a1e0e;
+  --color-text-muted:     #7a4a28;
+  --color-text-inverse:   #f7f0e8;
+
+  --color-accent-primary:   #8b2200;
+  --color-accent-secondary: #c85a1a;
+  --color-accent-pale:      rgba(139, 34, 0, 0.12);
+
+  --color-border:        #cbb89a;
+  --color-border-subtle: #ddd0b8;
+
+  --font-sans:    'Georgia', 'Times New Roman', serif;
+  --font-display: 'Georgia', 'Palatino Linotype', serif;
+}
+
+/* ── Cool (Sage Green) ─────────────────────────────────── */
+[data-theme="hearth"][data-variant="cool"] {
+  --color-bg-base:     #f4f7f2;
+  --color-bg-surface:  #e8f0e4;
+  --color-bg-elevated: #d8e8d0;
+
+  --color-text-primary:   #0c180a;
+  --color-text-secondary: #243020;
+  --color-text-muted:     #4a6644;
+
+  --color-accent-primary:   #3a6e2c;
+  --color-accent-secondary: #6aaa50;
+  --color-accent-pale:      rgba(58, 110, 44, 0.12);
+
+  --color-border:        #b4ccaa;
+  --color-border-subtle: #cce0c4;
+
+  --font-sans:    'Georgia', 'Times New Roman', serif;
+  --font-display: 'Georgia', 'Palatino Linotype', serif;
+}

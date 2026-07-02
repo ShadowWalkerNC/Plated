@@ -1,0 +1,237 @@
+{
+  "manifestVersion": "1.0",
+  "businessType": "restaurant",
+  "displayName": "Restaurant",
+  "description": "Full-service restaurant with menu, hours, location, and contact. Includes reservation link and Google Maps embed.",
+  "defaultStyle": "hearth",
+  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "pages": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "Home",
+      "usesSlots": [
+        "business.name",
+        "business.tagline",
+        "business.description",
+        "branding.logoUrl",
+        "branding.primaryColor",
+        "social.facebook",
+        "social.instagram",
+        "social.googleBusiness"
+      ]
+    },
+    {
+      "id": "menu",
+      "path": "/menu",
+      "title": "Menu",
+      "usesSlots": ["menu", "business.name"]
+    },
+    {
+      "id": "hours",
+      "path": "/hours",
+      "title": "Hours & Location",
+      "usesSlots": [
+        "hours",
+        "location.address1",
+        "location.address2",
+        "location.city",
+        "location.state",
+        "location.zip",
+        "location.googleMapsUrl",
+        "business.phone"
+      ]
+    },
+    {
+      "id": "about",
+      "path": "/about",
+      "title": "About",
+      "usesSlots": [
+        "business.name",
+        "business.description",
+        "branding.logoUrl"
+      ]
+    },
+    {
+      "id": "contact",
+      "path": "/contact",
+      "title": "Contact",
+      "usesSlots": [
+        "business.name",
+        "business.phone",
+        "business.email",
+        "location.address1",
+        "location.city",
+        "location.state",
+        "location.zip",
+        "location.googleMapsUrl"
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "field": "business.name",
+      "type": "text",
+      "required": true,
+      "label": "Restaurant Name",
+      "hint": "The name your guests know you by.",
+      "wizardStep": 1
+    },
+    {
+      "field": "business.tagline",
+      "type": "text",
+      "required": false,
+      "label": "Tagline",
+      "hint": "A short phrase that captures your vibe. e.g. \"Farm to table since 1998\"",
+      "wizardStep": 1
+    },
+    {
+      "field": "business.description",
+      "type": "richtext",
+      "required": true,
+      "label": "About Your Restaurant",
+      "hint": "Tell guests who you are, what you serve, and what makes you special.",
+      "wizardStep": 1
+    },
+    {
+      "field": "business.phone",
+      "type": "text",
+      "required": false,
+      "label": "Phone Number",
+      "hint": "Your main contact number for reservations and inquiries.",
+      "wizardStep": 1
+    },
+    {
+      "field": "business.email",
+      "type": "text",
+      "required": false,
+      "label": "Email Address",
+      "hint": "Contact email shown on your website.",
+      "wizardStep": 1
+    },
+    {
+      "field": "branding.logoUrl",
+      "type": "image",
+      "required": false,
+      "label": "Logo",
+      "hint": "Upload your logo. PNG or SVG recommended. Minimum 512×512.",
+      "wizardStep": 2
+    },
+    {
+      "field": "branding.primaryColor",
+      "type": "text",
+      "required": false,
+      "label": "Primary Brand Color",
+      "hint": "Hex color code (e.g. #2a4a2e). We can extract this from your logo automatically.",
+      "wizardStep": 2
+    },
+    {
+      "field": "location.address1",
+      "type": "text",
+      "required": false,
+      "label": "Street Address",
+      "wizardStep": 3
+    },
+    {
+      "field": "location.city",
+      "type": "text",
+      "required": false,
+      "label": "City",
+      "wizardStep": 3
+    },
+    {
+      "field": "location.state",
+      "type": "text",
+      "required": false,
+      "label": "State",
+      "wizardStep": 3
+    },
+    {
+      "field": "location.zip",
+      "type": "text",
+      "required": false,
+      "label": "ZIP Code",
+      "wizardStep": 3
+    },
+    {
+      "field": "location.googleMapsUrl",
+      "type": "text",
+      "required": false,
+      "label": "Google Maps Embed URL",
+      "hint": "Paste the embed URL from Google Maps (Share → Embed a map → copy src URL).",
+      "wizardStep": 3
+    },
+    {
+      "field": "hours",
+      "type": "hours",
+      "required": false,
+      "label": "Hours of Operation",
+      "hint": "Set your open/close times for each day of the week.",
+      "wizardStep": 3
+    },
+    {
+      "field": "menu",
+      "type": "menu",
+      "required": false,
+      "label": "Menu",
+      "hint": "Add your menu categories and items. You can add photos and dietary tags.",
+      "wizardStep": 4
+    },
+    {
+      "field": "social.facebook",
+      "type": "text",
+      "required": false,
+      "label": "Facebook Page URL",
+      "hint": "e.g. https://facebook.com/yourrestaurant — Don't have one? We'll help you create it.",
+      "wizardStep": 5
+    },
+    {
+      "field": "social.instagram",
+      "type": "text",
+      "required": false,
+      "label": "Instagram Profile URL",
+      "hint": "e.g. https://instagram.com/yourrestaurant",
+      "wizardStep": 5
+    },
+    {
+      "field": "social.googleBusiness",
+      "type": "text",
+      "required": false,
+      "label": "Google Business Profile URL",
+      "hint": "Your Google Maps listing URL. Helps guests leave reviews.",
+      "wizardStep": 5
+    },
+    {
+      "field": "social.doordash",
+      "type": "text",
+      "required": false,
+      "label": "DoorDash Listing URL",
+      "hint": "Link to your restaurant on DoorDash. Optional.",
+      "wizardStep": 5
+    },
+    {
+      "field": "social.ubereats",
+      "type": "text",
+      "required": false,
+      "label": "Uber Eats Listing URL",
+      "hint": "Link to your restaurant on Uber Eats. Optional.",
+      "wizardStep": 5
+    },
+    {
+      "field": "seo.siteTitle",
+      "type": "text",
+      "required": false,
+      "label": "Site Title (SEO)",
+      "hint": "Appears in browser tabs and search results. Defaults to your restaurant name.",
+      "wizardStep": 6
+    },
+    {
+      "field": "seo.metaDescription",
+      "type": "text",
+      "required": false,
+      "label": "Meta Description (SEO)",
+      "hint": "One or two sentences about your restaurant for search engines. Max 160 characters.",
+      "wizardStep": 6
+    }
+  ]
+}

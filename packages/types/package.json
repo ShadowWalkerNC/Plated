@@ -1,0 +1,21 @@
+{
+  "name": "@nexcms/types",
+  "version": "0.0.0",
+  "description": "Shared TypeScript types and interfaces — single source of truth for all NexCMS packages",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
