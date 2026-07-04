@@ -1,67 +1,107 @@
-# Changelog
+# Changelog — NexCMS
 
-All notable changes to NexCMS are documented here.
 Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
 
 ---
 
-## [Unreleased — Phase 1]
+## [Unreleased — Phase 1: Generator Core]
 
-### Phase 1 — Generator Core (Jul–Sep 2026)
+> Jul–Sep 2026. In progress.
 
-> *In progress. See roadmap in README.md.*
+### Planned
+- `packages/generator/` — full `generate()` implementation: ProjectSchema → Astro file output
+- `packages/template-engine/` — `loadManifest()`, `resolveSlots()`, `resolveBlocks()` implementations
+- `packages/builder/electron/` — Electron main.ts, preload.ts, IPC handler stubs
+- `packages/cli/` — CLI wired to spawn Electron binary
+- `templates/restaurant/` — complete Astro template with all 6 page stubs
+- `styles/hearth/` — complete CSS variable set + Tailwind config
+- Turborepo pipeline: generator build verified end-to-end
 
 ---
 
-## [Phase 0 — Complete]
+## [v4.0.0] — July 4, 2026 — Full Reassessment
 
-### Architecture & Planning — Closed Jul 4, 2026
+### docs: complete project reassessment and master rewrite
 
-#### Added
-- `packages/types/` — `ProjectSchema`, `SiteRecord`, `UserRecord`, `FormSubmission`, `MediaRecord`, `TemplateManifest` interfaces locked (CP1 ✅)
-- `packages/generator/` — stub with `generate()` entry point and `GenerateResult` type
-- `packages/template-engine/` — stub with `loadManifest()` and `resolveSlots()` entry points
-- `packages/asset-tools/` — stub with `generateFavicons()`, `optimizeImage()`, `generateOgImage()`, `extractPrimaryColor()`
-- `packages/seo-tools/` — stub with `generateSitemap()`, `generateRobotsTxt()`, `generateMetaTags()`, `generateSchemaOrg()`
-- `packages/builder/` — Phase 2 stub (Electron + React 19 + Vite wizard UI)
-- `packages/cli/` — stub CLI with `new`, `export`, `preview` commands
-- `packages/saas/` — Phase 4 stub (Astro hybrid SaaS Hub)
-- `templates/restaurant/nexcms.template.json` — restaurant template manifest with 21 content slots across 6 wizard steps (CP2 ✅, CP7 ✅)
-- `styles/hearth/variables.css` — CSS variable tokens for all 3 Hearth variants
-- `styles/hearth/tailwind.config.ts` — Tailwind config mapping CSS vars to utility classes
-- `turbo.json` — Turborepo pipeline (build, dev, lint, test, type-check, clean) (CP4 ✅)
-- `pnpm-workspace.yaml` — pnpm workspaces configuration
-- `tsconfig.base.json` — shared TypeScript base config
-- `.env.example` — all environment variables documented
-- `.gitignore` — comprehensive ignore rules
-- `CHANGELOG.md` — this file
-- `CONTRIBUTING.md` — contribution guide
-- `AGENTS.md` v1–v2 — architectural decisions locked (CP3 ✅, CP5 ✅)
-- `README.md` v1–v2 — full project documentation (CP6 ✅)
+All documentation rewritten from scratch following full feature gap analysis.
+Project rules expanded from 15 to 20. Architectural decisions expanded from 10 to 15.
 
-#### Phase 0 DoD — All Checkpoints Complete
-- [x] CP1 — `ProjectSchema` TypeScript interface locked
-- [x] CP2 — `nexcms.template.json` manifest spec written
-- [x] CP3 — Supabase schema designed
-- [x] CP4 — Monorepo scaffolded
-- [x] CP5 — Architectural decisions in AGENTS.md
-- [x] CP6 — README + AGENTS updated
-- [x] CP7 — Restaurant template stub created
+#### README.md v4.0
+- Added complete integrations table: Square (Catalog + Orders + Gift Cards + Loyalty),
+  Meta/Instagram, Twitter/X, Google Business + Maps, Apple Maps, Yelp, TripAdvisor
+- Added full reservations integrations: OpenTable, Resy, SevenRooms, Yelp, in-house form
+- Added marketing integrations: Mailchimp, Klaviyo, Resend, Twilio, Tidio/Crisp
+- Added analytics integrations: Plausible (default), GA4 (extension), Search Console
+- Added AI tools section: Gemini — description, menu, alt text, SEO, color palette
+- Added complete features list (80+ features across 9 categories)
+- Added three-layer extension system: JSON config + npm plugins + CDN/script manager
+- Added curated CDN library catalog: Swiper, GSAP, AOS, Lottie, Alpine, GLightbox,
+  Flatpickr, Chart.js, vanilla-cookieconsent, QRCode.js
+- Added content engine features: blog, events, specials board, press, multi-location
+- Added media library features: background removal, image crop, Unsplash stock photos
+- Added accessibility: WCAG 2.1 AA, RTL, multilingual (Astro i18n), semantic HTML
+- Added performance: PWA, font subsetting, critical CSS, Core Web Vitals, structured data testing
+- Added print assets: PDF menu (jsPDF), QR code (qrcode), business card export
+- Updated tech stack table: added Gemini, jsPDF, qrcode, Plausible, @dnd-kit, CodeMirror 6
+- Updated monorepo structure: added packages/ai-tools/, packages/pdf-tools/,
+  packages/integrations/yelp/, builder/src/steps/, builder/src/editor/, builder/src/media/
+- Updated roadmap: Phases 1–8 (added Phase 5 Content Engine, Phase 7 Polish, Phase 8 Launch)
 
-#### docs: master plan update — Jul 4, 2026
-- `README.md` v3.0 — full master plan: Electron, block-level DnD, dual extension system,
-  Square/Meta/Google/Apple Maps integrations, existing website import, service tiers,
-  8-step wizard flow, updated roadmap (Phases 1–7), integration env vars table
-- `AGENTS.md` v3.0 — 10 locked architectural decisions: added Decision 6 (Electron),
-  Decision 7 (block-level DnD + @dnd-kit), Decision 8 (dual extensions),
-  Decision 9 (integration architecture + packages/integrations/ structure),
-  Decision 10 (service tiers + Supabase schema fields)
-- `AGENTS.md` — added `packages/extensions/` and `packages/integrations/` to monorepo
-  structure and project rules (rules 12–15 added)
-- `AGENTS.md` — updated Supabase schema with `integrations` table, `sites.tier`,
-  `sites.managed_by`, `sites.billing_status`
-- `.env.example` — added 14 integration env vars: Square, Meta, Twitter/X, Google,
-  Apple Maps, ENCRYPTION_KEY
-- `CHANGELOG.md` — this update
+#### AGENTS.md v4.0
+- Added Decision 11: Content Engine — Astro Content Collections (no external CMS)
+- Added Decision 12: AI Tools — Google Gemini API locked (no OpenAI/Anthropic)
+- Added Decision 13: Analytics — Plausible default, GA4 as extension
+- Added Decision 14: PDF + QR — jsPDF + qrcode npm package
+- Added Decision 15: Multi-location — first-class feature, locations[] in ProjectSchema
+- Updated D6 (Electron IPC): added removeBackground, generateQR, exportPDF channels
+- Updated D8 (Extensions): expanded to 3-layer system (added CDN/script manager layer)
+- Updated D9 (Integrations): added yelp/ to packages/integrations/
+- Supabase schema: added content_posts table (blog, events, specials, press)
+- Project rules expanded: 15 → 20 (added rules 16–20)
+- Tech stack section expanded with full library list
+- Agent confirmation block updated
 
-**Phase 0 CLOSED. Phase 1 active.**
+#### CONTRIBUTING.md v4.0
+- Updated scopes to include new packages: ai-tools, pdf-tools, extensions, integrations
+- Updated rules to reflect all 20 project rules
+- Added development setup notes for Electron
+
+#### .env.example v4.0
+- Added: GEMINI_API_KEY, YELP_API_KEY, PLAUSIBLE_API_KEY, PLAUSIBLE_DOMAIN,
+  UNSPLASH_ACCESS_KEY, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+- Total env vars: 28
+
+---
+
+## [v3.0.0] — July 4, 2026
+
+### docs: master plan update — Electron, block DnD, extensions, integrations, service tiers
+
+- README v3: Added Electron, block DnD, dual extension system (JSON + npm),
+  Square/Meta/Google/Apple Maps integrations, service tiers, 8-step wizard, Phases 1–7
+- AGENTS v3: Added Decisions 6–10 (Electron, DnD, extensions, integrations, tiers)
+- AGENTS v3: Added integrations Supabase table, sites.tier/managed_by/billing_status
+- .env.example: Added 14 integration env vars (Square, Meta, Twitter, Google, Apple Maps)
+
+---
+
+## [v2.0.0] — July 2, 2026
+
+### docs: Phase 0 product pivot — full architectural rewrite
+
+- README v2: Hospitality-first positioning, two-mode architecture, roadmap
+- AGENTS v2: 5 locked decisions, monorepo structure, Supabase schema
+- Phase 0 DoD: all 7 checkpoints complete
+
+---
+
+## [v1.0.0] — July 2, 2026
+
+### chore: initial monorepo scaffold
+
+- All package stubs created
+- Turborepo + pnpm workspace configured
+- Restaurant template manifest (CP2, CP7)
+- Hearth style tokens
+- Base TypeScript config
+- .gitignore, .env.example
