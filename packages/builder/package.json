@@ -1,14 +1,19 @@
 {
   "name": "@nexcms/builder",
   "version": "0.0.0",
-  "description": "Local Builder — React 19 + Vite wizard UI (desktop-first)",
+  "description": "Local Builder — Electron shell + React 19 + Vite wizard UI (desktop-first)",
+  "main": "./dist/electron/main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "vite build && tsc -p tsconfig.electron.json",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "dist": "npm run build && electron-builder",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@nexcms/generator": "workspace:*",
+    "@nexcms/template-engine": "workspace:*",
     "@nexcms/types": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -17,7 +22,11 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "concurrently": "^9.0.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
     "typescript": "^5.4.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "wait-on": "^8.0.0"
   }
 }
