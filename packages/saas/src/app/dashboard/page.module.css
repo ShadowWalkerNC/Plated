@@ -1,0 +1,56 @@
+.page { display: grid; gap: 2rem; }
+
+.header {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+}
+
+.title {
+  font-family: var(--font-display); font-size: 2.25rem;
+  color: var(--color-text); line-height: 1;
+}
+
+.subtitle { color: var(--color-text-muted); margin-top: 0.25rem; }
+
+.newBtn {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: 0.6rem 1.25rem;
+  border-radius: 999px; font-weight: 700;
+  background: var(--color-primary); color: var(--color-primary-fg);
+}
+
+.empty {
+  display: grid; gap: 1rem; place-items: center;
+  padding: 4rem 2rem; border-radius: var(--radius-card);
+  background: var(--color-surface); border: 1px dashed var(--color-border);
+  text-align: center;
+}
+
+.emptyTitle { font-weight: 700; color: var(--color-text); font-size: 1.15rem; }
+.emptyBody  { color: var(--color-text-muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: grid; border-radius: var(--radius-card);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05); overflow: hidden;
+  transition: box-shadow 120ms;
+}
+
+.card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+
+.cardTheme { height: 120px; background: linear-gradient(135deg, #8a4b2f, #f4ede4); }
+.cardTheme[data-theme='canvas']   { background: linear-gradient(135deg, #f0f0f0, #fff); }
+.cardTheme[data-theme='midnight'] { background: linear-gradient(135deg, #151515, #4a2a22); }
+.cardTheme[data-theme='market']   { background: linear-gradient(135deg, #5e8c61, #f3eddc); }
+.cardTheme[data-theme='coast']    { background: linear-gradient(135deg, #83b8d8, #f6fbff); }
+.cardTheme[data-theme='ember']    { background: linear-gradient(135deg, #2a1612, #b65a2f); }
+
+.cardBody    { padding: 1rem 1.1rem; display: grid; gap: 0.25rem; }
+.cardName    { font-weight: 700; color: var(--color-text); }
+.cardMeta    { font-size: 0.85rem; color: var(--color-text-muted); text-transform: capitalize; }
+.cardDate    { font-size: 0.82rem; color: var(--color-text-muted); }

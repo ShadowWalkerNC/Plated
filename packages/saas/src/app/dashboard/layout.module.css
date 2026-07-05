@@ -1,0 +1,51 @@
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 1rem;
+  background: #241712;
+  color: #fff8f2;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  color: #fff8f2;
+  padding: 0 0.5rem;
+}
+
+.nav {
+  display: grid;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.navLink {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,248,242,0.75);
+  transition: background 120ms, color 120ms;
+}
+
+.navLink:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff8f2;
+}
+
+.userRow {
+  padding: 0.5rem;
+}
+
+.main {
+  padding: 2rem;
+  background: var(--color-bg);
+  overflow: auto;
+}

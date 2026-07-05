@@ -1,0 +1,15 @@
+.page { display: grid; gap: 2rem; max-width: 720px; }
+.title { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-text); line-height: 1; }
+.subtitle { color: var(--color-text-muted); }
+.form { display: grid; gap: 1.75rem; }
+.field { display: grid; gap: 0.4rem; }
+.label { font-weight: 700; color: var(--color-text); }
+.input { min-height: 50px; padding: 0.85rem 1rem; border-radius: 1rem; border: 1px solid var(--color-border); background: var(--color-surface); font-size: 1rem; }
+.themeField { display: grid; gap: 0.75rem; }
+.themeGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.themeCard { display: grid; gap: 0.5rem; border-radius: 1rem; overflow: hidden; cursor: pointer; border: 2px solid var(--color-border); background: var(--color-surface); padding-bottom: 0.75rem; transition: border-color 120ms; }
+.themeCard:has(.themeRadio:checked) { border-color: var(--color-accent); }
+.themeRadio { display: none; }
+.themePreview { height: 100px; }
+.themeLabel { text-align: center; font-weight: 600; font-size: 0.9rem; color: var(--color-text); }
+.submitBtn { min-height: 50px; padding: 0.85rem 1.5rem; border-radius: 999px; border: none; background: var(--color-primary); color: var(--color-primary-fg); font-weight: 700; font-size: 1rem; cursor: pointer; justify-self: start; }
