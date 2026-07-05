@@ -1,0 +1,91 @@
+.shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 0px);
+  margin: -2rem;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 1rem;
+  background: #241712;
+  color: #fff8f2;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebarTop { display: grid; gap: 0.5rem; }
+
+.backLink {
+  background: none; border: none; color: rgba(255,248,242,0.65);
+  cursor: pointer; font-size: 0.9rem; text-align: left; padding: 0;
+}
+
+.projectName {
+  font-size: 1rem; font-weight: 700;
+  color: #fff8f2; padding: 0 0.25rem;
+}
+
+.progressWrap { display: grid; gap: 0.4rem; }
+.progressRow { display: flex; justify-content: space-between; font-size: 0.82rem; color: rgba(255,248,242,0.6); }
+.progressTrack { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+.progressFill  { height: 100%; background: linear-gradient(90deg, #c98f4a, #f0c27a); border-radius: inherit; }
+
+.stepList { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; flex: 1; }
+
+.stepBtn {
+  width: 100%; display: grid; grid-template-columns: 36px 1fr; gap: 0.75rem;
+  align-items: center; padding: 0.75rem 0.8rem; border-radius: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+  color: inherit; cursor: pointer; text-align: left;
+}
+.stepBtn:hover { background: rgba(255,255,255,0.07); }
+.stepActive   { background: rgba(201,143,74,0.16) !important; border-color: rgba(201,143,74,0.4) !important; }
+.stepComplete .stepNum { background: #c98f4a; color: #241712; }
+
+.stepNum {
+  width: 36px; height: 36px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.07); font-weight: 700; font-size: 0.9rem;
+}
+
+.stepInfo  { display: grid; gap: 0.1rem; }
+.stepTitle { font-weight: 700; font-size: 0.95rem; }
+.stepHint  { font-size: 0.8rem; color: rgba(255,248,242,0.6); }
+
+.sidebarSave { display: grid; gap: 0.5rem; margin-top: auto; }
+.saveError   { color: #f88; font-size: 0.85rem; }
+.saveOk      { color: #8fc98f; font-size: 0.85rem; }
+.saveBtn     { min-height: 44px; border-radius: 999px; border: none; background: #8a4b2f; color: #fff8f2; font-weight: 700; cursor: pointer; }
+
+.main {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+  padding: 2rem;
+  background: var(--color-bg);
+  overflow: auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.8);
+  border: 1px solid var(--color-border);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  overflow: auto;
+}
+
+.footerNav { display: flex; justify-content: space-between; gap: 1rem; }
+.backBtn   { min-height: 46px; padding: 0.75rem 1.5rem; border-radius: 999px; border: 1px solid var(--color-border); background: rgba(255,255,255,0.8); color: var(--color-text); font-weight: 700; cursor: pointer; }
+.nextBtn   { min-height: 46px; padding: 0.75rem 1.5rem; border-radius: 999px; border: none; background: var(--color-primary); color: var(--color-primary-fg); font-weight: 700; cursor: pointer; }
+
+.control :global(input),
+.control :global(textarea),
+.control :global(select) {
+  width: 100%; min-height: 46px; padding: 0.8rem 0.95rem;
+  border-radius: 0.9rem; border: 1px solid var(--color-border);
+  background: rgba(255,255,255,0.9); color: var(--color-text); font-size: 0.95rem;
+}
+.control :global(textarea) { min-height: 120px; resize: vertical; }
+.control :global(input[type='color']) { min-height: 46px; width: 100%; padding: 0.3rem; cursor: pointer; }

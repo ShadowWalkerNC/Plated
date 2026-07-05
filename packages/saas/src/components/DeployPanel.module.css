@@ -1,0 +1,35 @@
+.page { display: grid; gap: 1.75rem; max-width: 820px; }
+.header { display: grid; gap: 0.5rem; }
+.breadcrumb { display: flex; gap: 0.5rem; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.breadcrumb a { color: var(--color-text-muted); }
+.title { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-text); line-height: 1; }
+
+.providerGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.providerCard {
+  display: grid; gap: 0.5rem; padding: 1.1rem; border-radius: 1rem; text-align: left;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  cursor: pointer; transition: box-shadow 120ms;
+}
+.providerCard:hover   { box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+.providerActive       { border-color: var(--color-accent); box-shadow: 0 0 0 2px rgba(201,143,74,0.2); }
+.providerLabel        { font-weight: 700; color: var(--color-text); }
+.providerDesc         { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; }
+
+.infoCard {
+  padding: 1rem 1.1rem; border-radius: 1rem;
+  background: rgba(201,143,74,0.07); border: 1px solid rgba(201,143,74,0.2);
+  font-size: 0.9rem; color: var(--color-text-muted);
+}
+.infoCard code { background: rgba(0,0,0,0.06); padding: 0.1rem 0.35rem; border-radius: 0.35rem; font-size: 0.85rem; color: var(--color-text); }
+
+.error   { padding: 0.9rem 1rem; border-radius: 1rem; background: rgba(198,40,40,0.07); border: 1px solid rgba(198,40,40,0.18); color: #c62828; }
+.success { display: grid; gap: 0.75rem; padding: 1rem 1.1rem; border-radius: 1rem; background: rgba(46,125,50,0.06); border: 1px solid rgba(46,125,50,0.18); }
+.successTitle { font-weight: 700; color: var(--color-text); }
+.deployUrl    { color: var(--color-primary); font-size: 0.95rem; }
+.warnings     { margin: 0; padding-left: 1.2rem; color: var(--color-text-muted); font-size: 0.9rem; }
+
+.actions  { display: flex; justify-content: space-between; gap: 1rem; }
+.backBtn  { display: inline-flex; align-items: center; min-height: 48px; padding: 0.75rem 1.5rem; border-radius: 999px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-weight: 700; }
+.deployBtn{ min-height: 48px; padding: 0.75rem 1.75rem; border-radius: 999px; border: none; background: var(--color-primary); color: var(--color-primary-fg); font-weight: 700; cursor: pointer; }
+
+@media (max-width: 640px) { .providerGrid { grid-template-columns: 1fr; } }
