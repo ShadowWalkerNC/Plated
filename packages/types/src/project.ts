@@ -1,13 +1,12 @@
 import type { BusinessType, StyleTemplate, ColorTheme } from './template.js';
 
 /**
- * ProjectSchema — the core data contract for NexCMS.
+ * ProjectSchema v2.0 — core data contract for NexCMS.
  *
- * This is the single source of truth for what a user fills in
- * during the wizard. The generator reads this and produces
- * an Astro site output.
+ * This is the single source of truth for wizard input.
+ * The generator reads this and produces an Astro site.
  *
- * Any change to this interface requires updating:
+ * Any change here requires updating:
  * - packages/generator
  * - packages/template-engine
  * - packages/builder (wizard fields)
@@ -15,142 +14,311 @@ import type { BusinessType, StyleTemplate, ColorTheme } from './template.js';
  */
 export interface ProjectSchema {
   // ── Meta ─────────────────────────────────────────────────
-  /** Internal project ID (UUID) */
   id: string;
-  /** Schema version for forward-compatibility */
-  schemaVersion: '1.0';
-  /** When this project was first created */
+  schemaVersion: '2.0';
   createdAt: string;
-  /** When this project was last saved */
   updatedAt: string;
 
-  // ── Template Selection ────────────────────────────────────
+  // ── Template ─────────────────────────────────────────────
   businessType: BusinessType;
   styleTemplate: StyleTemplate;
   colorTheme: ColorTheme;
+  darkMode: boolean;
 
   // ── Business Identity ────────────────────────────────────
   business: {
     name: string;
-    tagline?: string | undefined;
+    tagline?: string;
     description: string;
-    /** Primary phone number */
-    phone?: string | undefined;
-    email?: string | undefined;
-    website?: string | undefined;
+    phone?: string;
+    email?: string;
+    /** Existing website URL — used as reference for branding hints */
+    existingWebsite?: string;
+    cuisineType?: string;
+    foundedYear?: number;
   };
 
-  // ── Location ────────────────────────────────────────────
-  location: {
-    /** Street address line 1 */
-    address1?: string | undefined;
-    address2?: string | undefined;
-    city?: string | undefined;
-    state?: string | undefined;
-    zip?: string | undefined;
-    country: string;
-    /** Google Maps embed URL or Place ID */
-    googleMapsUrl?: string | undefined;
-  };
+  // ── Locations (multi-location first-class support) ────────
+  locations: LocationRecord[];
+  /** Index into locations[] that is the primary/default location */
+  primaryLocationIndex: number;
 
-  // ── Hours ──────────────────────────────────────────────
-  hours: {
-    /** day index: 0=Sunday … 6=Saturday */
-    schedule: Array<{
-      day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-      open: boolean;
-      /** 24-hour format HH:MM */
-      openTime?: string | undefined;
-      closeTime?: string | undefined;
-    }>;
-    holidayNote?: string | undefined;
-  };
+  // ── Menu ──────────────────────────────────────────────────
+  menu: MenuSchema;
 
-  // ── Menu ──────────────────────────────────────────────
-  menu: {
-    categories: Array<{
-      id: string;
-      name: string;
-      description?: string | undefined;
-      items: Array<{
-        id: string;
-        name: string;
-        description?: string | undefined;
-        price?: string | undefined;
-        /** Storage path or URL */
-        imageUrl?: string | undefined;
-        /** e.g. 'vegetarian', 'vegan', 'gluten-free', 'spicy' */
-        dietaryTags?: string[] | undefined;
-        available: boolean;
-      }>;
-    }>;
-  };
-
-  // ── Branding ──────────────────────────────────────────
+  // ── Branding ──────────────────────────────────────────────
   branding: {
-    /** Storage path or URL for primary logo */
-    logoUrl?: string | undefined;
-    /** Storage path or URL for favicon source (min 512×512) */
-    faviconSourceUrl?: string | undefined;
-    /** Hex color extracted from logo or chosen by user */
-    primaryColor?: string | undefined;
-    secondaryColor?: string | undefined;
+    logoUrl?: string;
+    faviconSourceUrl?: string;
+    heroImageUrl?: string;
+    heroVideoUrl?: string;
+    primaryColor?: string;
+    secondaryColor?: string;
+    accentColor?: string;
   };
 
-  // ── Social Media ──────────────────────────────────────
-  social: {
-    facebook?: string | undefined;
-    instagram?: string | undefined;
-    tiktok?: string | undefined;
-    twitter?: string | undefined;
-    youtube?: string | undefined;
-    /** DoorDash listing URL */
-    doordash?: string | undefined;
-    /** Uber Eats listing URL */
-    ubereats?: string | undefined;
-    /** Grubhub listing URL */
-    grubhub?: string | undefined;
-    /** Google Business Profile URL */
-    googleBusiness?: string | undefined;
-  };
+  // ── Social & Integrations ─────────────────────────────────
+  social: SocialSchema;
+  integrations: IntegrationConfig;
 
-  // ── SEO ───────────────────────────────────────────────
-  seo: {
-    /** Defaults to business.name if not set */
-    siteTitle?: string | undefined;
-    /** Defaults to business.description if not set */
-    metaDescription?: string | undefined;
-    /** Injected into <head> — used for Google verification etc. */
-    headSnippet?: string | undefined;
-  };
+  // ── Content Collections ───────────────────────────────────
+  blog?: ContentPost[];
+  events?: EventPost[];
+  specials?: SpecialPost[];
+  press?: PressPost[];
 
-  // ── Deployment ────────────────────────────────────────
+  // ── SEO ───────────────────────────────────────────────────
+  seo: SeoSchema;
+
+  // ── Extensions ────────────────────────────────────────────
+  extensions: ExtensionConfig;
+
+  // ── Deployment ────────────────────────────────────────────
   deployment: {
-    /** Local mode: preferred deploy target for instructions */
-    target?: 'netlify' | 'vercel' | 'cloudflare' | 'github' | undefined;
-    /** SaaS mode: subdomain on nexcms.io */
-    subdomain?: string | undefined;
-    /** SaaS mode: custom domain if configured */
-    customDomain?: string | undefined;
+    target?: 'netlify' | 'vercel' | 'cloudflare' | 'github';
+    subdomain?: string;
+    customDomain?: string;
   };
 
-  // ── Food Truck Extras ────────────────────────────────
-  /** Only relevant when businessType === 'food-truck' or 'food-stand' */
-  locationSchedule?: Array<{
-    day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-    locationName: string;
-    address?: string | undefined;
-    startTime?: string | undefined;
-    endTime?: string | undefined;
-  }> | undefined;
-
-  // ── Events (Bar / Nightclub) ─────────────────────────
-  /** Only relevant when businessType === 'bar' */
-  events?: Array<{
-    id: string;
-    title: string;
-    date: string;
-    description?: string | undefined;
-    ticketUrl?: string | undefined;
-  }> | undefined;
+  // ── Food Truck Schedule ───────────────────────────────────
+  locationSchedule?: TruckStop[];
 }
+
+// ── Location ────────────────────────────────────────────────
+export interface LocationRecord {
+  id: string;
+  name: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country: string;
+  phone?: string;
+  email?: string;
+  googleMapsUrl?: string;
+  googlePlaceId?: string;
+  hours: HoursSchedule;
+  /** Optional: point to a specific menu variant for this location */
+  menuVariantId?: string;
+}
+
+export interface HoursSchedule {
+  schedule: DayHours[];
+  holidayNote?: string;
+  additionalNotes?: string;
+}
+
+export interface DayHours {
+  /** 0=Sunday … 6=Saturday */
+  day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  open: boolean;
+  /** 24-hour HH:MM */
+  openTime?: string;
+  closeTime?: string;
+  /** Support for split shifts e.g. lunch + dinner */
+  secondShift?: { openTime: string; closeTime: string };
+}
+
+export interface TruckStop {
+  day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  locationName: string;
+  address?: string;
+  startTime?: string;
+  endTime?: string;
+  mapUrl?: string;
+}
+
+// ── Menu ─────────────────────────────────────────────────────
+export interface MenuSchema {
+  /** If connected to Square, the Square location ID used for sync */
+  squareLocationId?: string;
+  /** When the menu was last synced from Square */
+  lastSyncedAt?: string;
+  categories: MenuCategory[];
+}
+
+export interface MenuCategory {
+  id: string;
+  name: string;
+  description?: string;
+  displayOrder: number;
+  items: MenuItem[];
+}
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  description?: string;
+  price?: string;
+  imageUrl?: string;
+  dietaryTags?: DietaryTag[];
+  available: boolean;
+  displayOrder: number;
+  /** Modifier groups from Square (allergens, sizes, add-ons) */
+  modifierGroups?: ModifierGroup[];
+}
+
+export type DietaryTag =
+  | 'vegetarian'
+  | 'vegan'
+  | 'gluten-free'
+  | 'dairy-free'
+  | 'nut-free'
+  | 'halal'
+  | 'kosher'
+  | 'spicy'
+  | 'contains-alcohol';
+
+export interface ModifierGroup {
+  id: string;
+  name: string;
+  required: boolean;
+  options: Array<{ id: string; name: string; priceDelta?: string }>;
+}
+
+// ── Social ───────────────────────────────────────────────────
+export interface SocialSchema {
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+  tiktok?: string;
+  youtube?: string;
+  doordash?: string;
+  ubereats?: string;
+  grubhub?: string;
+  toast?: string;
+  chownow?: string;
+  yelp?: string;
+  tripadvisor?: string;
+  opentable?: string;
+  googleBusiness?: string;
+}
+
+// ── Integration Config ────────────────────────────────────────
+export interface IntegrationConfig {
+  square?: {
+    connected: boolean;
+    locationId?: string;
+    merchantId?: string;
+    /** accessToken stored encrypted separately — never in project.json */
+  };
+  facebook?: { connected: boolean; pageId?: string; pageName?: string };
+  instagram?: { connected: boolean; accountId?: string; username?: string };
+  twitter?: { connected: boolean; userId?: string; handle?: string };
+  googleBusiness?: { connected: boolean; accountId?: string; locationId?: string };
+  appleMaps?: { connected: boolean; placeId?: string };
+  yelp?: { connected: boolean; businessId?: string; alias?: string };
+}
+
+// ── Content Collections ───────────────────────────────────────
+export interface ContentPost {
+  id: string;
+  type: 'blog' | 'news';
+  title: string;
+  slug: string;
+  excerpt?: string;
+  body: string; // Markdown
+  coverImageUrl?: string;
+  author?: string;
+  tags?: string[];
+  publishedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventPost {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  coverImageUrl?: string;
+  eventDate: string;
+  eventEndDate?: string;
+  location?: string;
+  ticketUrl?: string;
+  recurring?: 'weekly' | 'monthly' | 'none';
+  createdAt: string;
+}
+
+export interface SpecialPost {
+  id: string;
+  title: string;
+  description?: string;
+  imageUrl?: string;
+  price?: string;
+  validFrom?: string;
+  validUntil?: string;
+  daysAvailable?: Array<0 | 1 | 2 | 3 | 4 | 5 | 6>;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface PressPost {
+  id: string;
+  publication: string;
+  headline: string;
+  url?: string;
+  publishedAt?: string;
+  logoUrl?: string;
+}
+
+// ── SEO ──────────────────────────────────────────────────────
+export interface SeoSchema {
+  siteTitle?: string;
+  metaDescription?: string;
+  ogImageUrl?: string;
+  googleVerification?: string;
+  bingVerification?: string;
+  /** Arbitrary head snippet for custom meta/scripts */
+  headSnippet?: string;
+  bodyStartSnippet?: string;
+  bodyEndSnippet?: string;
+  structuredDataOverride?: Record<string, unknown>;
+}
+
+// ── Extensions ───────────────────────────────────────────────
+export interface ExtensionConfig {
+  analytics?: {
+    plausible?: { enabled: boolean; domain?: string };
+    ga4?: { enabled: boolean; measurementId?: string };
+  };
+  reservations?: {
+    provider: 'opentable' | 'resy' | 'sevenrooms' | 'yelp' | 'inhouse';
+    widgetUrl?: string;
+    restaurantId?: string;
+  };
+  liveChat?: {
+    provider: 'tidio' | 'crisp';
+    publicKey: string;
+  };
+  whatsapp?: { enabled: boolean; phone?: string };
+  emailCapture?: {
+    provider: 'mailchimp' | 'klaviyo' | 'resend';
+    listId?: string;
+    apiKey?: string;
+  };
+  loyalty?: {
+    provider: 'square' | 'custom';
+    programId?: string;
+    linkUrl?: string;
+  };
+  cookieBanner?: { enabled: boolean; theme?: 'light' | 'dark' };
+  googleAnalytics?: { enabled: boolean; measurementId?: string };
+  /** Curated CDN libraries toggled on by user */
+  cdnLibraries?: CdnLibraryId[];
+  /** npm plugins installed via nexcms-plugin-* */
+  plugins?: string[];
+}
+
+export type CdnLibraryId =
+  | 'swiper'
+  | 'gsap'
+  | 'aos'
+  | 'lottie'
+  | 'alpinejs'
+  | 'glightbox'
+  | 'flatpickr'
+  | 'chartjs'
+  | 'cookieconsent'
+  | 'qrcodejs';

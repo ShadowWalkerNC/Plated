@@ -1,6 +1,5 @@
 /**
- * BusinessType — the 8 supported hospitality business types in v1.
- * Phase 2 expands to small-business, startup, portfolio, event-venue.
+ * BusinessType — 8 hospitality types for v1.
  */
 export type BusinessType =
   | 'restaurant'
@@ -13,8 +12,8 @@ export type BusinessType =
   | 'ghost-kitchen';
 
 /**
- * StyleTemplate — the 6 visual styles.
- * Each style injects CSS variables only — zero content logic.
+ * StyleTemplate — 6 visual styles.
+ * Each injects CSS variables ONLY — zero content logic.
  */
 export type StyleTemplate =
   | 'hearth'
@@ -24,60 +23,146 @@ export type StyleTemplate =
   | 'obsidian'
   | 'ghost';
 
-/**
- * ColorTheme — the 3 standard color theme variants per style.
- */
+/** 3 color theme variants per style */
 export type ColorTheme = 'default' | 'warm' | 'cool';
 
 export type SlotType =
   | 'text'
   | 'richtext'
   | 'image'
+  | 'video'
   | 'list'
   | 'boolean'
+  | 'number'
   | 'hours'
   | 'menu'
   | 'schedule'
   | 'social'
-  | 'seo';
+  | 'seo'
+  | 'location'
+  | 'content-collection'
+  | 'extension';
+
+/**
+ * BlockType — the types of draggable content blocks.
+ */
+export type BlockType =
+  | 'hero'
+  | 'text'
+  | 'image'
+  | 'gallery'
+  | 'menu-preview'
+  | 'hours'
+  | 'map'
+  | 'social-feed'
+  | 'cta'
+  | 'testimonials'
+  | 'specials'
+  | 'events-list'
+  | 'blog-list'
+  | 'press'
+  | 'delivery-links'
+  | 'reservation-widget'
+  | 'video'
+  | 'divider'
+  | 'spacer'
+  | 'custom-embed';
+
+/**
+ * BlockSchema — a single draggable content block in the editor.
+ * Blocks live inside sections. Sections live on pages.
+ */
+export interface BlockSchema {
+  id: string;
+  type: BlockType;
+  /** Display order within its parent section */
+  order: number;
+  visible: boolean;
+  /** Block-specific config — keys depend on type */
+  config: Record<string, unknown>;
+}
 
 /**
  * ContentSlot — a single mappable content field in a template manifest.
  */
 export interface ContentSlot {
-  /** Dot-notation path into ProjectSchema, e.g. 'business.name' */
+  /** Dot-notation path into ProjectSchema e.g. 'business.name' */
   field: string;
   type: SlotType;
   required: boolean;
   label: string;
-  hint?: string | undefined;
-  /** Which wizard step this slot appears in */
+  hint?: string;
   wizardStep: number;
 }
 
 /**
- * TemplateManifest — the nexcms.template.json contract.
- * CP2: manifest spec locked — Phase 0 checkpoint complete.
+ * TemplateSection — a section within a page with ordered blocks.
+ */
+export interface TemplateSection {
+  id: string;
+  name: string;
+  /** Display order on the page */
+  order: number;
+  visible: boolean;
+  blocks: BlockSchema[];
+}
+
+/**
+ * TemplatePage — a page definition with sections + slots.
+ */
+export interface TemplatePage {
+  id: string;
+  path: string;
+  title: string;
+  /** Whether users can toggle this page off */
+  optional: boolean;
+  sections: TemplateSection[];
+  usesSlots: string[];
+}
+
+/**
+ * TemplateManifest — nexcms.template.json contract.
  */
 export interface TemplateManifest {
-  /** Manifest format version */
-  manifestVersion: '1.0';
+  manifestVersion: '2.0';
   businessType: BusinessType;
-  /** Human-readable display name */
   displayName: string;
   description: string;
-  /** All content slots this template exposes to the wizard */
   slots: ContentSlot[];
-  /** Ordered list of pages this template generates */
-  pages: Array<{
-    id: string;
-    path: string;
-    title: string;
-    /** Slot field names used on this page */
-    usesSlots: string[];
-  }>;
-  /** Compatible style templates */
+  pages: TemplatePage[];
   compatibleStyles: StyleTemplate[];
-  /** Default style if user skips selection */
   defaultStyle: StyleTemplate;
+}
+
+/**
+ * PluginManifest — what an npm nexcms-plugin-* package exports.
+ */
+export interface PluginManifest {
+  id: string;
+  name: string;
+  version: string;
+  description?: string;
+  /** Additional wizard steps this plugin injects */
+  wizardSteps?: Array<{
+    stepIndex: number;
+    title: string;
+    component: string;
+  }>;
+  /** Zod schema path for plugin config validation */
+  configSchemaPath?: string;
+  /** Astro component paths to inject into templates */
+  components?: Array<{
+    slot: 'head' | 'body-start' | 'body-end' | 'nav' | 'footer';
+    path: string;
+  }>;
+  /** Environment variables required by this plugin */
+  envVars?: Array<{
+    key: string;
+    required: boolean;
+    description: string;
+  }>;
+  /** CDN scripts this plugin adds */
+  cdnScripts?: string[];
+  /** Build hook — called during site generation */
+  onBuild?: string; // module path to async function
 }
