@@ -1,0 +1,19 @@
+.screen { min-height: 100vh; display: grid; place-items: center; padding: 2rem; background: radial-gradient(circle at 15% 20%, rgba(201,143,74,0.08), transparent 35%), radial-gradient(circle at 85% 80%, rgba(138,75,47,0.06), transparent 35%), #fcf8f3; }
+.card { width: min(100%, 860px); display: grid; gap: 1.25rem; padding: 2rem; border-radius: 1.5rem; background: rgba(255,255,255,0.82); border: 1px solid rgba(74,47,35,0.1); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; color: #8a7262; font-weight: 700; }
+.title { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 3rem; line-height: 1; color: #241712; }
+.subtitle { margin: 0; color: #6e5a4d; }
+.statRow { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.statCard { display: grid; gap: 0.35rem; padding: 1rem; border-radius: 1rem; background: rgba(255,255,255,0.7); border: 1px solid rgba(74,47,35,0.1); }
+.statLabel { font-size: 0.82rem; color: #8a7262; text-transform: uppercase; letter-spacing: 0.06em; }
+.statValue { color: #241712; font-size: 1.1rem; }
+.outputRow { display: grid; grid-template-columns: 1fr auto; gap: 0.75rem; }
+.outputInput { min-height: 48px; padding: 0.85rem 1rem; border-radius: 1rem; border: 1px solid rgba(74,47,35,0.15); width: 100%; }
+.actions { display: flex; justify-content: space-between; gap: 1rem; }
+.primaryBtn { min-height: 48px; padding: 0.85rem 1.35rem; border-radius: 999px; border: none; background: #8a4b2f; color: #fff8f2; font-weight: 700; cursor: pointer; }
+.ghostBtn { min-height: 48px; padding: 0.85rem 1.35rem; border-radius: 999px; border: 1px solid rgba(74,47,35,0.15); background: rgba(255,255,255,0.8); color: #241712; font-weight: 700; cursor: pointer; }
+.error { padding: 0.85rem 1rem; border-radius: 1rem; background: rgba(220,50,50,0.08); border: 1px solid rgba(220,50,50,0.18); color: #8b1a1a; }
+.result { display: grid; gap: 0.85rem; padding: 1rem; border-radius: 1rem; background: rgba(255,255,255,0.72); border: 1px solid rgba(74,47,35,0.1); }
+.successTitle { font-weight: 700; font-size: 1.1rem; color: #241712; }
+.resultMeta { color: #6e5a4d; }
+.warnings { margin: 0; padding-left: 1.2rem; color: #6e5a4d; }

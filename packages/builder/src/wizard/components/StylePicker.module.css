@@ -1,0 +1,12 @@
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.card { display: grid; gap: 0.75rem; padding: 0.9rem; border-radius: 1rem; border: 1px solid rgba(74,47,35,0.1); background: rgba(255,255,255,0.78); cursor: pointer; text-align: left; transition: box-shadow 120ms; }
+.active { border-color: rgba(201,143,74,0.65); box-shadow: 0 0 0 2px rgba(201,143,74,0.2); }
+.preview { height: 120px; border-radius: 0.8rem; background: linear-gradient(135deg, #8a4b2f, #f4ede4); }
+.preview[data-theme='canvas']   { background: linear-gradient(135deg, #f0f0f0, #ffffff); }
+.preview[data-theme='midnight'] { background: linear-gradient(135deg, #151515, #4a2a22); }
+.preview[data-theme='market']   { background: linear-gradient(135deg, #5e8c61, #f3eddc); }
+.preview[data-theme='coast']    { background: linear-gradient(135deg, #83b8d8, #f6fbff); }
+.preview[data-theme='ember']    { background: linear-gradient(135deg, #2a1612, #b65a2f); }
+.body { display: grid; gap: 0.2rem; }
+.name { font-weight: 700; color: #241712; }
+.description { color: #6e5a4d; font-size: 0.88rem; }

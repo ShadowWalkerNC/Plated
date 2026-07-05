@@ -1,60 +1,19 @@
-.step {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.header {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.title {
-  margin: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2.4rem;
-  color: #241712;
-  line-height: 1;
-}
-
-.subtitle {
-  margin: 0;
-  color: #6e5a4d;
-  max-width: 68ch;
-}
-
-.grid2,
-.grid3 {
-  display: grid;
-  gap: 1rem;
-}
-
-.grid2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.noteCard,
-.hoursSection {
-  display: grid;
-  gap: 0.75rem;
-  padding: 1.15rem 1.2rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(74, 47, 35, 0.1);
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.noteTitle,
-.sectionLabel {
-  margin: 0;
-  font-weight: 700;
-  color: #241712;
-}
-
-.noteList {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: #6e5a4d;
-}
+.step { display: grid; gap: 1.5rem; }
+.header { display: grid; gap: 0.35rem; }
+.title { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.4rem; color: #241712; line-height: 1; }
+.subtitle { margin: 0; color: #6e5a4d; max-width: 68ch; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.noteCard { padding: 1.15rem 1.2rem; border-radius: 1rem; border: 1px solid rgba(74,47,35,0.1); background: rgba(255,255,255,0.6); }
+.noteTitle { margin: 0 0 0.5rem; font-weight: 700; color: #241712; }
+.noteList { margin: 0; padding-left: 1.1rem; color: #6e5a4d; }
+.choiceCard { display: grid; gap: 0.4rem; }
+.choiceLabel { font-weight: 700; color: #241712; }
+.choiceCard select { min-height: 48px; padding: 0.8rem 0.95rem; border-radius: 0.9rem; border: 1px solid rgba(74,47,35,0.15); background: rgba(255,255,255,0.9); }
+.hoursSection { display: grid; gap: 0.75rem; }
+.sectionLabel { font-weight: 700; color: #241712; }
+.toggleGrid { display: grid; gap: 0.75rem; }
+.toggleCard { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: 1rem 1.1rem; border-radius: 1rem; background: rgba(255,255,255,0.78); border: 1px solid rgba(74,47,35,0.1); cursor: pointer; }
+.toggleCardBody { display: grid; gap: 0.25rem; }
+.toggleTitle { font-weight: 700; color: #241712; }
+.toggleDescription { color: #6e5a4d; font-size: 0.88rem; }
