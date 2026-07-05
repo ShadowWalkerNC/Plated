@@ -351,7 +351,7 @@ Each style: Light + Dark variants + 3 color themes. 8 structures × 6 styles mai
 | **Runtime (prod)** | Node.js 22 | Ecosystem stability |
 | **Templates** | Astro 5 | Static output + server islands |
 | **Local Builder** | Electron + React 19 + Vite + Shadcn/UI | Native desktop wizard app |
-| **SaaS frontend** | Astro 5 hybrid | Mobile-first server-rendered hub |
+| **SaaS frontend** | Next.js + Refine | Mobile-first server-rendered hub + admin/dashboard layer |
 | **Database** | Supabase (PostgreSQL + RLS) | Multi-tenant SaaS backend |
 | **Auth** | Supabase Auth | Email, magic link, OAuth |
 | **Storage** | Supabase Storage | Logos, media, uploads |
@@ -367,6 +367,10 @@ Each style: Light + Dark variants + 3 color themes. 8 structures × 6 styles mai
 | **Styling** | Tailwind CSS + CSS Variables | Style injection |
 | **CDN** | Cloudflare | Edge cache + purge |
 | **Hosting** | Railway | Persistent Node.js server |
+
+### Why Refine for the SaaS Dashboard
+
+`packages/saas` uses [Refine](https://github.com/refinedev/refine) as the headless admin/dashboard layer. Refine is purpose-built for CRUD-heavy data UIs — site management, user administration, billing, plan limits, super-admin controls — which is exactly what the SaaS hub needs. It provides authentication flows, role-based access control, data provider connectors (wired directly to Supabase), and `useTable`/`useDataGrid` hooks that eliminate weeks of boilerplate. It does not touch the template engine, generator, or Electron builder — those are pure Node.js pipelines.
 
 ---
 
@@ -395,12 +399,12 @@ nexcms/
 │   │   ├── src/              ← React wizard UI (desktop-first, 1280px)
 │   │   └── electron/         ← main.ts, preload.ts, ipc/ handlers
 │   ├── cli/                  ← LOCAL: nexcms CLI — spawns Electron, triggers export
-│   └── saas/                 ← SAAS: Astro hybrid (mobile-first, 390px)
-│       ├── dashboard/        ← Client + admin + super-admin
+│   └── saas/                 ← SAAS: Next.js + Refine (mobile-first, 390px)
+│       ├── dashboard/        ← Client + admin + super-admin (Refine resources)
 │       ├── editor/           ← Block-level DnD editor
 │       └── renderer/         ← Tenant-aware site renderer
 ├── templates/
-│   ├── restaurant/
+│   ├── restaurant/           ← nexcms.template.json v2.0 + Astro pages (Phase 1)
 │   ├── food-truck/
 │   ├── bar/
 │   ├── cafe/
@@ -430,17 +434,30 @@ nexcms/
 
 ## Roadmap
 
-| Phase | Timeline | Goal |
-|---|---|---|
-| **Phase 0 — Plan** | ✅ Jul 2026 | Types, manifest spec, Supabase schema, monorepo scaffold, docs |
-| **Phase 1 — Generator** | Jul–Sep 2026 | `generator` + `template-engine`. Restaurant + Hearth. Electron shell. CLI → Astro zip. |
-| **Phase 2 — Local Builder** | Sep–Nov 2026 | Full Electron wizard. All 8 types. All 6 styles. Block DnD. Media library. PDF/QR export. |
-| **Phase 3 — Integrations** | Nov 2026–Jan 2027 | Square (full), Meta, Google, Apple Maps, Yelp. OAuth flows. AI tools (Gemini). Existing website import. |
-| **Phase 4 — SaaS Foundation** | Jan–Mar 2027 | Supabase, auth, mobile dashboard, live editing, super-admin, service tiers, custom domains. |
-| **Phase 5 — Content Engine** | Mar–May 2027 | Blog, events, specials board, press section. Multi-location support. Email capture. Reservations. |
-| **Phase 6 — Extensions** | May–Jul 2027 | npm plugin registry, CDN library picker, script injection, GitHub push, one-click deploy. |
-| **Phase 7 — Polish** | Jul–Sep 2027 | Analytics, Core Web Vitals, PWA, accessibility audit, print assets, multilingual, RTL. |
-| **Phase 8 — Launch** | Q4 2027 | nexcms.io public, docs site, pricing, template marketplace, White-Glove onboarding. |
+| Phase | Timeline | Status | Goal |
+|---|---|---|---|
+| **Phase 0 — Plan** | Jul 2026 | ✅ Complete | Types (`ProjectSchema` v2.0, all interfaces), manifest spec, monorepo scaffold, docs |
+| **Phase 1 — Generator** | Jul–Sep 2026 | 🔄 In Progress | `template-engine` ✅ · `generator` (next) · Restaurant + Hearth · Electron shell · CLI → Astro zip |
+| **Phase 2 — Local Builder** | Sep–Nov 2026 | ⬜ Planned | Full Electron wizard. All 8 types. All 6 styles. Block DnD. Media library. PDF/QR export. |
+| **Phase 3 — Integrations** | Nov 2026–Jan 2027 | ⬜ Planned | Square (full), Meta, Google, Apple Maps, Yelp. OAuth flows. AI tools (Gemini). Existing website import. |
+| **Phase 4 — SaaS Foundation** | Jan–Mar 2027 | ⬜ Planned | Supabase, auth, mobile dashboard (Next.js + Refine), live editing, super-admin, service tiers, custom domains. |
+| **Phase 5 — Content Engine** | Mar–May 2027 | ⬜ Planned | Blog, events, specials board, press section. Multi-location support. Email capture. Reservations. |
+| **Phase 6 — Extensions** | May–Jul 2027 | ⬜ Planned | npm plugin registry, CDN library picker, script injection, GitHub push, one-click deploy. |
+| **Phase 7 — Polish** | Jul–Sep 2027 | ⬜ Planned | Analytics, Core Web Vitals, PWA, accessibility audit, print assets, multilingual, RTL. |
+| **Phase 8 — Launch** | Q4 2027 | ⬜ Planned | nexcms.io public, docs site, pricing, template marketplace, White-Glove onboarding. |
+
+### Phase 1 Progress
+
+| Item | Status |
+|---|---|
+| `packages/types` — full `ProjectSchema` v2.0 | ✅ Done |
+| `templates/restaurant/nexcms.template.json` v2.0 | ✅ Done |
+| `packages/template-engine` — `loadManifest`, `resolveSlots`, `resolveBlocks`, `resolveTemplate` | ✅ Done |
+| `packages/generator` — `generate()` implementation | 🔄 Next |
+| `templates/restaurant/` Astro pages (7 pages) | ⬜ Queued |
+| `styles/hearth/` — CSS tokens + Tailwind config | ⬜ Queued |
+| `packages/builder` — Electron main + preload + IPC | ⬜ Queued |
+| CLI → Electron spawn wired | ⬜ Queued |
 
 ---
 
