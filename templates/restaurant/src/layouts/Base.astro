@@ -1,0 +1,110 @@
+---
+const {
+  title,
+  description = '',
+  image,
+} = Astro.props;
+const { site } = Astro.locals;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- OG tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={image} />}
+    {!image && site.branding.heroImageUrl && <meta property="og:image" content={site.branding.heroImageUrl} />}
+
+    <!-- Favicon -->
+    {site.branding.faviconUrl && <link rel="icon" href={site.branding.faviconUrl} />}
+    {!site.branding.faviconUrl && <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles/hearth.css" />
+
+    <!-- Verification tags -->
+    {site.seo.googleVerification && (
+      <meta name="google-site-verification" content={site.seo.googleVerification} />
+    )}
+    {site.seo.bingVerification && (
+      <meta name="msvalidate.01" content={site.seo.bingVerification} />
+    )}
+
+    <!-- Custom head snippet -->
+    {site.seo.headSnippet && <Fragment set:html={site.seo.headSnippet} />}
+
+    <!-- Analytics: Plausible -->
+    {site.extensions?.analytics?.provider === 'plausible' && (
+      <script
+        defer
+        data-domain={site.extensions.analytics.domain}
+        src="https://plausible.io/js/script.js"
+      ></script>
+    )}
+
+    <!-- Analytics: Google Analytics 4 -->
+    {site.extensions?.googleAnalytics?.enabled && site.extensions.googleAnalytics.measurementId && (
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${site.extensions.googleAnalytics.measurementId}`}
+      ></script>
+    )}
+  </head>
+  <body>
+    <!-- Nav -->
+    <nav class="site-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-brand">
+          {site.branding.logoUrl
+            ? <img src={site.branding.logoUrl} alt={site.business.name} class="nav-logo" />
+            : <span class="nav-brand-name">{site.business.name}</span>
+          }
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/menu">Menu</a></li>
+          <li><a href="/hours">Hours</a></li>
+          {site.events?.length > 0 && <li><a href="/events">Events</a></li>}
+          {site.business.description && <li><a href="/about">About</a></li>}
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Body start snippet -->
+    {site.seo.bodyStartSnippet && <Fragment set:html={site.seo.bodyStartSnippet} />}
+
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <span class="footer-name">{site.business.name}</span>
+          {site.business.tagline && <span class="footer-tagline">{site.business.tagline}</span>}
+        </div>
+        <div class="footer-links">
+          {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noreferrer">Instagram</a>}
+          {site.social.facebook && <a href={site.social.facebook} target="_blank" rel="noreferrer">Facebook</a>}
+          {site.social.googleBusiness && <a href={site.social.googleBusiness} target="_blank" rel="noreferrer">Google</a>}
+          {site.social.yelp && <a href={site.social.yelp} target="_blank" rel="noreferrer">Yelp</a>}
+        </div>
+        <p class="footer-copy">&copy; {new Date().getFullYear()} {site.business.name}. Built with <a href="https://nexcms.io">NexCMS</a>.</p>
+      </div>
+    </footer>
+
+    <!-- Body end snippet -->
+    {site.seo.bodyEndSnippet && <Fragment set:html={site.seo.bodyEndSnippet} />}
+  </body>
+</html>

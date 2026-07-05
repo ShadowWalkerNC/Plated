@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+const primaryLoc = site.locations[site.primaryLocationIndex] ?? site.locations[0];
+---
+<Base title={`Hours & Location — ${site.business.name}`} description={`Hours, address, and directions for ${site.business.name}.`}>
+
+  <section class="section hours-page-header">
+    <div class="container text-center">
+      <h1 class="page-title">Hours &amp; Location</h1>
+    </div>
+  </section>
+
+  {site.locations.map((loc, index) => (
+    <section class={`section location-section${index > 0 ? ' location-section--alt' : ''}`}>
+      <div class="container location-grid">
+
+        <!-- Hours card -->
+        <div class="hours-detail-card">
+          {loc.name && <h2 class="location-name">{loc.name}</h2>}
+          {!loc.name && <h2 class="location-name">Hours</h2>}
+
+          <ul class="hours-list hours-list--full">
+            {loc.hours.schedule.map((d) => (
+              <li class={`hours-row${!d.open ? ' hours-row--closed' : ''}`}>
+                <span class="hours-day">{['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.day]}</span>
+                <span class="hours-time">{d.open ? `${d.openTime}–${d.closeTime}` : 'Closed'}</span>
+              </li>
+            ))}
+          </ul>
+
+          {loc.holidayNote && (
+            <p class="holiday-note">{loc.holidayNote}</p>
+          )}
+        </div>
+
+        <!-- Address & contact card -->
+        <div class="address-detail-card">
+          <h2 class="section-subheading">Find Us</h2>
+          <address class="address-full">
+            {loc.address1 && <span>{loc.address1}</span>}
+            {loc.address2 && <span>{loc.address2}</span>}
+            {(loc.city || loc.state || loc.zip) && (
+              <span>{[loc.city, loc.state, loc.zip].filter(Boolean).join(', ')}</span>
+            )}
+          </address>
+
+          {(site.business.phone || loc.phone) && (
+            <p class="contact-phone">
+              <a href={`tel:${loc.phone ?? site.business.phone}`}>{loc.phone ?? site.business.phone}</a>
+            </p>
+          )}
+          {(site.business.email || loc.email) && (
+            <p class="contact-email">
+              <a href={`mailto:${loc.email ?? site.business.email}`}>{loc.email ?? site.business.email}</a>
+            </p>
+          )}
+
+          <div class="map-actions">
+            {loc.googleMapsUrl && (
+              <a class="btn btn-primary" href={loc.googleMapsUrl} target="_blank" rel="noreferrer">Google Maps</a>
+            )}
+            {loc.appleMapsUrl && (
+              <a class="btn btn-ghost" href={loc.appleMapsUrl} target="_blank" rel="noreferrer">Apple Maps</a>
+            )}
+          </div>
+        </div>
+
+      </div>
+    </section>
+  ))}
+
+  {site.locations.length === 0 && (
+    <section class="section">
+      <div class="container text-center">
+        <p>Location information coming soon.</p>
+      </div>
+    </section>
+  )}
+
+</Base>

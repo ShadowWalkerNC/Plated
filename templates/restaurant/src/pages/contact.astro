@@ -1,0 +1,103 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+const primaryLoc = site.locations[site.primaryLocationIndex] ?? site.locations[0];
+---
+<Base title={`Contact — ${site.business.name}`} description={`Get in touch with ${site.business.name}.`}>
+
+  <section class="section contact-header">
+    <div class="container text-center">
+      <h1 class="page-title">Contact Us</h1>
+    </div>
+  </section>
+
+  <section class="section contact-body">
+    <div class="container contact-grid">
+
+      <!-- Contact info -->
+      <div class="contact-info-card">
+        <h2 class="section-subheading">Get in Touch</h2>
+
+        {(site.business.phone || primaryLoc?.phone) && (
+          <div class="contact-row">
+            <span class="contact-label">Phone</span>
+            <a href={`tel:${primaryLoc?.phone ?? site.business.phone}`} class="contact-value">
+              {primaryLoc?.phone ?? site.business.phone}
+            </a>
+          </div>
+        )}
+
+        {(site.business.email || primaryLoc?.email) && (
+          <div class="contact-row">
+            <span class="contact-label">Email</span>
+            <a href={`mailto:${primaryLoc?.email ?? site.business.email}`} class="contact-value">
+              {primaryLoc?.email ?? site.business.email}
+            </a>
+          </div>
+        )}
+
+        {primaryLoc && (
+          <div class="contact-row">
+            <span class="contact-label">Address</span>
+            <address class="contact-value contact-address">
+              {primaryLoc.address1 && <span>{primaryLoc.address1}</span>}
+              {(primaryLoc.city || primaryLoc.state || primaryLoc.zip) && (
+                <span>{[primaryLoc.city, primaryLoc.state, primaryLoc.zip].filter(Boolean).join(', ')}</span>
+              )}
+            </address>
+          </div>
+        )}
+
+        {primaryLoc?.googleMapsUrl && (
+          <a class="btn btn-primary mt-4" href={primaryLoc.googleMapsUrl} target="_blank" rel="noreferrer">
+            Get Directions
+          </a>
+        )}
+
+        {site.social.googleBusiness && (
+          <a class="btn btn-ghost mt-2" href={site.social.googleBusiness} target="_blank" rel="noreferrer">
+            Leave a Review
+          </a>
+        )}
+      </div>
+
+      <!-- Contact form -->
+      <div class="contact-form-card">
+        <h2 class="section-subheading">Send a Message</h2>
+        <form class="contact-form" method="POST" action="/api/contact" novalidate>
+          <label class="form-label">
+            Name
+            <input class="form-input" type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="form-label">
+            Email
+            <input class="form-input" type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="form-label">
+            Phone (optional)
+            <input class="form-input" type="tel" name="phone" autocomplete="tel" />
+          </label>
+          <label class="form-label">
+            Message
+            <textarea class="form-textarea" name="message" rows="5" required></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Reservation widget placeholder -->
+  {site.extensions?.reservations && (
+    <section class="section reservations-section">
+      <div class="container text-center">
+        <h2 class="section-heading">Make a Reservation</h2>
+        <div id="reservation-widget" data-provider={site.extensions.reservations.provider}>
+          <!-- Reservation widget injected by extension -->
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>

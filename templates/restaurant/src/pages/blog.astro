@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+const posts = site.blog ?? [];
+---
+<Base title={`News & Blog — ${site.business.name}`} description={`Latest news and updates from ${site.business.name}.`}>
+
+  <section class="section blog-header">
+    <div class="container text-center">
+      <h1 class="page-title">News &amp; Blog</h1>
+    </div>
+  </section>
+
+  {posts.length > 0 ? (
+    <section class="section blog-list-section">
+      <div class="container">
+        <ul class="blog-grid">
+          {posts.map((post) => (
+            <li class="blog-card">
+              {post.coverImageUrl && (
+                <div class="blog-image-wrap">
+                  <img src={post.coverImageUrl} alt={post.title} class="blog-image" loading="lazy" />
+                </div>
+              )}
+              <div class="blog-card-body">
+                {post.category && <span class="blog-category">{post.category}</span>}
+                <h2 class="blog-title">
+                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                </h2>
+                {post.excerpt && <p class="blog-excerpt">{post.excerpt}</p>}
+                <div class="blog-meta">
+                  {post.author && <span class="blog-author">{post.author}</span>}
+                  {post.publishedAt && <span class="blog-date">{post.publishedAt}</span>}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ) : (
+    <section class="section">
+      <div class="container text-center">
+        <p>No posts yet. Check back soon.</p>
+      </div>
+    </section>
+  )}
+
+</Base>

@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+---
+<Base title={site.business.name} description={site.seo.metaDescription || site.business.description}>
+
+  <!-- Hero -->
+  <section id="hero" class="section hero-section">
+    <div class="container hero-block">
+      {site.branding.heroImageUrl && (
+        <div class="hero-image-wrap">
+          <img src={site.branding.heroImageUrl} alt={`${site.business.name} hero image`} class="hero-image" />
+        </div>
+      )}
+      <div class="hero-content">
+        {site.branding.logoUrl && <img src={site.branding.logoUrl} alt={`${site.business.name} logo`} class="hero-logo" />}
+        <h1 class="hero-title">{site.business.name}</h1>
+        {site.business.tagline && <p class="hero-tagline">{site.business.tagline}</p>}
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="/menu">View Menu</a>
+          <a class="btn btn-secondary" href="/hours">Hours &amp; Location</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About intro -->
+  {site.business.description && (
+    <section id="intro" class="section intro-section">
+      <div class="container text-center">
+        <h2 class="section-heading">About Us</h2>
+        <p class="intro-body">{site.business.description}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Menu preview -->
+  {site.menu.categories.length > 0 && (
+    <section id="menu-preview" class="section menu-preview-section">
+      <div class="container">
+        <h2 class="section-heading">Our Menu</h2>
+        <div class="menu-grid">
+          {site.menu.categories.slice(0, 2).map((cat) => (
+            <div class="menu-category-card">
+              <h3 class="menu-cat-name">{cat.name}</h3>
+              {cat.description && <p class="menu-cat-desc">{cat.description}</p>}
+              <ul class="menu-item-list">
+                {cat.items.slice(0, 4).map((item) => (
+                  <li class="menu-item">
+                    <span class="item-name">{item.name}</span>
+                    {item.price && <span class="item-price">{item.price}</span>}
+                    {item.description && <p class="item-desc">{item.description}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="text-center mt-8">
+          <a class="btn btn-primary" href="/menu">Full Menu</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Hours & map -->
+  <section id="hours-map" class="section hours-map-section">
+    <div class="container hours-map-grid">
+      <!-- Hours -->
+      {site.locations.length > 0 && (() => {
+        const loc = site.locations[site.primaryLocationIndex] ?? site.locations[0];
+        return (
+          <div class="hours-card">
+            <h2 class="section-heading">Hours</h2>
+            <ul class="hours-list">
+              {loc.hours.schedule.map((d) => (
+                <li class="hours-row">
+                  <span class="hours-day">{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.day]}</span>
+                  <span class="hours-time">{d.open ? `${d.openTime}–${d.closeTime}` : 'Closed'}</span>
+                </li>
+              ))}
+            </ul>
+            {loc.phone && <p class="location-phone"><a href={`tel:${loc.phone}`}>{loc.phone}</a></p>}
+            {loc.googleMapsUrl && <a class="btn btn-ghost" href={loc.googleMapsUrl} target="_blank" rel="noreferrer">Get Directions</a>}
+          </div>
+        );
+      })()}
+      <!-- Map placeholder -->
+      <div class="map-card">
+        {(() => {
+          const loc = site.locations[site.primaryLocationIndex] ?? site.locations[0];
+          if (!loc) return null;
+          const address = [loc.address1, loc.city, loc.state, loc.zip].filter(Boolean).join(', ');
+          return (
+            <address class="address-block">
+              {loc.name && <strong>{loc.name}</strong>}
+              <span>{address}</span>
+            </address>
+          );
+        })()}
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery links -->
+  {[site.social.doordash, site.social.ubereats, site.social.grubhub].some(Boolean) && (
+    <section id="order-online" class="section delivery-section">
+      <div class="container text-center">
+        <h2 class="section-heading">Order Online</h2>
+        <div class="delivery-links">
+          {site.social.doordash && <a class="delivery-btn" href={site.social.doordash} target="_blank" rel="noreferrer">DoorDash</a>}
+          {site.social.ubereats && <a class="delivery-btn" href={site.social.ubereats} target="_blank" rel="noreferrer">Uber Eats</a>}
+          {site.social.grubhub && <a class="delivery-btn" href={site.social.grubhub} target="_blank" rel="noreferrer">Grubhub</a>}
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>

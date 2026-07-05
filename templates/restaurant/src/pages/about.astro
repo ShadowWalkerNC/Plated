@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+---
+<Base title={`About — ${site.business.name}`} description={site.seo.metaDescription || site.business.description}>
+
+  <!-- About hero -->
+  <section class="section about-hero-section">
+    <div class="container text-center">
+      {site.branding.heroImageUrl && (
+        <div class="about-hero-image-wrap">
+          <img
+            src={site.branding.heroImageUrl}
+            alt={`${site.business.name}`}
+            class="about-hero-image"
+          />
+        </div>
+      )}
+      <h1 class="page-title">{site.business.name}</h1>
+      {site.business.tagline && <p class="page-tagline">{site.business.tagline}</p>}
+    </div>
+  </section>
+
+  <!-- Story body -->
+  {site.business.description && (
+    <section class="section about-body-section">
+      <div class="container about-prose">
+        <h2 class="section-heading">Our Story</h2>
+        <p class="about-description">{site.business.description}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Press mentions -->
+  {site.press?.length > 0 && (
+    <section class="section press-section">
+      <div class="container">
+        <h2 class="section-heading">In the Press</h2>
+        <ul class="press-list">
+          {site.press.map((mention) => (
+            <li class="press-item">
+              {mention.url ? (
+                <a href={mention.url} target="_blank" rel="noreferrer" class="press-link">
+                  <span class="press-outlet">{mention.outlet}</span>
+                  <span class="press-headline">{mention.headline}</span>
+                </a>
+              ) : (
+                <div>
+                  <span class="press-outlet">{mention.outlet}</span>
+                  <span class="press-headline">{mention.headline}</span>
+                </div>
+              )}
+              {mention.date && <span class="press-date">{mention.date}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Social links -->
+  {(site.social.instagram || site.social.facebook || site.social.twitter) && (
+    <section class="section social-section">
+      <div class="container text-center">
+        <h2 class="section-heading">Follow Us</h2>
+        <div class="social-links">
+          {site.social.instagram && (
+            <a class="social-link" href={site.social.instagram} target="_blank" rel="noreferrer">Instagram</a>
+          )}
+          {site.social.facebook && (
+            <a class="social-link" href={site.social.facebook} target="_blank" rel="noreferrer">Facebook</a>
+          )}
+          {site.social.twitter && (
+            <a class="social-link" href={site.social.twitter} target="_blank" rel="noreferrer">Twitter / X</a>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>

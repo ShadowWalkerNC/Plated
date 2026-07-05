@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+const { site } = Astro.locals;
+---
+<Base title={`Menu — ${site.business.name}`} description={`View the full menu at ${site.business.name}.`}>
+
+  <section class="section menu-page-header">
+    <div class="container text-center">
+      <h1 class="page-title">Menu</h1>
+      {site.business.cuisineType && <p class="cuisine-label">{site.business.cuisineType}</p>}
+    </div>
+  </section>
+
+  {site.menu.categories.length > 0 ? (
+    <section class="section menu-full-section">
+      <div class="container">
+        {site.menu.categories.map((cat) => (
+          <div class="menu-category" id={`cat-${cat.id}`}>
+            <h2 class="menu-cat-heading">{cat.name}</h2>
+            {cat.description && <p class="menu-cat-description">{cat.description}</p>}
+            <ul class="menu-items">
+              {cat.items.map((item) => (
+                <li class="menu-item-row">
+                  <div class="item-main">
+                    <div class="item-header">
+                      <span class="item-name">{item.name}</span>
+                      {item.price && <span class="item-price">{item.price}</span>}
+                    </div>
+                    {item.description && <p class="item-description">{item.description}</p>}
+                    {item.dietaryTags?.length > 0 && (
+                      <div class="item-tags">
+                        {item.dietaryTags.map((tag) => <span class="diet-tag">{tag}</span>)}
+                      </div>
+                    )}
+                  </div>
+                  {item.imageUrl && (
+                    <div class="item-image-wrap">
+                      <img src={item.imageUrl} alt={item.name} class="item-image" loading="lazy" />
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <section class="section">
+      <div class="container text-center">
+        <p>Our menu is coming soon. Check back shortly.</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Order online CTA -->
+  {[site.social.doordash, site.social.ubereats, site.social.grubhub, site.social.toast, site.social.chownow].some(Boolean) && (
+    <section class="section delivery-cta-section">
+      <div class="container text-center">
+        <h2>Order Online</h2>
+        <div class="delivery-links">
+          {site.social.doordash && <a class="delivery-btn" href={site.social.doordash} target="_blank" rel="noreferrer">DoorDash</a>}
+          {site.social.ubereats && <a class="delivery-btn" href={site.social.ubereats} target="_blank" rel="noreferrer">Uber Eats</a>}
+          {site.social.grubhub && <a class="delivery-btn" href={site.social.grubhub} target="_blank" rel="noreferrer">Grubhub</a>}
+          {site.social.toast && <a class="delivery-btn" href={site.social.toast} target="_blank" rel="noreferrer">Toast</a>}
+          {site.social.chownow && <a class="delivery-btn" href={site.social.chownow} target="_blank" rel="noreferrer">ChowNow</a>}
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>
