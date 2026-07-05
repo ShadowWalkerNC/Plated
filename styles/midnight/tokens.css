@@ -1,0 +1,16 @@
+:root {
+  --color-bg:           #0e0e0e;
+  --color-surface:      #181818;
+  --color-surface-2:    #222222;
+  --color-border:       rgba(255,255,255,0.08);
+  --color-text:         #f0ebe6;
+  --color-text-muted:   rgba(240,235,230,0.55);
+  --color-primary:      #c8856e;
+  --color-primary-fg:   #0e0e0e;
+  --color-accent:       #e8a87c;
+  --font-display:       'Cormorant Garamond', Georgia, serif;
+  --font-body:          'Inter', system-ui, sans-serif;
+  --radius-card:        1rem;
+  --radius-btn:         999px;
+  --shadow-card:        0 8px 32px rgba(0,0,0,0.45);
+}

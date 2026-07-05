@@ -1,0 +1,15 @@
+:root {
+  --color-bg:           #fdfaf4;
+  --color-surface:      #fff9ee;
+  --color-border:       #ddd5c4;
+  --color-text:         #1e1a14;
+  --color-text-muted:   #7a6e5a;
+  --color-primary:      #3d7a4f;
+  --color-primary-fg:   #ffffff;
+  --color-accent:       #e07b39;
+  --font-display:       'Playfair Display', Georgia, serif;
+  --font-body:          'Source Sans 3', system-ui, sans-serif;
+  --radius-card:        1.25rem;
+  --radius-btn:         0.5rem;
+  --shadow-card:        0 4px 16px rgba(30,26,20,0.08);
+}

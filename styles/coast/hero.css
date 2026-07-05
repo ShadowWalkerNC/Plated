@@ -1,0 +1,36 @@
+.hero {
+  min-height: 88vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 7rem 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(205,228,240,0.35) 0%, transparent 60%),
+    var(--color-bg);
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 600;
+  line-height: 1.08;
+  color: var(--color-text);
+  max-width: 16ch;
+  margin-inline: auto;
+  margin-bottom: 1.5rem;
+}
+
+.hero__tagline {
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+  max-width: 46ch;
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

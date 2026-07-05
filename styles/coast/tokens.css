@@ -1,0 +1,15 @@
+:root {
+  --color-bg:           #f7fbfe;
+  --color-surface:      #ffffff;
+  --color-border:       #cde4f0;
+  --color-text:         #162433;
+  --color-text-muted:   #5a7a8e;
+  --color-primary:      #1b6fa8;
+  --color-primary-fg:   #ffffff;
+  --color-accent:       #f0a855;
+  --font-display:       'Lora', Georgia, serif;
+  --font-body:          'Inter', system-ui, sans-serif;
+  --radius-card:        1.25rem;
+  --radius-btn:         999px;
+  --shadow-card:        0 4px 20px rgba(22,36,51,0.07);
+}
