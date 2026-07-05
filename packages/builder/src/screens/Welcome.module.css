@@ -1,0 +1,167 @@
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  gap: 2.5rem;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(201, 143, 74, 0.08), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(138, 75, 47, 0.05), transparent 50%),
+    #fcf8f3;
+}
+
+.hero {
+  text-align: center;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4rem;
+  color: #241712;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.tagline {
+  font-size: 1.25rem;
+  color: #2f241d;
+  margin: 0;
+  font-weight: 600;
+}
+
+.sub {
+  font-size: 1rem;
+  color: #6e5a4d;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btnPrimary,
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  min-width: 200px;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font: 600 1rem/1 inherit;
+  cursor: pointer;
+  border: none;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.btnPrimary:hover,
+.btnSecondary:hover {
+  transform: translateY(-2px);
+}
+
+.btnPrimary {
+  background: #8a4b2f;
+  color: #fff8f2;
+  box-shadow: 0 4px 18px rgba(138, 75, 47, 0.22);
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.85);
+  color: #241712;
+  border: 1px solid rgba(74, 47, 35, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.recent {
+  width: min(100%, 540px);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.recentHeading {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6e5a4d;
+  margin: 0;
+}
+
+.recentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.recentItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(74, 47, 35, 0.1);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 120ms;
+}
+
+.recentItem:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.recentName {
+  font-weight: 600;
+  color: #241712;
+  font-size: 0.95rem;
+}
+
+.recentPath {
+  font-size: 0.78rem;
+  color: #a08070;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(220, 50, 50, 0.08);
+  border: 1px solid rgba(220, 50, 50, 0.2);
+  border-radius: 0.75rem;
+  color: #8b1a1a;
+  font-size: 0.9rem;
+  max-width: 540px;
+}
+
+.errorDismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1rem;
+  padding: 0;
+  margin-left: auto;
+}
+
+.footer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  color: #a08070;
+  font-size: 0.82rem;
+  margin-top: auto;
+}

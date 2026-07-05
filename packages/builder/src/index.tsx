@@ -1,6 +1,14 @@
-// @nexcms/builder — Phase 2 stub
-// Local Builder: React 19 + Vite wizard UI
-// Desktop-first. Launches at localhost:3000 via the CLI.
-// Implementation begins Phase 2 (Sep–Nov 2026).
+// @nexcms/builder — React 19 entrypoint
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { App } from './App.js';
+import './styles/base.css';
 
-export {};
+const root = document.getElementById('root');
+if (!root) throw new Error('[builder] #root element not found');
+
+createRoot(root).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
