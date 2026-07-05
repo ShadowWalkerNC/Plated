@@ -1,0 +1,171 @@
+.shell {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+  background: #f8f1ea;
+}
+
+.sidebar {
+  padding: 2rem 1.25rem;
+  background: linear-gradient(180deg, #241712 0%, #34231c 100%);
+  color: #fff8f2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.brandBlock {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+.projectName {
+  color: rgba(255, 248, 242, 0.72);
+  font-size: 0.95rem;
+}
+
+.progressWrap {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.progressLabelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: rgba(255, 248, 242, 0.75);
+}
+
+.progressTrack {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c98f4a, #f0c27a);
+  border-radius: inherit;
+}
+
+.stepList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stepButton {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  border-radius: 1rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.stepButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stepButtonActive {
+  background: rgba(201, 143, 74, 0.18);
+  border-color: rgba(201, 143, 74, 0.45);
+}
+
+.stepButtonComplete .stepIndex {
+  background: #c98f4a;
+  color: #241712;
+}
+
+.stepIndex {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+}
+
+.stepText {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.stepTitle {
+  font-weight: 700;
+}
+
+.stepDescription {
+  color: rgba(255, 248, 242, 0.7);
+  font-size: 0.84rem;
+}
+
+.main {
+  padding: 2rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(74, 47, 35, 0.1);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+  overflow: auto;
+}
+
+.footerNav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.backBtn,
+.nextBtn {
+  min-height: 48px;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.backBtn {
+  border: 1px solid rgba(74, 47, 35, 0.15);
+  background: rgba(255, 255, 255, 0.8);
+  color: #241712;
+}
+
+.nextBtn {
+  border: none;
+  background: #8a4b2f;
+  color: #fff8f2;
+  box-shadow: 0 4px 18px rgba(138, 75, 47, 0.22);
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  color: #6e5a4d;
+  font-size: 1.05rem;
+}

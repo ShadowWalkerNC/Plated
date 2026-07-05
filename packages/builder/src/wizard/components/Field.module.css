@@ -1,0 +1,38 @@
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  font-weight: 700;
+  color: #241712;
+}
+
+.hint {
+  color: #8a7262;
+  font-size: 0.84rem;
+}
+
+.control :global(input),
+.control :global(textarea),
+.control :global(select) {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(74, 47, 35, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  color: #2f241d;
+}
+
+.control :global(textarea) {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.control :global(input:focus),
+.control :global(textarea:focus),
+.control :global(select:focus) {
+  outline: 2px solid rgba(201, 143, 74, 0.22);
+  border-color: rgba(138, 75, 47, 0.35);
+}
