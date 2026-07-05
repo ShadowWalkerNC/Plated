@@ -1,5 +1,10 @@
-// @nexcms/cli — Phase 1 stub
-// Entry point for the `nexcms` CLI.
-// Launches the local builder wizard at localhost:3000.
+// @nexcms/cli — programmatic API
+// Use this if you want to drive NexCMS from a script or integration test.
 
-export { run } from './cli.js';
+export { runCli } from './cli.js';
+export { cmdLaunch } from './commands/launch.js';
+export { cmdNew } from './commands/new.js';
+export { cmdExport } from './commands/export.js';
+export { cmdPreview } from './commands/preview.js';
+export { createDefaultSchema } from './schema.js';
+export { printHelp, printVersion } from './help.js';

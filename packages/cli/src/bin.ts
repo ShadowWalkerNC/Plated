@@ -1,8 +1,10 @@
 #!/usr/bin/env node
-// nexcms binary entry point
-import { run } from './cli.js';
+// nexcms CLI — bin entrypoint
+// Invoked by: npx nexcms [command] [options]
 
-run().catch((err) => {
-  console.error(err);
+import { runCli } from './cli.js';
+
+runCli(process.argv.slice(2)).catch((err) => {
+  console.error('\n❌ NexCMS error:', err instanceof Error ? err.message : String(err));
   process.exit(1);
 });

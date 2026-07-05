@@ -1,27 +1,40 @@
-// nexcms CLI — command dispatcher
-// Phase 1 stub — implementation begins Phase 1 (Jul–Sep 2026)
+// nexcms CLI — command router
 
-const COMMANDS = ['new', 'export', 'preview'] as const;
-type Command = typeof COMMANDS[number];
+import { resolve } from 'node:path';
+import { cmdLaunch } from './commands/launch.js';
+import { cmdNew } from './commands/new.js';
+import { cmdExport } from './commands/export.js';
+import { cmdPreview } from './commands/preview.js';
+import { printHelp, printVersion } from './help.js';
 
-export async function run(args: string[] = process.argv.slice(2)): Promise<void> {
-  const command = args[0] as Command | undefined;
+export async function runCli(argv: string[]): Promise<void> {
+  const [command, ...rest] = argv;
 
   switch (command) {
     case undefined:
+    case 'launch':
+      return cmdLaunch();
+
     case 'new':
-      console.log('NexCMS — guided website builder');
-      console.log('Builder UI not yet available. Phase 1 in progress.');
-      break;
+      return cmdNew(rest);
+
     case 'export':
-      console.log('Export not yet available. Phase 1 in progress.');
-      break;
+      return cmdExport(rest);
+
     case 'preview':
-      console.log('Preview not yet available. Phase 1 in progress.');
-      break;
+      return cmdPreview(rest);
+
+    case '--version':
+    case '-v':
+      return printVersion();
+
+    case '--help':
+    case '-h':
+      return printHelp();
+
     default:
-      console.error(`Unknown command: ${command}`);
-      console.error(`Available commands: ${COMMANDS.join(', ')}`);
+      console.error(`❌ Unknown command: "${command}"`);
+      printHelp();
       process.exit(1);
   }
 }
