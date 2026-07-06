@@ -6,293 +6,150 @@
   <title>Plated — Pitch Deck</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --cream:   #fcf8f3;
-      --warm:    #f5f0ea;
-      --sienna:  #8a4b2f;
-      --amber:   #c98f4a;
-      --dark:    #1a1208;
-      --mid:     #3d2a1d;
-      --muted:   #7a6254;
-      --border:  rgba(138,75,47,0.14);
-      --shadow:  0 24px 64px rgba(46,28,15,0.10);
+      --cream: #fcf8f3; --warm: #f5f0ea; --sienna: #8a4b2f;
+      --amber: #c98f4a; --dark: #1a1208; --mid: #3d2a1d;
+      --muted: #7a6254; --border: rgba(138,75,47,0.14);
+      --shadow: 0 24px 64px rgba(46,28,15,0.10);
+      --green: #2d7a3a;
     }
-
     html { scroll-snap-type: y mandatory; overflow-y: scroll; font-size: 16px; }
     body { background: var(--dark); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--dark); }
 
-    /* ---- SLIDE BASE ---- */
-    .slide {
-      scroll-snap-align: start;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 4rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
+    .slide { scroll-snap-align: start; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4rem 2rem; position: relative; overflow: hidden; }
+    .slide-inner { width: min(920px, 100%); position: relative; z-index: 1; }
 
-    .slide-inner {
-      width: min(900px, 100%);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ---- TYPOGRAPHY ---- */
-    .kicker {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-weight: 700;
-      color: var(--amber);
-      margin-bottom: 1rem;
-    }
-
+    .kicker { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; font-weight: 700; color: var(--amber); margin-bottom: 1rem; }
     h1 { font-family: Georgia, serif; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.02; }
     h2 { font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.08; }
-    h3 { font-family: Georgia, serif; font-size: clamp(1.3rem, 2.5vw, 1.9rem); line-height: 1.2; }
-
+    h3 { font-family: Georgia, serif; font-size: clamp(1.2rem, 2.2vw, 1.8rem); line-height: 1.2; }
     .lead { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.65; max-width: 62ch; }
     .sub  { font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
-
     strong { color: var(--sienna); }
 
-    /* ---- NAV DOTS ---- */
-    #nav {
-      position: fixed;
-      right: 1.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      z-index: 100;
-    }
-
-    .dot {
-      width: 8px; height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.2);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      border: none;
-    }
+    #nav { position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.6rem; z-index: 100; }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; }
     .dot.active { background: var(--amber); transform: scale(1.4); }
 
-    /* ---- SLIDE THEMES ---- */
     .dark-slide  { background: var(--dark); color: var(--cream); }
-    .dark-slide .kicker { color: var(--amber); }
+    .dark-slide .kicker, .dark-slide strong { color: var(--amber); }
     .dark-slide h1, .dark-slide h2, .dark-slide h3 { color: var(--cream); }
     .dark-slide .lead { color: rgba(244,237,228,0.85); }
     .dark-slide .sub  { color: rgba(244,237,228,0.45); }
-    .dark-slide strong { color: var(--amber); }
-
     .light-slide { background: var(--cream); color: var(--dark); }
     .amber-slide { background: var(--sienna); color: var(--cream); }
-    .amber-slide .kicker { color: var(--amber); }
+    .amber-slide .kicker, .amber-slide strong { color: var(--amber); }
     .amber-slide h1, .amber-slide h2, .amber-slide h3 { color: var(--cream); }
     .amber-slide .lead { color: rgba(244,237,228,0.88); }
-    .amber-slide strong { color: var(--amber); }
 
-    /* ---- COMPONENTS ---- */
-    .pill {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      background: rgba(201,143,74,0.15);
-      color: var(--amber);
-      border: 1px solid rgba(201,143,74,0.3);
-      margin-bottom: 1.5rem;
-    }
-
-    .card-grid {
-      display: grid;
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
+    .card-grid { display: grid; gap: 1.25rem; margin-top: 2rem; }
     .card-grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .card-grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-
-    .card {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 1.5rem;
-    }
-    .light-slide .card {
-      background: #fff;
-      border-color: var(--border);
-      box-shadow: var(--shadow);
-    }
-    .amber-slide .card {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.15);
-    }
-
-    .card-label {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 700;
-      color: var(--amber);
-      margin-bottom: 0.5rem;
-    }
+    .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.5rem; }
+    .light-slide .card { background: #fff; border-color: var(--border); box-shadow: var(--shadow); }
+    .amber-slide .card { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+    .card-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--amber); margin-bottom: 0.5rem; }
     .light-slide .card-label { color: var(--sienna); }
-
     .card h3 { margin-bottom: 0.4rem; }
-    .card p  { font-size: 0.92rem; line-height: 1.55; }
+    .card p { font-size: 0.92rem; line-height: 1.55; }
     .dark-slide .card p, .amber-slide .card p { color: rgba(244,237,228,0.65); }
     .light-slide .card p { color: var(--muted); }
 
-    .stat-big {
-      font-family: Georgia, serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 700;
-      line-height: 1;
-      color: var(--amber);
-    }
-    .stat-label {
-      font-size: 0.9rem;
-      margin-top: 0.4rem;
-      opacity: 0.65;
-    }
+    .stat-big { font-family: Georgia, serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; line-height: 1; color: var(--amber); }
+    .stat-label { font-size: 0.9rem; margin-top: 0.4rem; opacity: 0.65; }
+    .stat-row { display: flex; gap: 3rem; flex-wrap: wrap; margin-top: 2.5rem; }
 
-    .stat-row {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      margin-top: 2.5rem;
-    }
-
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-top: 2rem;
-      counter-reset: step;
-    }
-    .step {
-      display: flex;
-      gap: 1.5rem;
-      align-items: flex-start;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      counter-increment: step;
-    }
+    .steps { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; counter-reset: step; }
+    .step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); counter-increment: step; }
     .light-slide .step { border-bottom-color: var(--border); }
     .step:last-child { border-bottom: none; }
-    .step-num {
-      width: 36px; height: 36px;
-      border-radius: 999px;
-      background: rgba(201,143,74,0.15);
-      color: var(--amber);
-      font-weight: 800;
-      font-size: 0.9rem;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
+    .step-num { width: 36px; height: 36px; border-radius: 999px; background: rgba(201,143,74,0.15); color: var(--amber); font-weight: 800; font-size: 0.9rem; display: grid; place-items: center; flex-shrink: 0; }
     .step-num::before { content: counter(step); }
     .step-body strong { display: block; margin-bottom: 0.2rem; }
     .dark-slide .step-body strong, .amber-slide .step-body strong { color: var(--cream); }
     .step-body p { font-size: 0.9rem; }
 
-    .compare-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 2rem;
-      font-size: 0.92rem;
-    }
-    .compare-table th, .compare-table td {
-      padding: 0.9rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .compare-table th {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      font-weight: 700;
-    }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.92rem; }
+    .compare-table th, .compare-table td { padding: 0.9rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .compare-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; }
     .compare-table tr td:first-child { font-weight: 700; color: var(--dark); }
-    .compare-table .yes { color: #2d7a3a; font-weight: 700; }
+    .compare-table .yes { color: var(--green); font-weight: 700; }
     .compare-table .no  { color: #b3261e; }
     .compare-table .plated-col { color: var(--sienna); font-weight: 800; }
     .compare-table .highlight td { background: rgba(201,143,74,0.06); }
 
-    .logo-mark {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-    }
-    .logo-word {
-      font-family: Georgia, serif;
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--cream);
-    }
+    .logo-mark { display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; }
+    .logo-word { font-family: Georgia, serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; color: var(--cream); }
 
-    .cta-btn {
-      display: inline-block;
-      margin-top: 2.5rem;
-      padding: 1rem 2rem;
-      border-radius: 999px;
-      background: var(--amber);
-      color: var(--dark);
-      font-weight: 800;
-      font-size: 1rem;
-      text-decoration: none;
-      letter-spacing: 0.02em;
-    }
+    .cta-btn { display: inline-block; margin-top: 2rem; padding: 1rem 2rem; border-radius: 999px; background: var(--amber); color: var(--dark); font-weight: 800; font-size: 1rem; text-decoration: none; letter-spacing: 0.02em; }
+    .cta-btn-ghost { display: inline-block; margin-top: 2rem; padding: 1rem 2rem; border-radius: 999px; background: transparent; color: var(--cream); font-weight: 800; font-size: 1rem; text-decoration: none; letter-spacing: 0.02em; border: 2px solid rgba(255,255,255,0.3); }
 
-    .quote {
-      font-family: Georgia, serif;
-      font-size: clamp(1.4rem, 3vw, 2.2rem);
-      line-height: 1.35;
-      font-style: italic;
-      max-width: 22ch;
-      margin-bottom: 1.5rem;
-    }
-    .quote-attr {
-      font-size: 0.85rem;
-      opacity: 0.5;
-      letter-spacing: 0.06em;
-    }
+    .quote { font-family: Georgia, serif; font-size: clamp(1.3rem, 2.8vw, 2rem); line-height: 1.35; font-style: italic; max-width: 24ch; margin-bottom: 1.25rem; }
+    .quote-attr { font-size: 0.85rem; opacity: 0.5; letter-spacing: 0.06em; }
 
-    /* bg accents */
-    .bg-ring {
-      position: absolute;
-      border-radius: 999px;
-      border: 1px solid rgba(201,143,74,0.08);
-      pointer-events: none;
-    }
-
-    /* slide number */
-    .slide-num {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 2rem;
-      font-size: 0.75rem;
-      opacity: 0.25;
-      letter-spacing: 0.1em;
-    }
+    .bg-ring { position: absolute; border-radius: 999px; border: 1px solid rgba(201,143,74,0.08); pointer-events: none; }
+    .slide-num { position: absolute; bottom: 1.5rem; right: 2rem; font-size: 0.75rem; opacity: 0.25; letter-spacing: 0.1em; }
     .dark-slide .slide-num, .amber-slide .slide-num { color: var(--cream); }
 
+    /* code pill */
+    .code-pill { display: inline-block; background: rgba(201,143,74,0.12); border: 1px solid rgba(201,143,74,0.25); border-radius: 8px; padding: 0.25rem 0.7rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.82rem; color: var(--amber); letter-spacing: 0.02em; }
+    .dark-slide .code-pill { background: rgba(201,143,74,0.12); }
+
+    /* mode split */
+    .mode-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .mode-card { border-radius: 20px; padding: 1.75rem; }
+    .mode-card.standalone { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+    .mode-card.integrated { background: rgba(201,143,74,0.1); border: 1px solid rgba(201,143,74,0.25); }
+    .mode-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; font-weight: 800; margin-bottom: 0.75rem; }
+    .mode-card.standalone .mode-tag { color: rgba(244,237,228,0.5); }
+    .mode-card.integrated .mode-tag { color: var(--amber); }
+    .mode-card h3 { color: var(--cream); margin-bottom: 0.5rem; }
+    .mode-card p { font-size: 0.9rem; color: rgba(244,237,228,0.65); line-height: 1.55; }
+    .mode-card ul { margin-top: 0.75rem; list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .mode-card ul li { font-size: 0.86rem; color: rgba(244,237,228,0.7); display: flex; gap: 0.5rem; }
+    .mode-card ul li::before { content: '✓'; color: var(--amber); font-weight: 800; flex-shrink: 0; }
+
+    /* pricing cards */
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .p-card { background: #fff; border: 1px solid var(--border); border-radius: 24px; padding: 2rem 1.75rem; box-shadow: var(--shadow); position: relative; }
+    .p-card.featured { border: 2px solid var(--sienna); box-shadow: 0 32px 80px rgba(138,75,47,0.18); }
+    .p-badge { position: absolute; top: -13px; left: 1.5rem; background: var(--sienna); color: #fff8f2; font-size: 0.68rem; font-weight: 800; padding: 0.28rem 0.8rem; border-radius: 999px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .p-tier { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; font-weight: 800; color: var(--sienna); margin-bottom: 0.6rem; }
+    .p-price { font-family: Georgia, serif; font-size: 3.2rem; font-weight: 700; line-height: 1; color: var(--dark); margin-bottom: 0.25rem; }
+    .p-price sup { font-size: 1.4rem; vertical-align: super; font-family: sans-serif; font-weight: 400; }
+    .p-price span { font-size: 1rem; font-family: sans-serif; font-weight: 400; color: var(--muted); }
+    .p-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .p-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.55; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    .p-features { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; margin-top: 1rem; }
+    .p-features li { font-size: 0.87rem; color: var(--mid); display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.4; }
+    .p-features li::before { content: '✓'; color: var(--green); font-weight: 800; flex-shrink: 0; }
+    .p-features li.dim { color: var(--muted); }
+    .p-features li.dim::before { content: '—'; color: var(--muted); font-weight: 400; }
+    .update-bar { margin-top: 1.25rem; background: rgba(138,75,47,0.06); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--mid); display: flex; align-items: center; gap: 0.75rem; }
+    .update-bar strong { color: var(--sienna); }
+    .value-bar { margin-top: 1.5rem; background: rgba(138,75,47,0.06); border: 1px solid var(--border); border-radius: 16px; padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 0.88rem; color: var(--mid); }
+    .value-bar strong { color: var(--sienna); }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
+    .faq-item { padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-family: Georgia, serif; font-size: 1.05rem; color: var(--cream); margin-bottom: 0.4rem; }
+    .faq-a { font-size: 0.9rem; color: rgba(244,237,228,0.6); line-height: 1.6; }
+    .faq-a .code-pill { font-size: 0.78rem; }
+
+    /* ecosystem */
+    .eco-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; margin-top: 2rem; }
+    .eco-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 1.25rem; }
+    .eco-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .eco-card h3 { font-size: 1rem; color: var(--cream); margin-bottom: 0.3rem; }
+    .eco-card p { font-size: 0.82rem; color: rgba(244,237,228,0.55); line-height: 1.5; }
+
     @media (max-width: 640px) {
-      .card-grid.cols-2, .card-grid.cols-3 { grid-template-columns: 1fr; }
+      .card-grid.cols-2, .card-grid.cols-3, .mode-split, .pricing-grid, .eco-grid { grid-template-columns: 1fr; }
       .stat-row { gap: 2rem; }
       #nav { display: none; }
     }
-
     @media print {
       html { scroll-snap-type: none; font-size: 13px; }
       #nav { display: none; }
@@ -302,10 +159,9 @@
 </head>
 <body>
 
-<!-- NAV DOTS -->
 <nav id="nav" aria-label="Slide navigation"></nav>
 
-<!-- ======================== SLIDE 1 — TITLE ======================== -->
+<!-- 1 — TITLE -->
 <section class="slide dark-slide" id="s1">
   <div class="bg-ring" style="width:700px;height:700px;top:-200px;right:-200px;"></div>
   <div class="bg-ring" style="width:400px;height:400px;bottom:-100px;left:-100px;"></div>
@@ -324,40 +180,46 @@
       </svg>
       <span class="logo-word">Plated</span>
     </div>
-    <p class="kicker">For restaurant owners</p>
-    <h1>Your restaurant<br>deserves a<br><span style="color:var(--amber)">better website.</span></h1>
-    <p class="lead" style="margin-top:1.5rem;">Plated builds a beautiful, professional restaurant site in minutes — no developer, no designer, no monthly agency retainer.</p>
+    <p class="kicker">Open-source · CulinaryOS module</p>
+    <h1>The restaurant<br>website module<br><span style="color:var(--amber)">that just works.</span></h1>
+    <p class="lead" style="margin-top:1.5rem;">Standalone or native to <strong>CulinaryOS</strong> — Plated builds a beautiful restaurant site in minutes, with your POS data already inside it.</p>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:2rem;">
+      <span class="code-pill">MIT licensed</span>
+      <span class="code-pill">CulinaryOS MCP</span>
+      <span class="code-pill">Self-hostable</span>
+      <span class="code-pill">White-label available</span>
+    </div>
   </div>
-  <span class="slide-num">1 / 10</span>
+  <span class="slide-num">1 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 2 — THE PROBLEM ======================== -->
+<!-- 2 — THE PROBLEM -->
 <section class="slide light-slide" id="s2">
   <div class="slide-inner">
     <p class="kicker">The problem</p>
-    <h2>Your current website<br>is costing you <strong>tables.</strong></h2>
+    <h2>Your ops stack is tight.<br>Your website is an <strong>afterthought.</strong></h2>
     <div class="card-grid cols-3" style="margin-top:2.5rem;">
       <div class="card">
-        <div class="card-label">Too expensive</div>
-        <h3>Agency sites<br>start at $3,000</h3>
-        <p>And another $200/mo to maintain. Most restaurants pay it once, then watch it go stale for two years.</p>
+        <div class="card-label">The gap</div>
+        <h3>POS, KDS, inventory — all connected</h3>
+        <p>CulinaryOS runs the back of house like a machine. Then the public-facing website is a stale Squarespace page nobody updates.</p>
       </div>
       <div class="card">
-        <div class="card-label">Too generic</div>
-        <h3>Squarespace wasn’t built for restaurants</h3>
-        <p>No menu builder. No food truck schedule. No delivery links. You spend hours fighting templates designed for yoga studios.</p>
+        <div class="card-label">The cost</div>
+        <h3>Custom builds start at $3,000+</h3>
+        <p>A developer charges thousands and delivers months later. The menu is already wrong by launch day.</p>
       </div>
       <div class="card">
-        <div class="card-label">Too technical</div>
-        <h3>WordPress takes a weekend to set up</h3>
-        <p>Plugins, hosting, SSL, backups — that’s not what you signed up for when you opened a restaurant.</p>
+        <div class="card-label">The maintenance</div>
+        <h3>SaaS builders lock you in forever</h3>
+        <p>$23–$65/mo to Squarespace. Another $200/mo to an agency. No source code, no control, no exit.</p>
       </div>
     </div>
   </div>
-  <span class="slide-num">2 / 10</span>
+  <span class="slide-num">2 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 3 — THE TRUTH ======================== -->
+<!-- 3 — THE REALITY -->
 <section class="slide dark-slide" id="s3">
   <div class="bg-ring" style="width:600px;height:600px;top:-150px;left:-150px;"></div>
   <div class="slide-inner" style="text-align:center;">
@@ -369,256 +231,322 @@
       </div>
       <div>
         <div class="stat-big">3 sec</div>
-        <div class="stat-label">is all you get before they’re gone<br>if your site loads slowly or looks bad</div>
+        <div class="stat-label">before a slow or outdated site<br>sends them to a competitor</div>
       </div>
       <div>
         <div class="stat-big">$0</div>
-        <div class="stat-label">is what most restaurants<br>invested in their site last year</div>
+        <div class="stat-label">is what most restaurants invested<br>in their website last year</div>
       </div>
     </div>
-    <p class="lead" style="margin-top:3rem;max-width:54ch;margin-left:auto;margin-right:auto;">A bad website doesn’t just look unprofessional. <strong>It sends hungry customers to your competitor.</strong></p>
+    <p class="lead" style="margin-top:3rem;max-width:54ch;margin-left:auto;margin-right:auto;">The ops are tight. The food is great. <strong>The website is losing tables every single day.</strong></p>
   </div>
-  <span class="slide-num">3 / 10</span>
+  <span class="slide-num">3 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 4 — THE SOLUTION ======================== -->
-<section class="slide amber-slide" id="s4">
+<!-- 4 — THE SOLUTION -->
+<section class="slide dark-slide" id="s4">
+  <div class="bg-ring" style="width:500px;height:500px;top:-100px;right:-200px;"></div>
   <div class="slide-inner">
     <p class="kicker">The solution</p>
-    <h2>Plated builds your<br>site <strong>in minutes.</strong></h2>
-    <p class="lead" style="margin-top:1.25rem;">Answer a few questions about your restaurant. We handle everything else.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num"></div>
-        <div class="step-body">
-          <strong>Tell us about your restaurant</strong>
-          <p>Name, cuisine, city, what makes you special. Takes about 2 minutes.</p>
-        </div>
+    <h2>Standalone or native to<br><strong>CulinaryOS.</strong> Your call.</h2>
+    <div class="mode-split">
+      <div class="mode-card standalone">
+        <div class="mode-tag">Standalone mode</div>
+        <h3>Any restaurant, anywhere</h3>
+        <p>No CulinaryOS required. Answer a few questions, pick a theme, go live.</p>
+        <ul>
+          <li>5-minute setup wizard</li>
+          <li>Menu builder included</li>
+          <li>Self-host on any server</li>
+          <li>Custom domain ready</li>
+        </ul>
       </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div class="step-body">
-          <strong>Pick a theme</strong>
-          <p>Hearth, Editorial, or Bistro — each designed specifically for hospitality.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div class="step-body">
-          <strong>Choose your goal</strong>
-          <p>Book a table? Order online? Call now? We build the site around your #1 conversion.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div class="step-body">
-          <strong>Go live</strong>
-          <p>One click to publish. Your domain, your site, ready to take reservations today.</p>
-        </div>
+      <div class="mode-card integrated">
+        <div class="mode-tag">⚡ CulinaryOS native</div>
+        <h3>Plug in. Data syncs automatically.</h3>
+        <p>Connect Plated as a CulinaryOS MCP extension. Menu, hours, and specials pull live from your POS.</p>
+        <ul>
+          <li>MCP extension install in 1 command</li>
+          <li>Menu syncs from POS in real time</li>
+          <li>Hours pulled from admin-client</li>
+          <li>RecipeOS integration for specials</li>
+        </ul>
       </div>
     </div>
   </div>
-  <span class="slide-num">4 / 10</span>
+  <span class="slide-num">4 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 5 — THEMES ======================== -->
+<!-- 5 — THEMES -->
 <section class="slide light-slide" id="s5">
   <div class="slide-inner">
     <p class="kicker">Built for hospitality</p>
-    <h2>Three themes, all designed<br>for <strong>restaurants.</strong></h2>
+    <h2>Three themes. All designed<br>for <strong>restaurants.</strong></h2>
     <div class="card-grid cols-3" style="margin-top:2rem;">
       <div class="card" style="border-top:3px solid #c98f4a;">
         <div class="card-label">Hearth</div>
         <h3>Warm &amp; intimate</h3>
-        <p>Deep ambers, serif headlines, and a layout built around the chef’s story. Perfect for fine dining and neighbourhood favourites.</p>
+        <p>Deep ambers, serif headlines, layout built around the chef’s story. Fine dining and neighbourhood favourites.</p>
       </div>
       <div class="card" style="border-top:3px solid #1a1208;">
         <div class="card-label">Editorial</div>
         <h3>Refined &amp; photographic</h3>
-        <p>Clean whites, dramatic full-bleed food photography, and restrained typography. Elevated dining and modern cuisine.</p>
+        <p>Clean whites, dramatic full-bleed food photography, restrained typography. Elevated and modern cuisine.</p>
       </div>
       <div class="card" style="border-top:3px solid #8a4b2f;">
         <div class="card-label">Bistro</div>
         <h3>Casual &amp; energetic</h3>
-        <p>Bold layout, big personality. Great for casual dining, food trucks, bars, and anything with a queue out the door.</p>
+        <p>Bold layout, big personality. Casual dining, food trucks, bars — anything with a queue out the door.</p>
       </div>
     </div>
-    <p class="sub" style="margin-top:1.5rem;">Every theme includes: menu section · hours &amp; location · reservation CTA · delivery links · social media · SEO-ready markup.</p>
+    <p class="sub" style="margin-top:1.5rem;">Every theme: menu · hours &amp; location · reservation CTA · delivery links · social · SEO-ready markup · mobile-first</p>
   </div>
-  <span class="slide-num">5 / 10</span>
+  <span class="slide-num">5 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 6 — COMPARISON ======================== -->
+<!-- 6 — COMPARISON -->
 <section class="slide light-slide" id="s6">
   <div class="slide-inner">
     <p class="kicker">How we compare</p>
-    <h2>Everything they charge extra for.<br><strong>Included by default.</strong></h2>
+    <h2>Own your code.<br><strong>Own your site.</strong></h2>
     <table class="compare-table">
       <thead>
         <tr>
           <th>Feature</th>
           <th class="plated-col">🍽️ Plated</th>
+          <th>Custom build</th>
           <th>Squarespace</th>
-          <th>Agency</th>
           <th>WordPress</th>
         </tr>
       </thead>
       <tbody>
         <tr class="highlight">
-          <td>Setup time</td>
-          <td class="plated-col">~5 min</td>
-          <td>Hours</td>
-          <td>Weeks</td>
-          <td>Days</td>
+          <td>You own the source code</td>
+          <td class="yes">✓ Always</td>
+          <td class="yes">✓ Yes</td>
+          <td class="no">✕ Never</td>
+          <td class="yes">✓ Yes</td>
+        </tr>
+        <tr>
+          <td>CulinaryOS / MCP integration</td>
+          <td class="yes">✓ Native</td>
+          <td class="no">✕ Build it yourself</td>
+          <td class="no">✕ No</td>
+          <td class="no">✕ No</td>
         </tr>
         <tr>
           <td>Restaurant-specific templates</td>
           <td class="yes">✓ Always</td>
+          <td class="yes">✓ Custom</td>
           <td class="no">✕ Generic</td>
-          <td class="yes">✓ Custom</td>
-          <td class="no">✕ Plugins needed</td>
+          <td class="no">✕ Plugin needed</td>
         </tr>
         <tr>
-          <td>Menu builder</td>
-          <td class="yes">✓ Built-in</td>
-          <td class="no">✕ Extra cost</td>
-          <td class="yes">✓ Bespoke</td>
-          <td class="no">✕ Plugin</td>
+          <td>Setup time</td>
+          <td class="plated-col">~5 min</td>
+          <td>Weeks</td>
+          <td>Hours</td>
+          <td>Days</td>
         </tr>
         <tr>
-          <td>Delivery platform links</td>
-          <td class="yes">✓ Yes</td>
-          <td class="no">✕ No</td>
-          <td class="yes">✓ Custom</td>
-          <td class="no">✕ Manual</td>
-        </tr>
-        <tr>
-          <td>Custom domain</td>
-          <td class="yes">✓ Included</td>
-          <td>Extra plan</td>
-          <td>✓ Included</td>
-          <td>✓ Self-manage</td>
+          <td>Monthly fee</td>
+          <td class="yes">✓ $0 forever</td>
+          <td>$0 (self-host)</td>
+          <td class="no">$23–$65/mo</td>
+          <td>$15–$50/mo</td>
         </tr>
         <tr class="highlight">
-          <td>Monthly cost</td>
-          <td class="plated-col">From $0</td>
-          <td>$23–$65/mo</td>
-          <td>$200+/mo</td>
-          <td>$15–$50/mo</td>
+          <td>Initial cost</td>
+          <td class="plated-col">Free or $299 one-time</td>
+          <td>$3,000–$10,000+</td>
+          <td>“free” + lock-in</td>
+          <td>Free + dev time</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <span class="slide-num">6 / 10</span>
+  <span class="slide-num">6 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 7 — PROOF / SOCIAL ======================== -->
+<!-- 7 — ECOSYSTEM -->
 <section class="slide dark-slide" id="s7">
-  <div class="bg-ring" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+  <div class="bg-ring" style="width:500px;height:500px;bottom:-150px;right:-150px;"></div>
   <div class="slide-inner">
-    <p class="kicker">Why it works</p>
-    <h2>Restaurants using Plated<br>see results <strong>immediately.</strong></h2>
-    <div class="card-grid cols-2" style="margin-top:2rem;">
-      <div class="card">
-        <p class="quote">“I had a site live before my dinner service. I didn’t touch a single line of code.”</p>
-        <p class="quote-attr">RESTAURANT OWNER · CHARLOTTE, NC</p>
+    <p class="kicker">CulinaryOS ecosystem</p>
+    <h2>Plated connects to everything<br><strong>you’ve already built.</strong></h2>
+    <div class="eco-grid">
+      <div class="eco-card">
+        <div class="eco-icon">💳</div>
+        <h3>POS</h3>
+        <p>Menu items, prices, and availability sync to your public site automatically.</p>
       </div>
-      <div class="card">
-        <p class="quote">“Finally a website that shows my menu the way I want it — not shoved into a generic template.”</p>
-        <p class="quote-attr">FOOD TRUCK OPERATOR · RALEIGH, NC</p>
+      <div class="eco-card">
+        <div class="eco-icon">🍳</div>
+        <h3>KDS</h3>
+        <p>86’d items and kitchen status can surface as “today’s special” or sold-out flags.</p>
       </div>
-    </div>
-    <div class="stat-row" style="margin-top:2.5rem;">
-      <div>
-        <div class="stat-big">5 min</div>
-        <div class="stat-label">average time to a live site</div>
+      <div class="eco-card">
+        <div class="eco-icon">📚</div>
+        <h3>RecipeOS</h3>
+        <p>Feature dishes with their full story — ingredients, chef notes, allergen info.</p>
       </div>
-      <div>
-        <div class="stat-big">100%</div>
-        <div class="stat-label">mobile-first — looks great on every phone</div>
+      <div class="eco-card">
+        <div class="eco-icon">⏰</div>
+        <h3>Admin Client</h3>
+        <p>Hours, holiday closures, and announcements push to the website in real time.</p>
       </div>
-      <div>
-        <div class="stat-big">$0</div>
-        <div class="stat-label">to get started on the free plan</div>
+      <div class="eco-card">
+        <div class="eco-icon">🤖</div>
+        <h3>MCP Layer</h3>
+        <p>AI agents in CulinaryOS can update site copy, menus, and promos via tool calls.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon">🔌</div>
+        <h3>Extensions</h3>
+        <p>Plated ships as a standard CulinaryOS extension — install, configure, done.</p>
       </div>
     </div>
   </div>
-  <span class="slide-num">7 / 10</span>
+  <span class="slide-num">7 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 8 — PRICING ======================== -->
+<!-- 8 — PRICING -->
 <section class="slide light-slide" id="s8">
   <div class="slide-inner">
-    <p class="kicker">Simple pricing</p>
-    <h2>Pay for what you need.<br><strong>Nothing more.</strong></h2>
-    <div class="card-grid cols-3" style="margin-top:2rem;">
-      <div class="card">
-        <div class="card-label">Free</div>
-        <h3 style="font-size:2rem;">$0<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
-        <p style="margin-top:0.75rem;">1 restaurant site · Plated subdomain · All themes · Menu builder · SEO basics</p>
+    <p class="kicker">Pricing</p>
+    <h2>Pay once. Own it.<br><strong>No subscriptions. Ever.</strong></h2>
+    <div class="pricing-grid">
+      <div class="p-card">
+        <div class="p-tier">Open Source</div>
+        <div class="p-price">$0</div>
+        <div class="p-sub">Free forever · MIT license</div>
+        <p class="p-desc">Full source code. Self-host anywhere. Use commercially with Plated branding visible.</p>
+        <ul class="p-features">
+          <li>Complete source code (MIT)</li>
+          <li>All 3 themes included</li>
+          <li>CulinaryOS MCP integration</li>
+          <li>Menu builder &amp; SEO markup</li>
+          <li>Unlimited sites</li>
+          <li>Community support via GitHub</li>
+          <li>Minor &amp; patch updates free on GitHub</li>
+          <li class="dim">White-label / remove branding</li>
+          <li class="dim">Commercial resale rights</li>
+          <li class="dim">Major version updates</li>
+        </ul>
       </div>
-      <div class="card" style="border:2px solid var(--sienna);position:relative;">
-        <div style="position:absolute;top:-12px;left:1.5rem;background:var(--sienna);color:#fff8f2;font-size:0.72rem;font-weight:800;padding:0.25rem 0.75rem;border-radius:999px;letter-spacing:0.1em;">MOST POPULAR</div>
-        <div class="card-label">Pro</div>
-        <h3 style="font-size:2rem;">$19<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
-        <p style="margin-top:0.75rem;">3 sites · Custom domain · Priority deploy · Delivery platform links · Analytics</p>
-      </div>
-      <div class="card">
-        <div class="card-label">Agency</div>
-        <h3 style="font-size:2rem;">$49<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
-        <p style="margin-top:0.75rem;">Unlimited sites · White-label · All Pro features · Priority support</p>
+      <div class="p-card featured">
+        <div class="p-badge">WHITE-LABEL</div>
+        <div class="p-tier">Commercial License</div>
+        <div class="p-price"><sup>$</sup>299 <span>one-time</span></div>
+        <div class="p-sub">Per developer / agency · unlimited client sites</div>
+        <p class="p-desc">Remove Plated branding. Ship it as your own product. Resell to as many clients as you like.</p>
+        <ul class="p-features">
+          <li>Everything in Open Source</li>
+          <li>Remove Plated branding entirely</li>
+          <li>Commercial resale rights</li>
+          <li>Use your own logo &amp; domain</li>
+          <li>Unlimited client sites under one license</li>
+          <li>Priority issue support</li>
+          <li>1 major version update included</li>
+        </ul>
+        <div class="update-bar">
+          <span style="font-size:1.2rem">&#128260;</span>
+          <span>Future major versions (v2, v3…) available at <strong>$79 each</strong>. Buy only what’s worth it to you.</span>
+        </div>
       </div>
     </div>
-    <p class="sub" style="margin-top:1.5rem;text-align:center;">No contracts. Cancel anytime. Start free — upgrade when you’re ready.</p>
+    <div class="value-bar">
+      <span style="font-size:1.4rem">💡</span>
+      <span>A developer charges <strong>$3,000+</strong> to build a restaurant site. With a $299 license you deliver it in an afternoon — and keep the rest.</span>
+    </div>
+    <p class="sub" style="margin-top:1.25rem;text-align:center;">Free plan stays free forever · No lock-in · No monthly fees · You own the code</p>
   </div>
-  <span class="slide-num">8 / 10</span>
+  <span class="slide-num">8 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 9 — HOW TO GET STARTED ======================== -->
+<!-- 9 — LICENSE FAQ -->
 <section class="slide dark-slide" id="s9">
+  <div class="bg-ring" style="width:600px;height:600px;top:-100px;right:-200px;"></div>
+  <div class="slide-inner">
+    <p class="kicker">License FAQ</p>
+    <h2>Common questions,<br><strong>straight answers.</strong></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Can I use the free version for a paying client?</div>
+        <div class="faq-a">Yes — MIT license. Build for clients, charge for your time. Just keep the Plated branding visible on the site.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does white-label mean I own the code?</div>
+        <div class="faq-a">You get a perpetual commercial license. You don’t own the IP, but you can ship it under your brand forever — no expiry, no renewal required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What counts as a “major version”?</div>
+        <div class="faq-a">Semantic versioning — v1→v2, v2→v3. Patch and minor releases (<span class="code-pill">v1.1</span>, <span class="code-pill">v1.2.3</span>) are always free on GitHub.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is the license per client or per developer?</div>
+        <div class="faq-a">Per developer or agency. One $299 license covers unlimited client sites — no per-seat or per-site fees.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I don’t buy the v2 update?</div>
+        <div class="faq-a">Nothing bad happens. Your v1 white-label license is valid forever. You stay on v1 and pull free patches from GitHub as usual.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is the CulinaryOS MCP integration in the free version?</div>
+        <div class="faq-a">Yes. The MCP integration is part of the open-source core — free for everyone, forever.</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">9 / 11</span>
+</section>
+
+<!-- 10 — GET STARTED -->
+<section class="slide amber-slide" id="s10">
   <div class="slide-inner">
     <p class="kicker">Getting started</p>
-    <h2>Your site could be live<br><strong>before dinner service.</strong></h2>
-    <div class="steps" style="margin-top:2rem;">
+    <h2>Live before<br><strong>dinner service.</strong></h2>
+    <div class="steps">
       <div class="step">
         <div class="step-num"></div>
         <div class="step-body">
-          <strong>Sign up free at plated.io</strong>
-          <p>No credit card required. Takes 30 seconds.</p>
+          <strong>Clone the repo</strong>
+          <p><span class="code-pill" style="color:#1a1208;background:rgba(26,18,8,0.1);border-color:rgba(26,18,8,0.2);">git clone https://github.com/ShadowWalkerNC/Plated</span></p>
         </div>
       </div>
       <div class="step">
         <div class="step-num"></div>
         <div class="step-body">
-          <strong>Run the onboarding wizard</strong>
-          <p>4 quick questions. Plated generates your starter site instantly.</p>
+          <strong>Run the setup wizard</strong>
+          <p><span class="code-pill" style="color:#1a1208;background:rgba(26,18,8,0.1);border-color:rgba(26,18,8,0.2);">plated init</span> — name, cuisine, theme. Done in 2 minutes.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num"></div>
         <div class="step-body">
-          <strong>Add your menu &amp; photos</strong>
-          <p>Fill in the details. Add your logo, hours, and social links.</p>
+          <strong>CulinaryOS users: install as extension</strong>
+          <p><span class="code-pill" style="color:#1a1208;background:rgba(26,18,8,0.1);border-color:rgba(26,18,8,0.2);">culinary ext add plated</span> — menu and hours sync automatically.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num"></div>
         <div class="step-body">
-          <strong>Publish</strong>
-          <p>Hit deploy. Your site goes live immediately on a fast global CDN.</p>
+          <strong>Deploy</strong>
+          <p>Self-host or push to Vercel / Netlify / Fly. Your site is live on a global CDN.</p>
         </div>
       </div>
     </div>
   </div>
-  <span class="slide-num">9 / 10</span>
+  <span class="slide-num">10 / 11</span>
 </section>
 
-<!-- ======================== SLIDE 10 — CTA ======================== -->
-<section class="slide amber-slide" id="s10">
+<!-- 11 — CTA -->
+<section class="slide dark-slide" id="s11">
+  <div class="bg-ring" style="width:700px;height:700px;top:-200px;right:-200px;"></div>
+  <div class="bg-ring" style="width:350px;height:350px;bottom:-100px;left:-100px;"></div>
   <div class="slide-inner" style="text-align:center;">
     <div class="logo-mark" style="justify-content:center;">
       <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="64" height="64" rx="14" fill="rgba(255,255,255,0.12)"/>
+        <rect width="64" height="64" rx="14" fill="#2a1e0f"/>
         <circle cx="32" cy="32" r="18" stroke="#f4ede4" stroke-width="3" fill="none"/>
         <circle cx="32" cy="32" r="12" stroke="#f4ede4" stroke-width="1.5" fill="none" opacity="0.4"/>
         <line x1="16" y1="20" x2="16" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
@@ -630,18 +558,20 @@
       </svg>
       <span class="logo-word">Plated</span>
     </div>
-    <h1 style="max-width:14ch;margin:0 auto;">Ready to fill<br>more tables?</h1>
-    <p class="lead" style="margin:1.5rem auto 0;max-width:46ch;">Start free. No credit card. Your restaurant site live in under 5 minutes.</p>
-    <a class="cta-btn" href="https://plated.io">Get started free →</a>
-    <p class="quote-attr" style="margin-top:2.5rem;">plated.io &nbsp;·&nbsp; hello@plated.io</p>
+    <h1 style="max-width:16ch;margin:0 auto;">The restaurant web<br>layer for <span style="color:var(--amber)">CulinaryOS.</span></h1>
+    <p class="lead" style="margin:1.5rem auto 0;max-width:48ch;">Free and open source. White-label for $299 one-time. No subscriptions, no lock-in — you own the code.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a class="cta-btn" href="https://github.com/ShadowWalkerNC/Plated">&#9733; Star on GitHub</a>
+      <a class="cta-btn-ghost" href="https://plated.io">Get white-label license →</a>
+    </div>
+    <p class="quote-attr" style="margin-top:2.5rem;">github.com/ShadowWalkerNC/Plated &nbsp;·&nbsp; plated.io</p>
   </div>
-  <span class="slide-num">10 / 10</span>
+  <span class="slide-num">11 / 11</span>
 </section>
 
 <script>
   const slides = document.querySelectorAll('.slide');
   const nav    = document.getElementById('nav');
-
   slides.forEach((slide, i) => {
     const btn = document.createElement('button');
     btn.className = 'dot';
@@ -649,9 +579,7 @@
     btn.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
     nav.appendChild(btn);
   });
-
   const dots = nav.querySelectorAll('.dot');
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -660,17 +588,13 @@
       }
     });
   }, { threshold: 0.5 });
-
   slides.forEach(s => observer.observe(s));
-
-  // keyboard nav
   document.addEventListener('keydown', (e) => {
     const active = Array.from(dots).findIndex(d => d.classList.contains('active'));
-    if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && active < slides.length - 1) {
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && active < slides.length - 1)
       slides[active + 1].scrollIntoView({ behavior: 'smooth' });
-    } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && active > 0) {
+    else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && active > 0)
       slides[active - 1].scrollIntoView({ behavior: 'smooth' });
-    }
   });
 </script>
 </body>
