@@ -1,6 +1,6 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname }          from 'node:path';
-import type { AstroFile }   from '@nexcms/astro-output';
+import type { AstroFile }   from '@plated/astro-output';
 
 // Spec-compliant ZIP builder — no external deps.
 // Compression method: 0 (stored). Files are written verbatim.
