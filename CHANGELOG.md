@@ -1,4 +1,4 @@
-# Changelog — NexCMS
+# Changelog — Plated
 
 Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
 
@@ -10,12 +10,49 @@ Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(s
 
 ### Planned
 - `packages/generator/` — full `generate()` implementation: ProjectSchema → Astro file output
-- `packages/template-engine/` — `loadManifest()`, `resolveSlots()`, `resolveBlocks()` implementations
 - `packages/builder/electron/` — Electron main.ts, preload.ts, IPC handler stubs
 - `packages/cli/` — CLI wired to spawn Electron binary
-- `templates/restaurant/` — complete Astro template with all 6 page stubs
-- `styles/hearth/` — complete CSS variable set + Tailwind config
+- CulinaryOS extension install command (confirm name + integration contract)
+- White-label license purchase URL
 - Turborepo pipeline: generator build verified end-to-end
+
+---
+
+## [v5.0.0] — July 6, 2026 — Open-Core Pivot
+
+### docs: reposition as open-source CulinaryOS module, open-core licensing
+
+Full pivot from SaaS/subscription model to open-core. Plated is now MIT-licensed with an
+optional $299 white-label commercial license. Major version updates available at $79 each.
+All SaaS, subscription, and feature-bloat plans removed.
+
+#### README.md v5.0
+- Reframed as open-source restaurant website module + CulinaryOS native extension
+- Removed: Stripe billing, Free/Pro/Agency tiers, SaaS-first framing
+- Added: CulinaryOS Integration section with dual-mode architecture diagrams
+- Added: Licensing table (MIT free / $299 white-label / $79 per major version)
+- Expanded themes table: 3 → all 6 real themes (hearth, canvas, midnight, market, coast, ember)
+- Added `pitch/` to monorepo structure map
+- Removed: `STRIPE_SECRET_KEY` from env vars table
+- Added MIT, CulinaryOS native, and status badges
+
+#### styles/README.md v5.0
+- Renamed from `# NexCMS Themes` → `# Plated Themes`
+- Content unchanged — all 6 themes already correctly documented
+
+#### pitch/index.html v5.0
+- Full 11-slide rewrite: open-core + CulinaryOS positioning
+- Slide 1: Title — open-source · CulinaryOS module pill badges
+- Slide 2: Problem — ops/web gap framing
+- Slide 3: Reality — stats reframed around the gap
+- Slide 4: Solution — dual-mode split (standalone vs CulinaryOS native)
+- Slide 5: Themes — expanded from 3 → 6 real themes with correct names, fonts, accent colours
+- Slide 6: Comparison — Plated vs custom build vs Squarespace vs WordPress
+- Slide 7: Ecosystem — POS, KDS, RecipeOS, Admin Client, MCP, Extensions
+- Slide 8: Pricing — Free MIT / $299 white-label / $79 per major version
+- Slide 9: License FAQ — 6 Q&As
+- Slide 10: Get started — `git clone` + `plated init` + `culinary ext add plated`
+- Slide 11: CTA — GitHub star + white-label license buttons
 
 ---
 
@@ -23,52 +60,26 @@ Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(s
 
 ### docs: complete project reassessment and master rewrite
 
-All documentation rewritten from scratch following full feature gap analysis.
+All documentation rewritten following full feature gap analysis.
 Project rules expanded from 15 to 20. Architectural decisions expanded from 10 to 15.
 
 #### README.md v4.0
-- Added complete integrations table: Square (Catalog + Orders + Gift Cards + Loyalty),
-  Meta/Instagram, Twitter/X, Google Business + Maps, Apple Maps, Yelp, TripAdvisor
-- Added full reservations integrations: OpenTable, Resy, SevenRooms, Yelp, in-house form
-- Added marketing integrations: Mailchimp, Klaviyo, Resend, Twilio, Tidio/Crisp
-- Added analytics integrations: Plausible (default), GA4 (extension), Search Console
-- Added AI tools section: Gemini — description, menu, alt text, SEO, color palette
-- Added complete features list (80+ features across 9 categories)
-- Added three-layer extension system: JSON config + npm plugins + CDN/script manager
-- Added curated CDN library catalog: Swiper, GSAP, AOS, Lottie, Alpine, GLightbox,
-  Flatpickr, Chart.js, vanilla-cookieconsent, QRCode.js
-- Added content engine features: blog, events, specials board, press, multi-location
-- Added media library features: background removal, image crop, Unsplash stock photos
-- Added accessibility: WCAG 2.1 AA, RTL, multilingual (Astro i18n), semantic HTML
-- Added performance: PWA, font subsetting, critical CSS, Core Web Vitals, structured data testing
-- Added print assets: PDF menu (jsPDF), QR code (qrcode), business card export
-- Updated tech stack table: added Gemini, jsPDF, qrcode, Plausible, @dnd-kit, CodeMirror 6
-- Updated monorepo structure: added packages/ai-tools/, packages/pdf-tools/,
-  packages/integrations/yelp/, builder/src/steps/, builder/src/editor/, builder/src/media/
-- Updated roadmap: Phases 1–8 (added Phase 5 Content Engine, Phase 7 Polish, Phase 8 Launch)
+- Added complete integrations table and reservations integrations
+- Added marketing, analytics, and AI tools sections
+- Added three-layer extension system
+- Added content engine, media library, accessibility, and performance features
+- Updated tech stack and monorepo structure
 
 #### AGENTS.md v4.0
-- Added Decision 11: Content Engine — Astro Content Collections (no external CMS)
-- Added Decision 12: AI Tools — Google Gemini API locked (no OpenAI/Anthropic)
-- Added Decision 13: Analytics — Plausible default, GA4 as extension
-- Added Decision 14: PDF + QR — jsPDF + qrcode npm package
-- Added Decision 15: Multi-location — first-class feature, locations[] in ProjectSchema
-- Updated D6 (Electron IPC): added removeBackground, generateQR, exportPDF channels
-- Updated D8 (Extensions): expanded to 3-layer system (added CDN/script manager layer)
-- Updated D9 (Integrations): added yelp/ to packages/integrations/
-- Supabase schema: added content_posts table (blog, events, specials, press)
-- Project rules expanded: 15 → 20 (added rules 16–20)
-- Tech stack section expanded with full library list
-- Agent confirmation block updated
+- Added Decisions 11–15
+- Updated D6, D8, D9
+- Supabase schema: added content_posts table
+- Project rules expanded: 15 → 20
 
 #### CONTRIBUTING.md v4.0
-- Updated scopes to include new packages: ai-tools, pdf-tools, extensions, integrations
-- Updated rules to reflect all 20 project rules
-- Added development setup notes for Electron
+- Updated scopes and rules to reflect new packages and project rules
 
 #### .env.example v4.0
-- Added: GEMINI_API_KEY, YELP_API_KEY, PLAUSIBLE_API_KEY, PLAUSIBLE_DOMAIN,
-  UNSPLASH_ACCESS_KEY, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
 - Total env vars: 28
 
 ---
@@ -77,11 +88,9 @@ Project rules expanded from 15 to 20. Architectural decisions expanded from 10 t
 
 ### docs: master plan update — Electron, block DnD, extensions, integrations, service tiers
 
-- README v3: Added Electron, block DnD, dual extension system (JSON + npm),
-  Square/Meta/Google/Apple Maps integrations, service tiers, 8-step wizard, Phases 1–7
-- AGENTS v3: Added Decisions 6–10 (Electron, DnD, extensions, integrations, tiers)
-- AGENTS v3: Added integrations Supabase table, sites.tier/managed_by/billing_status
-- .env.example: Added 14 integration env vars (Square, Meta, Twitter, Google, Apple Maps)
+- README v3: Added Electron, block DnD, dual extension system, integrations, service tiers, 8-step wizard
+- AGENTS v3: Added Decisions 6–10
+- .env.example: Added 14 integration env vars
 
 ---
 
@@ -101,7 +110,7 @@ Project rules expanded from 15 to 20. Architectural decisions expanded from 10 t
 
 - All package stubs created
 - Turborepo + pnpm workspace configured
-- Restaurant template manifest (CP2, CP7)
+- Restaurant template manifest
 - Hearth style tokens
 - Base TypeScript config
 - .gitignore, .env.example
