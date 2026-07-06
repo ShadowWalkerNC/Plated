@@ -7,17 +7,20 @@ export function Step3Social() {
   const updateSchema = useWizardStore((s) => s.updateSchema);
 
   const rows: Array<[keyof typeof social, string, string]> = [
-    ['instagram', 'Instagram', 'https://instagram.com/yourhandle'],
-    ['facebook', 'Facebook', 'https://facebook.com/yourpage'],
-    ['twitter', 'Twitter / X', 'https://x.com/yourhandle'],
-    ['googleBusiness', 'Google Business', 'https://g.page/...'],
-    ['yelp', 'Yelp', 'https://yelp.com/biz/...'],
-    ['tripadvisor', 'Tripadvisor', 'https://tripadvisor.com/...'],
-    ['doordash', 'DoorDash', 'https://doordash.com/store/...'],
-    ['ubereats', 'Uber Eats', 'https://ubereats.com/store/...'],
-    ['grubhub', 'Grubhub', 'https://grubhub.com/restaurant/...'],
-    ['toast', 'Toast', 'https://order.toasttab.com/...'],
-    ['chownow', 'ChowNow', 'https://direct.chownow.com/order/...'],
+    ['instagram',      'Instagram',        'https://instagram.com/yourhandle'],
+    ['facebook',       'Facebook',         'https://facebook.com/yourpage'],
+    ['twitter',        'Twitter / X',      'https://x.com/yourhandle'],
+    ['tiktok',         'TikTok',           'https://tiktok.com/@yourhandle'],
+    ['youtube',        'YouTube',          'https://youtube.com/@yourchannel'],
+    ['googleBusiness', 'Google Business',  'https://g.page/...'],
+    ['yelp',           'Yelp',             'https://yelp.com/biz/...'],
+    ['tripadvisor',    'Tripadvisor',      'https://tripadvisor.com/...'],
+    ['opentable',      'OpenTable',        'https://opentable.com/...'],
+    ['doordash',       'DoorDash',         'https://doordash.com/store/...'],
+    ['ubereats',       'Uber Eats',        'https://ubereats.com/store/...'],
+    ['grubhub',        'Grubhub',          'https://grubhub.com/restaurant/...'],
+    ['toast',          'Toast',            'https://order.toasttab.com/...'],
+    ['chownow',        'ChowNow',          'https://direct.chownow.com/order/...'],
   ];
 
   return (
@@ -31,7 +34,7 @@ export function Step3Social() {
         {rows.map(([key, label, placeholder]) => (
           <Field key={key} label={label}>
             <input
-              value={social[key]}
+              value={social[key] ?? ''}
               onChange={(e) => updateSchema({ social: { [key]: e.target.value } })}
               placeholder={placeholder}
             />

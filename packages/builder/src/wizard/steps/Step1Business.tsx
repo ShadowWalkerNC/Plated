@@ -24,7 +24,7 @@ export function Step1Business() {
 
         <Field label="Cuisine type" hint="Used in headings, metadata, and internal organization.">
           <input
-            value={schema.business.cuisineType}
+            value={schema.business.cuisineType ?? ''}
             onChange={(e) => updateSchema({ business: { cuisineType: e.target.value } })}
             placeholder="Italian · Seafood · Southern"
           />
@@ -33,7 +33,7 @@ export function Step1Business() {
 
       <Field label="Tagline" hint="Short brand promise shown under the name.">
         <input
-          value={schema.business.tagline}
+          value={schema.business.tagline ?? ''}
           onChange={(e) => updateSchema({ business: { tagline: e.target.value } })}
           placeholder="Wood-fired food. Warm hospitality."
         />
@@ -50,7 +50,7 @@ export function Step1Business() {
       <div className={styles.grid3}>
         <Field label="Phone">
           <input
-            value={schema.business.phone}
+            value={schema.business.phone ?? ''}
             onChange={(e) => updateSchema({ business: { phone: e.target.value } })}
             placeholder="(555) 123-4567"
           />
@@ -58,7 +58,7 @@ export function Step1Business() {
 
         <Field label="Email">
           <input
-            value={schema.business.email}
+            value={schema.business.email ?? ''}
             onChange={(e) => updateSchema({ business: { email: e.target.value } })}
             placeholder="hello@restaurant.com"
           />
@@ -66,8 +66,14 @@ export function Step1Business() {
 
         <Field label="Founded year">
           <input
-            value={schema.business.foundedYear}
-            onChange={(e) => updateSchema({ business: { foundedYear: e.target.value } })}
+            type="number"
+            min={1800}
+            max={new Date().getFullYear()}
+            value={schema.business.foundedYear ?? ''}
+            onChange={(e) => {
+              const n = parseInt(e.target.value, 10);
+              updateSchema({ business: { foundedYear: Number.isFinite(n) ? n : undefined } });
+            }}
             placeholder="2017"
           />
         </Field>
