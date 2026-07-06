@@ -18,16 +18,17 @@ export interface WizardStore {
   isDirty: boolean;
 
   // Actions — navigation
-  setScreen: (screen: Screen) => void;
-  goToStep: (step: number) => void;
-  nextStep: () => void;
-  prevStep: () => void;
+  setScreen:  (screen: Screen) => void;
+  goToStep:   (step: number) => void;
+  nextStep:   () => void;
+  prevStep:   () => void;
+  openEditor: () => void;
 
   // Actions — project
-  initProject: (schema: ProjectSchema, filePath: string | null) => void;
-  updateSchema: (patch: DeepPartial<ProjectSchema>) => void;
+  initProject:        (schema: ProjectSchema, filePath: string | null) => void;
+  updateSchema:       (patch: DeepPartial<ProjectSchema>) => void;
   setProjectFilePath: (path: string) => void;
-  markClean: () => void;
+  markClean:          () => void;
 }
 
 // Minimal default schema — wizard fills it in
@@ -104,7 +105,8 @@ export const useWizardStore = create<WizardStore>()(
     projectFilePath: null,
     isDirty: false,
 
-    setScreen: (screen) => set({ screen }),
+    setScreen:  (screen) => set({ screen }),
+    openEditor: () => set({ screen: 'editor' }),
 
     goToStep: (step) =>
       set({ currentStep: Math.max(1, Math.min(step, TOTAL_STEPS)) }),
@@ -134,16 +136,13 @@ export const useWizardStore = create<WizardStore>()(
       set((state) => ({
         schema: deepMerge(state.schema, patch) as ProjectSchema,
         isDirty: true,
-        updatedAt: new Date().toISOString(),
       })),
 
     setProjectFilePath: (path) => set({ projectFilePath: path }),
-
     markClean: () => set({ isDirty: false }),
-  })),
+  }))
 );
 
-// Tiny recursive merge — only plain objects are merged, arrays are replaced
 function deepMerge(target: unknown, source: unknown): unknown {
   if (
     typeof source !== 'object' ||
@@ -161,7 +160,6 @@ function deepMerge(target: unknown, source: unknown): unknown {
   return result;
 }
 
-// Utility type
 export type DeepPartial<T> = T extends object
   ? { [P in keyof T]?: DeepPartial<T[P]> }
   : T;

@@ -1,0 +1,124 @@
+.panel {
+  width: 300px;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(74, 47, 35, 0.1);
+  background: rgba(255, 253, 250, 0.95);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #8a7262;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.emptyIcon { font-size: 2rem; }
+
+.typeHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(74, 47, 35, 0.08);
+}
+
+.typeIcon  { font-size: 1.25rem; }
+
+.typeLabel {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #241712;
+}
+
+.noConfig {
+  margin: 0;
+  padding: 1.25rem;
+  font-size: 0.88rem;
+  color: #8a7262;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.75rem 1.25rem;
+}
+
+.fieldRow {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(74, 47, 35, 0.06);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(74, 47, 35, 0.06);
+}
+
+.fieldLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6e5a4d;
+  text-transform: capitalize;
+}
+
+.input {
+  min-height: 36px;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(74, 47, 35, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 0.88rem;
+  color: #241712;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(74, 47, 35, 0.18);
+  cursor: pointer;
+  transition: background 0.18s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.toggleOn { background: var(--app-accent, #8a4b2f); }
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.18s;
+  display: block;
+}
+
+.toggleOn .toggleThumb { transform: translateX(18px); }
