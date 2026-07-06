@@ -1,0 +1,50 @@
+/**
+ * Builder UI Tokens
+ * Imports brand-level tokens then adds builder-specific layout tokens.
+ * Import order in main entry: tokens.css → base.css → component styles
+ */
+@import '../../../../brand/tokens.css';
+
+:root {
+  /* ── Builder Layout ───────────────────────────────────────────
+   * Desktop-first: base width 1280px
+   */
+  --sidebar-width:        220px;   /* left nav / step list           */
+  --panel-width:          340px;   /* right config panel             */
+  --toolbar-height:       48px;    /* top toolbar bar                */
+  --wizard-max-width:     680px;   /* wizard step content max-width  */
+  --preview-min-width:    480px;   /* live preview pane              */
+
+  /* ── Builder-specific Surface ────────────────────────────────*/
+  --toolbar-bg:           var(--app-surface);
+  --toolbar-border:       var(--app-border);
+  --panel-bg:             var(--app-surface);
+  --panel-border:         var(--app-border);
+  --preview-bg:           var(--app-bg);
+
+  /* ── Step Indicator ──────────────────────────────────────────*/
+  --step-dot-size:        8px;
+  --step-dot-active:      var(--app-accent);
+  --step-dot-inactive:    var(--app-border-strong);
+  --step-dot-done:        var(--app-success);
+
+  /* ── Input Styles ─────────────────────────────────────────────*/
+  --input-height:         38px;
+  --input-height-sm:      30px;
+  --input-bg:             var(--app-surface);
+  --input-border:         var(--app-border-strong);
+  --input-border-focus:   var(--app-accent);
+  --input-radius:         var(--radius-sm);
+  --input-padding-x:      var(--space-3);
+
+  /* ── Button ───────────────────────────────────────────────────*/
+  --btn-height:           36px;
+  --btn-height-sm:        28px;
+  --btn-height-lg:        44px;
+  --btn-padding-x:        var(--space-4);
+  --btn-radius:           var(--radius-sm);
+  --btn-primary-bg:       var(--app-accent);
+  --btn-primary-fg:       var(--app-accent-fg);
+  --btn-primary-hover:    var(--app-accent-hover);
+  --btn-ghost-hover:      var(--app-accent-subtle);
+}

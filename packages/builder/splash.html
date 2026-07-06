@@ -5,63 +5,95 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; background: transparent; }
+
     .card {
-      width: 480px; height: 300px;
-      background: #1a1208;
+      width: 480px;
+      height: 300px;
+      background: #1e1a17;
       border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.1rem;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      gap: 1rem;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
     }
-    .icon { width: 64px; height: 64px; }
+
+    /* App icon — P with fork & knife, matching the real logo geometry */
+    .icon {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+    }
+
     .wordmark {
-      font-family: 'Georgia', serif;
-      font-size: 2.2rem;
+      font-family: 'Georgia', 'Cormorant Garamond', serif;
+      font-size: 2.0rem;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      color: #f4ede4;
+      letter-spacing: -0.02em;
+      color: #fdf8f2;
+      line-height: 1;
     }
+
     .tagline {
       font-family: system-ui, sans-serif;
-      font-size: 0.8rem;
-      color: rgba(244,237,228,0.45);
-      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      color: rgba(253, 248, 242, 0.40);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
+
     .bar-track {
-      width: 160px; height: 2px;
-      background: rgba(255,255,255,0.08);
+      width: 140px;
+      height: 2px;
+      background: rgba(253, 248, 242, 0.08);
       border-radius: 999px;
       overflow: hidden;
-      margin-top: 0.4rem;
+      margin-top: 0.25rem;
     }
+
     .bar-fill {
       height: 100%;
       background: linear-gradient(90deg, #8a4b2f, #c98f4a);
       border-radius: 999px;
-      animation: load 1.4s ease-in-out forwards;
+      animation: load 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
     @keyframes load { from { width: 0 } to { width: 100% } }
   </style>
 </head>
 <body>
   <div class="card">
-    <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="64" height="64" rx="14" fill="#2a1e0f"/>
-      <circle cx="32" cy="32" r="18" stroke="#f4ede4" stroke-width="3" fill="none"/>
-      <circle cx="32" cy="32" r="12" stroke="#f4ede4" stroke-width="1.5" fill="none" opacity="0.45"/>
-      <line x1="16" y1="20" x2="16" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
-      <line x1="19" y1="20" x2="19" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
-      <line x1="22" y1="20" x2="22" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
-      <line x1="19" y1="28" x2="19" y2="44" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
-      <line x1="45" y1="20" x2="45" y2="44" stroke="#8a4b2f" stroke-width="2" stroke-linecap="round"/>
-      <path d="M45 20 C48 22 48 28 45 30" stroke="#8a4b2f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <!--
+      App icon — stylised P letterform with fork (left) and knife (right)
+      cut into the counter space. Matches the real Plated logo geometry.
+      Replace with <img src="./src/assets/logo-icon.png"> once asset is committed.
+    -->
+    <svg class="icon" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Rounded card bg -->
+      <rect width="72" height="72" rx="16" fill="#2a1e14"/>
+
+      <!-- P letterform body -->
+      <path
+        d="M18 56 L18 16 L38 16 C47 16 54 22 54 31 C54 40 47 46 38 46 L26 46"
+        stroke="#fdf8f2" stroke-width="7" stroke-linecap="round"
+        stroke-linejoin="round" fill="none"
+      />
+
+      <!-- Fork tines (left, inside P counter) -->
+      <line x1="26" y1="22" x2="26" y2="30" stroke="#c98f4a" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="29" y1="22" x2="29" y2="30" stroke="#c98f4a" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="32" y1="22" x2="32" y2="30" stroke="#c98f4a" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Fork handle -->
+      <line x1="29" y1="30" x2="29" y2="42" stroke="#c98f4a" stroke-width="1.8" stroke-linecap="round"/>
+
+      <!-- Knife (right, inside P counter) -->
+      <line x1="38" y1="22" x2="38" y2="42" stroke="#8a4b2f" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M38 22 C41 24 41 30 38 32" stroke="#8a4b2f" stroke-width="1.4" stroke-linecap="round" fill="none"/>
     </svg>
+
     <div class="wordmark">Plated</div>
-    <div class="tagline">Builder</div>
+    <div class="tagline">Website Builder</div>
     <div class="bar-track"><div class="bar-fill"></div></div>
   </div>
 </body>

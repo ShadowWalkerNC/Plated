@@ -1,0 +1,49 @@
+/**
+ * SaaS UI Tokens
+ * Mobile-first (390px base). Imports brand tokens then adds
+ * SaaS-specific layout tokens for dashboard + editor.
+ *
+ * Import in SaaS global layout: tokens.css → saas global styles
+ */
+@import '../../../../brand/tokens.css';
+
+:root {
+  /* ── SaaS Layout ──────────────────────────────────────────────
+   * Mobile-first: base 390px, scales up
+   */
+  --saas-nav-height:      56px;    /* top mobile nav bar             */
+  --saas-sidebar-width:   240px;   /* dashboard sidebar (desktop)    */
+  --saas-content-max:     960px;   /* dashboard content max-width    */
+  --saas-editor-panel:    320px;   /* editor right panel (desktop)   */
+
+  /* ── SaaS Surface ─────────────────────────────────────────────*/
+  --saas-nav-bg:          var(--app-surface);
+  --saas-nav-border:      var(--app-border);
+  --saas-sidebar-bg:      var(--app-sidebar);
+  --saas-card-bg:         var(--app-surface);
+  --saas-card-border:     var(--app-border);
+  --saas-card-radius:     var(--radius-md);
+
+  /* ── SaaS Input ───────────────────────────────────────────────*/
+  --saas-input-height:    44px;    /* touch-friendly (min 44px)      */
+  --saas-input-height-sm: 36px;
+  --saas-input-bg:        var(--app-surface);
+  --saas-input-border:    var(--app-border-strong);
+  --saas-input-focus:     var(--app-accent);
+  --saas-input-radius:    var(--radius-sm);
+
+  /* ── SaaS Button ──────────────────────────────────────────────*/
+  --saas-btn-height:      44px;    /* touch-friendly                 */
+  --saas-btn-height-sm:   36px;
+  --saas-btn-radius:      var(--radius-sm);
+  --saas-btn-primary-bg:  var(--app-accent);
+  --saas-btn-primary-fg:  var(--app-accent-fg);
+
+  /* ── Tier Badge Colors ────────────────────────────────────────*/
+  --tier-self-serve-bg:   var(--app-info-bg);
+  --tier-self-serve-fg:   var(--app-info);
+  --tier-managed-bg:      var(--app-accent-subtle);
+  --tier-managed-fg:      var(--app-accent);
+  --tier-white-glove-bg:  rgba(201, 143, 74, 0.12);
+  --tier-white-glove-fg:  var(--app-gold);
+}

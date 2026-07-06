@@ -1,0 +1,166 @@
+/**
+ * Plated — App Design Tokens
+ * ============================================================
+ * Single source of truth for all Plated UI: builder + SaaS.
+ * DO NOT put customer-site theme tokens here — those live in
+ * packages/astro-output/src/styles/theme.ts
+ *
+ * Usage:
+ *   @import '../../../../brand/tokens.css';   (builder)
+ *   @import '../../../brand/tokens.css';      (saas)
+ */
+
+:root {
+  /* ── Brand Palette ────────────────────────────────────────────
+   * Derived from the Plated logo:
+   *   Ink   #1e1a17  — primary dark, the "P" letterform
+   *   Cream #fdf8f2  — warm off-white background
+   *   Ember #8a4b2f  — warm accent (fork/knife tones)
+   *   Gold  #c98f4a  — secondary accent
+   */
+  --plated-ink:           #1e1a17;
+  --plated-ink-muted:     rgba(30, 26, 23, 0.55);
+  --plated-ink-faint:     rgba(30, 26, 23, 0.08);
+  --plated-cream:         #fdf8f2;
+  --plated-cream-dim:     #f4ede4;
+  --plated-ember:         #8a4b2f;
+  --plated-ember-light:   #b06040;
+  --plated-gold:          #c98f4a;
+  --plated-gold-light:    #dba96a;
+
+  /* ── App Surface Colors ───────────────────────────────────────
+   * Light mode (default)
+   */
+  --app-bg:               #fdf8f2;   /* outermost window / page bg     */
+  --app-surface:          #ffffff;   /* cards, panels, modals          */
+  --app-surface-raised:   #fffdf9;   /* elevated surfaces              */
+  --app-sidebar:          #f5ede2;   /* sidebar / left nav             */
+  --app-sidebar-active:   #ede0cf;   /* active sidebar item            */
+  --app-border:           rgba(30, 26, 23, 0.10);
+  --app-border-strong:    rgba(30, 26, 23, 0.18);
+  --app-overlay:          rgba(30, 26, 23, 0.40);  /* modal backdrop  */
+
+  /* ── App Text ─────────────────────────────────────────────────*/
+  --app-text:             #1e1a17;
+  --app-text-muted:       #7a6254;
+  --app-text-faint:       #b0998a;
+  --app-text-inverse:     #fdf8f2;
+
+  /* ── Interactive / Brand Action ───────────────────────────────*/
+  --app-accent:           #8a4b2f;   /* primary CTA — buttons, links   */
+  --app-accent-hover:     #b06040;
+  --app-accent-fg:        #fdf8f2;   /* text on accent bg              */
+  --app-accent-subtle:    rgba(138, 75, 47, 0.10); /* tinted bg        */
+
+  --app-gold:             #c98f4a;   /* secondary accent               */
+  --app-gold-fg:          #1e1a17;
+
+  /* ── Semantic Status ──────────────────────────────────────────*/
+  --app-success:          #2d7a4f;
+  --app-success-bg:       #edf7f1;
+  --app-warning:          #b06020;
+  --app-warning-bg:       #fdf3e7;
+  --app-error:            #c0392b;
+  --app-error-bg:         #fdf0ee;
+  --app-info:             #1b6fa8;
+  --app-info-bg:          #eaf4fd;
+
+  /* ── Typography ───────────────────────────────────────────────*/
+  --font-display:   'Cormorant Garamond', 'Georgia', serif;  /* wordmarks, headings */
+  --font-ui:        'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:      'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+
+  --text-xs:    0.72rem;   /* 11.5px — labels, badges          */
+  --text-sm:    0.825rem;  /* 13.2px — secondary text          */
+  --text-base:  0.9375rem; /* 15px   — body default            */
+  --text-md:    1.0625rem; /* 17px   — slightly larger body    */
+  --text-lg:    1.25rem;   /* 20px   — section headings        */
+  --text-xl:    1.5rem;    /* 24px   — page headings           */
+  --text-2xl:   2rem;      /* 32px   — display headings        */
+  --text-3xl:   2.75rem;   /* 44px   — hero / wordmark         */
+
+  --leading-tight:  1.25;
+  --leading-snug:   1.4;
+  --leading-normal: 1.6;
+
+  --weight-normal:  400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-bold:    700;
+
+  /* ── Spacing ──────────────────────────────────────────────────*/
+  --space-1:   0.25rem;   /*  4px */
+  --space-2:   0.5rem;    /*  8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+  --space-20:  5rem;      /* 80px */
+
+  /* ── Border Radius ────────────────────────────────────────────*/
+  --radius-sm:   0.375rem;  /*  6px — inputs, small elements  */
+  --radius-md:   0.625rem;  /* 10px — cards, panels           */
+  --radius-lg:   1rem;      /* 16px — modals, sheets          */
+  --radius-xl:   1.5rem;    /* 24px — splash card, app icon   */
+  --radius-full: 999px;     /* pills, avatars                 */
+
+  /* ── Shadows ──────────────────────────────────────────────────*/
+  --shadow-sm:  0 1px 3px rgba(30,26,23,0.08), 0 1px 2px rgba(30,26,23,0.05);
+  --shadow-md:  0 4px 12px rgba(30,26,23,0.10), 0 2px 4px rgba(30,26,23,0.06);
+  --shadow-lg:  0 12px 32px rgba(30,26,23,0.14), 0 4px 8px rgba(30,26,23,0.08);
+  --shadow-xl:  0 24px 64px rgba(30,26,23,0.20), 0 8px 16px rgba(30,26,23,0.10);
+
+  /* ── Z-Index Scale ────────────────────────────────────────────*/
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+
+  /* ── Motion ───────────────────────────────────────────────────*/
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast:   120ms;
+  --duration-normal: 200ms;
+  --duration-slow:   350ms;
+}
+
+/* ── Dark Mode ────────────────────────────────────────────────────
+ * Builder dark mode (Electron respects system preference).
+ * SaaS dashboard also supports dark via same tokens.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-bg:               #120e0b;
+    --app-surface:          #1c1612;
+    --app-surface-raised:   #231a14;
+    --app-sidebar:          #18120e;
+    --app-sidebar-active:   #221a14;
+    --app-border:           rgba(244, 237, 228, 0.08);
+    --app-border-strong:    rgba(244, 237, 228, 0.14);
+    --app-overlay:          rgba(0, 0, 0, 0.60);
+
+    --app-text:             #f4ede4;
+    --app-text-muted:       rgba(244, 237, 228, 0.55);
+    --app-text-faint:       rgba(244, 237, 228, 0.30);
+    --app-text-inverse:     #1e1a17;
+
+    --app-accent:           #c98f4a;
+    --app-accent-hover:     #dba96a;
+    --app-accent-fg:        #1e1a17;
+    --app-accent-subtle:    rgba(201, 143, 74, 0.12);
+
+    --app-success-bg:       rgba(45, 122, 79, 0.15);
+    --app-warning-bg:       rgba(176, 96, 32, 0.15);
+    --app-error-bg:         rgba(192, 57, 43, 0.15);
+    --app-info-bg:          rgba(27, 111, 168, 0.15);
+  }
+}
