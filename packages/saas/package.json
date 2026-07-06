@@ -1,5 +1,5 @@
 {
-  "name": "@nexcms/saas",
+  "name": "@plated/saas",
   "version": "0.3.0",
   "private": true,
   "scripts": {
@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@clerk/nextjs":        "^6.0.0",
-    "@nexcms/astro-output": "workspace:*",
-    "@nexcms/generator":    "workspace:*",
-    "@nexcms/types":        "workspace:*",
+    "@plated/astro-output": "workspace:*",
+    "@plated/generator":    "workspace:*",
+    "@plated/types":        "workspace:*",
     "@upstash/ratelimit":   "^2.0.0",
     "@upstash/redis":       "^1.34.0",
     "@vercel/analytics":    "^1.3.0",
@@ -33,10 +33,10 @@
     "zod":                  "^3.23.0"
   },
   "devDependencies": {
-    "@types/node":       "^22.0.0",
-    "@types/react":      "^19.0.0",
-    "@types/react-dom":  "^19.0.0",
-    "drizzle-kit":       "^0.28.0",
-    "typescript":        "^5.7.0"
+    "@types/node":      "^22.0.0",
+    "@types/react":     "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "drizzle-kit":      "^0.28.0",
+    "typescript":       "^5.7.0"
   }
 }

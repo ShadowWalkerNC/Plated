@@ -1,4 +1,4 @@
-// @nexcms/builder — Electron main process (v2)
+// Plated Builder — Electron main process
 import {
   app, BrowserWindow, ipcMain, dialog, shell, nativeTheme, powerMonitor,
 } from 'electron';
@@ -17,7 +17,6 @@ const VITE_DEV_URL = 'http://localhost:5173';
 let mainWindow:   BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;
 
-// ── Splash ─────────────────────────────────────────────────────────────
 function createSplash(): void {
   splashWindow = new BrowserWindow({
     width: 480, height: 300,
@@ -32,12 +31,11 @@ function closeSplash(): void {
   if (splashWindow) { splashWindow.close(); splashWindow = null; }
 }
 
-// ── Main window ───────────────────────────────────────────────────────
 function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1320, height: 860,
     minWidth: 1024, minHeight: 700,
-    title: 'NexCMS Builder',
+    title: 'Plated Builder',
     show: false,
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#18140f' : '#fcf8f3',
@@ -59,20 +57,15 @@ function createWindow(): void {
   mainWindow.once('ready-to-show', () => {
     closeSplash();
     mainWindow?.show();
-    if (!isDev) {
-      // Slight delay so the window paint is visible before update check
-      setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 3000);
-    }
+    if (!isDev) setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 3000);
   });
 
   mainWindow.on('closed', () => { mainWindow = null; });
 
-  // Forward online/offline events to renderer
-  powerMonitor.on('on-ac',  () => mainWindow?.webContents.send('network:change', { online: true  }));
+  powerMonitor.on('on-ac',      () => mainWindow?.webContents.send('network:change', { online: true }));
   powerMonitor.on('on-battery', () => mainWindow?.webContents.send('network:change', { online: true }));
 }
 
-// ── IPC ─────────────────────────────────────────────────────────────────
 function registerIpc(): void {
   registerGeneratorHandlers(ipcMain);
   registerDialogHandlers(ipcMain, dialog);
@@ -82,30 +75,27 @@ function registerIpc(): void {
   registerNetworkHandlers(ipcMain);
 }
 
-// ── Auto-updater config ─────────────────────────────────────────────────
 function configureAutoUpdater(): void {
-  autoUpdater.autoDownload    = true;
+  autoUpdater.autoDownload         = true;
   autoUpdater.autoInstallOnAppQuit = true;
 
-  autoUpdater.on('checking-for-update',     () => sendUpdaterEvent('checking'));
-  autoUpdater.on('update-available',   (info) => sendUpdaterEvent('available',    info));
-  autoUpdater.on('update-not-available',(info) => sendUpdaterEvent('not-available', info));
-  autoUpdater.on('download-progress',   (p)   => sendUpdaterEvent('progress',    p));
-  autoUpdater.on('update-downloaded',   (info) => sendUpdaterEvent('downloaded',  info));
-  autoUpdater.on('error',               (err) => sendUpdaterEvent('error',       { message: err.message }));
+  autoUpdater.on('checking-for-update',      () => send('checking'));
+  autoUpdater.on('update-available',   (i)  => send('available',     i));
+  autoUpdater.on('update-not-available',(i)  => send('not-available', i));
+  autoUpdater.on('download-progress',   (p)  => send('progress',     p));
+  autoUpdater.on('update-downloaded',   (i)  => send('downloaded',   i));
+  autoUpdater.on('error',               (e)  => send('error', { message: e.message }));
 }
 
-function sendUpdaterEvent(type: string, payload?: unknown): void {
+function send(type: string, payload?: unknown): void {
   mainWindow?.webContents.send('updater:event', { type, payload });
 }
 
-// ── App lifecycle ─────────────────────────────────────────────────────────
 app.whenReady().then(() => {
   if (!isDev) createSplash();
   configureAutoUpdater();
   registerIpc();
   createWindow();
-
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });

@@ -16,20 +16,14 @@
       gap: 1.1rem;
       box-shadow: 0 24px 64px rgba(0,0,0,0.5);
     }
-    .icon {
-      width: 64px; height: 64px;
-    }
+    .icon { width: 64px; height: 64px; }
     .wordmark {
-      display: flex;
-      align-items: baseline;
-      gap: 0;
       font-family: 'Georgia', serif;
       font-size: 2.2rem;
       font-weight: 700;
       letter-spacing: -0.03em;
       color: #f4ede4;
     }
-    .wordmark .cms { color: #c98f4a; }
     .tagline {
       font-family: system-ui, sans-serif;
       font-size: 0.8rem;
@@ -55,15 +49,18 @@
 </head>
 <body>
   <div class="card">
-    <!-- SVG icon mark -->
     <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="64" height="64" rx="14" fill="#2a1e0f"/>
-      <path d="M14 46 L14 18 L26 34 L26 18" stroke="#f4ede4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <path d="M36 18 L42 26 L36 34 L30 26 Z" fill="#c98f4a"/>
-      <path d="M50 24 C54 24 56 28 56 32 C56 36 54 40 50 40" stroke="#8a4b2f" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <circle cx="32" cy="52" r="3" fill="#c98f4a"/>
+      <circle cx="32" cy="32" r="18" stroke="#f4ede4" stroke-width="3" fill="none"/>
+      <circle cx="32" cy="32" r="12" stroke="#f4ede4" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <line x1="16" y1="20" x2="16" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="19" y1="20" x2="19" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="22" y1="20" x2="22" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="19" y1="28" x2="19" y2="44" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="45" y1="20" x2="45" y2="44" stroke="#8a4b2f" stroke-width="2" stroke-linecap="round"/>
+      <path d="M45 20 C48 22 48 28 45 30" stroke="#8a4b2f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
     </svg>
-    <div class="wordmark">Nex<span class="cms">CMS</span></div>
+    <div class="wordmark">Plated</div>
     <div class="tagline">Builder</div>
     <div class="bar-track"><div class="bar-fill"></div></div>
   </div>
