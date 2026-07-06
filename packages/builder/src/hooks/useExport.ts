@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
-const API = (window as any).nexcms as Record<string, (...a: any[]) => Promise<any>> | undefined;
+const API = (window as any).plated as Record<string, (...a: any[]) => Promise<any>> | undefined;
 
 interface ExportResult {
   ok:           boolean;

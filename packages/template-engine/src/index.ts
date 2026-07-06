@@ -1,16 +1,16 @@
-// @nexcms/template-engine — Phase 1 stub
-// Responsibility: reads nexcms.template.json manifests,
+// @plated/template-engine — Phase 1 stub
+// Responsibility: reads plated.template.json manifests,
 // maps ProjectSchema values into content slots,
 // and returns a resolved slot map ready for the generator.
 
-import type { TemplateManifest, ProjectSchema } from '@nexcms/types';
+import type { TemplateManifest, ProjectSchema } from '@plated/types';
 
 export interface SlotMap {
   [slotField: string]: unknown;
 }
 
 /**
- * loadManifest — reads and validates a nexcms.template.json file.
+ * loadManifest — reads and validates a plated.template.json file.
  */
 export async function loadManifest(
   _templateDir: string,

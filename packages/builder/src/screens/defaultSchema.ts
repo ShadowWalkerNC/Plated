@@ -1,4 +1,4 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 export function createDefaultSchema(name: string): ProjectSchema {
   return {

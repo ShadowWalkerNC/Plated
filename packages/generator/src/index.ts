@@ -1,8 +1,8 @@
-// @nexcms/generator — v2: delegates file generation to @nexcms/astro-output
+// @plated/generator — delegates file generation to @plated/astro-output
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { dirname, join }        from 'node:path';
-import { buildAstroProject }    from '@nexcms/astro-output';
-import type { ProjectSchema }   from '@nexcms/types';
+import { buildAstroProject }    from '@plated/astro-output';
+import type { ProjectSchema }   from '@plated/types';
 
 export interface GenerateOptions {
   outputDir:      string;

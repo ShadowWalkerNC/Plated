@@ -2,38 +2,38 @@
 // Options: New project, Open recent, Open file
 import { useState, useEffect } from 'react';
 import { useWizardStore } from '../store/useWizardStore.js';
-import { useNexcms } from '../hooks/useNexcms.js';
+import { usePlated } from '../hooks/usePlated.js';
 import { createDefaultSchema } from './defaultSchema.js';
 import styles from './Welcome.module.css';
 
 export function Welcome() {
   const { initProject } = useWizardStore();
-  const nexcms = useNexcms();
+  const plated = usePlated();
   const [recentProjects, setRecentProjects] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    nexcms.getRecentProjects().then(setRecentProjects).catch(() => {});
+    plated.getRecentProjects().then(setRecentProjects).catch(() => {});
   }, []);
 
   async function handleNew() {
-    const filePath = await nexcms.saveFile({
-      defaultPath: 'project.nexcms.json',
-      filters: [{ name: 'NexCMS Project', extensions: ['json'] }],
+    const filePath = await plated.saveFile({
+      defaultPath: 'project.plated.json',
+      filters: [{ name: 'Plated Project', extensions: ['json'] }],
     });
     if (!filePath) return;
     const schema = createDefaultSchema('');
-    await nexcms.saveProject(schema, filePath);
+    await plated.saveProject(schema, filePath);
     initProject(schema, filePath);
   }
 
   async function handleOpen() {
-    const filePath = await nexcms.pickFile({
-      filters: [{ name: 'NexCMS Project', extensions: ['json'] }],
+    const filePath = await plated.pickFile({
+      filters: [{ name: 'Plated Project', extensions: ['json'] }],
     });
     if (!filePath) return;
     try {
-      const schema = await nexcms.loadProject(filePath);
+      const schema = await plated.loadProject(filePath);
       initProject(schema, filePath);
     } catch (err) {
       setError(`Could not open project: ${err instanceof Error ? err.message : String(err)}`);
@@ -42,7 +42,7 @@ export function Welcome() {
 
   async function handleOpenRecent(filePath: string) {
     try {
-      const schema = await nexcms.loadProject(filePath);
+      const schema = await plated.loadProject(filePath);
       initProject(schema, filePath);
     } catch (err) {
       setError(`Could not open project: ${err instanceof Error ? err.message : String(err)}`);
@@ -52,8 +52,8 @@ export function Welcome() {
   return (
     <div className={styles.welcome}>
       <div className={styles.hero}>
-        <div className={styles.logo}>NexCMS</div>
-        <p className={styles.tagline}>The hospitality website builder.</p>
+        <div className={styles.logo}>Plated</div>
+        <p className={styles.tagline}>The restaurant website builder.</p>
         <p className={styles.sub}>Built for chefs, not developers.</p>
       </div>
 
@@ -94,7 +94,7 @@ export function Welcome() {
       )}
 
       <footer className={styles.footer}>
-        <span>NexCMS v0.0.0</span>
+        <span>Plated v0.0.0</span>
         <span>·</span>
         <span>Built for chefs, not developers.</span>
       </footer>

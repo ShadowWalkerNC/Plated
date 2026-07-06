@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNexcms } from '../hooks/useNexcms.js';
+import { usePlated } from '../hooks/usePlated.js';
 import { useWizardStore } from '../store/useWizardStore.js';
-import type { GenerateResult } from '../hooks/useNexcms.js';
+import type { GenerateResult } from '../hooks/usePlated.js';
 import styles from './ExportScreen.module.css';
 
 export function ExportScreen() {
-  const nexcms = useNexcms();
+  const plated = usePlated();
   const schema = useWizardStore((s) => s.schema);
   const setScreen = useWizardStore((s) => s.setScreen);
   const [outputDir, setOutputDir] = useState('');
@@ -15,21 +15,21 @@ export function ExportScreen() {
   const [dryRunFiles, setDryRunFiles] = useState<number | null>(null);
 
   useEffect(() => {
-    nexcms
+    plated
       .generateDryRun(schema)
       .then((r) => setDryRunFiles(r.filesWritten))
       .catch(() => {});
   }, []);
 
   async function chooseDir() {
-    const dir = await nexcms.pickOutputDir();
+    const dir = await plated.pickOutputDir();
     if (dir) setOutputDir(dir);
   }
 
   async function runExport() {
     let dir = outputDir;
     if (!dir) {
-      const picked = await nexcms.pickOutputDir();
+      const picked = await plated.pickOutputDir();
       if (!picked) return;
       dir = picked;
       setOutputDir(dir);
@@ -37,7 +37,7 @@ export function ExportScreen() {
     setLoading(true);
     setError(null);
     try {
-      const res = await nexcms.generate(schema, dir, true);
+      const res = await plated.generate(schema, dir, true);
       if (!res.success) throw new Error(res.errors.join('\n') || 'Generation failed.');
       setResult(res);
     } catch (err) {
@@ -92,7 +92,7 @@ export function ExportScreen() {
             )}
             <div className={styles.actions}>
               <button className={styles.ghostBtn} type="button" onClick={() => setScreen('wizard')}>Back to Wizard</button>
-              <button className={styles.primaryBtn} type="button" onClick={() => nexcms.revealInFinder(result.outputDir)}>Reveal in Finder</button>
+              <button className={styles.primaryBtn} type="button" onClick={() => plated.revealInFinder(result.outputDir)}>Reveal in Finder</button>
             </div>
           </div>
         )}

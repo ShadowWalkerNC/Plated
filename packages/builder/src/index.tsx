@@ -1,4 +1,4 @@
-// @nexcms/builder — React 19 entrypoint
+// @plated/builder — React 19 entrypoint
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.js';

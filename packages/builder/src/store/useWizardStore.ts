@@ -1,7 +1,7 @@
 // Zustand store — single source of truth for the wizard
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { Screen } from '../App.js';
 
 const TOTAL_STEPS = 8;
