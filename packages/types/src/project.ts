@@ -1,7 +1,7 @@
 import type { BusinessType, StyleTemplate, ColorTheme } from './template.js';
 
 /**
- * ProjectSchema v2.0 — core data contract for NexCMS.
+ * ProjectSchema v2.0 — core data contract for Plated.
  *
  * This is the single source of truth for wizard input.
  * The generator reads this and produces an Astro site.
@@ -13,19 +13,19 @@ import type { BusinessType, StyleTemplate, ColorTheme } from './template.js';
  * - packages/saas (editor fields)
  */
 export interface ProjectSchema {
-  // ── Meta ─────────────────────────────────────────────────
+  // ── Meta ────────────────────────────────────────────────────────
   id: string;
   schemaVersion: '2.0';
   createdAt: string;
   updatedAt: string;
 
-  // ── Template ─────────────────────────────────────────────
+  // ── Template ───────────────────────────────────────────────────
   businessType: BusinessType;
   styleTemplate: StyleTemplate;
   colorTheme: ColorTheme;
   darkMode: boolean;
 
-  // ── Business Identity ────────────────────────────────────
+  // ── Business Identity ──────────────────────────────────────────
   business: {
     name: string;
     tagline?: string;
@@ -38,15 +38,15 @@ export interface ProjectSchema {
     foundedYear?: number;
   };
 
-  // ── Locations (multi-location first-class support) ────────
+  // ── Locations (multi-location first-class support) ──────────────────────
   locations: LocationRecord[];
   /** Index into locations[] that is the primary/default location */
   primaryLocationIndex: number;
 
-  // ── Menu ──────────────────────────────────────────────────
+  // ── Menu ────────────────────────────────────────────────────────
   menu: MenuSchema;
 
-  // ── Branding ──────────────────────────────────────────────
+  // ── Branding ────────────────────────────────────────────────────
   branding: {
     logoUrl?: string;
     faviconSourceUrl?: string;
@@ -57,34 +57,34 @@ export interface ProjectSchema {
     accentColor?: string;
   };
 
-  // ── Social & Integrations ─────────────────────────────────
+  // ── Social & Integrations ──────────────────────────────────────────
   social: SocialSchema;
   integrations: IntegrationConfig;
 
-  // ── Content Collections ───────────────────────────────────
+  // ── Content Collections ───────────────────────────────────────────
   blog?: ContentPost[];
   events?: EventPost[];
   specials?: SpecialPost[];
   press?: PressPost[];
 
-  // ── SEO ───────────────────────────────────────────────────
+  // ── SEO ──────────────────────────────────────────────────────────
   seo: SeoSchema;
 
-  // ── Extensions ────────────────────────────────────────────
+  // ── Extensions ────────────────────────────────────────────────────
   extensions: ExtensionConfig;
 
-  // ── Deployment ────────────────────────────────────────────
+  // ── Deployment ────────────────────────────────────────────────────
   deployment: {
     target?: 'netlify' | 'vercel' | 'cloudflare' | 'github';
     subdomain?: string;
     customDomain?: string;
   };
 
-  // ── Food Truck Schedule ───────────────────────────────────
+  // ── Food Truck Schedule ───────────────────────────────────────────
   locationSchedule?: TruckStop[];
 }
 
-// ── Location ────────────────────────────────────────────────
+// ── Location ──────────────────────────────────────────────────────────
 export interface LocationRecord {
   id: string;
   name: string;
@@ -129,7 +129,7 @@ export interface TruckStop {
   mapUrl?: string;
 }
 
-// ── Menu ─────────────────────────────────────────────────────
+// ── Menu ─────────────────────────────────────────────────────────────
 export interface MenuSchema {
   /** If connected to Square, the Square location ID used for sync */
   squareLocationId?: string;
@@ -177,7 +177,7 @@ export interface ModifierGroup {
   options: Array<{ id: string; name: string; priceDelta?: string }>;
 }
 
-// ── Social ───────────────────────────────────────────────────
+// ── Social ───────────────────────────────────────────────────────────
 export interface SocialSchema {
   facebook?: string;
   instagram?: string;
@@ -195,7 +195,7 @@ export interface SocialSchema {
   googleBusiness?: string;
 }
 
-// ── Integration Config ────────────────────────────────────────
+// ── Integration Config ──────────────────────────────────────────────
 export interface IntegrationConfig {
   square?: {
     connected: boolean;
@@ -211,7 +211,7 @@ export interface IntegrationConfig {
   yelp?: { connected: boolean; businessId?: string; alias?: string };
 }
 
-// ── Content Collections ───────────────────────────────────────
+// ── Content Collections ───────────────────────────────────────────────
 export interface ContentPost {
   id: string;
   type: 'blog' | 'news';
@@ -263,7 +263,7 @@ export interface PressPost {
   logoUrl?: string;
 }
 
-// ── SEO ──────────────────────────────────────────────────────
+// ── SEO ────────────────────────────────────────────────────────────
 export interface SeoSchema {
   siteTitle?: string;
   metaDescription?: string;
@@ -277,7 +277,7 @@ export interface SeoSchema {
   structuredDataOverride?: Record<string, unknown>;
 }
 
-// ── Extensions ───────────────────────────────────────────────
+// ── Extensions ─────────────────────────────────────────────────────────
 export interface ExtensionConfig {
   analytics?: {
     plausible?: { enabled: boolean; domain?: string };
@@ -307,7 +307,7 @@ export interface ExtensionConfig {
   googleAnalytics?: { enabled: boolean; measurementId?: string };
   /** Curated CDN libraries toggled on by user */
   cdnLibraries?: CdnLibraryId[];
-  /** npm plugins installed via nexcms-plugin-* */
+  /** npm plugins installed via plated-plugin-* */
   plugins?: string[];
 }
 

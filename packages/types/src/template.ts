@@ -121,7 +121,7 @@ export interface TemplatePage {
 }
 
 /**
- * TemplateManifest — nexcms.template.json contract.
+ * TemplateManifest — plated.template.json contract.
  */
 export interface TemplateManifest {
   manifestVersion: '2.0';
@@ -135,7 +135,7 @@ export interface TemplateManifest {
 }
 
 /**
- * PluginManifest — what an npm nexcms-plugin-* package exports.
+ * PluginManifest — what an npm plated-plugin-* package exports.
  */
 export interface PluginManifest {
   id: string;

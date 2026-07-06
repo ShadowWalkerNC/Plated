@@ -1,4 +1,4 @@
-// @nexcms/types — Single source of truth for all NexCMS TypeScript contracts
+// @plated/types — Single source of truth for all Plated TypeScript contracts
 // CP1: ProjectSchema locked — Phase 0 checkpoint complete
 
 export type { ProjectSchema } from './project.js';
