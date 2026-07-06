@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@plated/types": "workspace:*",
-    "@plated/generator": "workspace:*"
+    "@plated/generator": "workspace:*",
+    "@plated/pdf-tools": "workspace:*",
+    "@imgly/background-removal": "^1.4.0",
+    "react-image-crop": "^11.0.5",
+    "electron-updater": "^6.1.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

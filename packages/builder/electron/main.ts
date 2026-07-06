@@ -4,15 +4,16 @@ import {
 } from 'electron';
 import { join }            from 'node:path';
 import { autoUpdater }     from 'electron-updater';
-import { registerGeneratorHandlers } from './ipc/generator.js';
-import { registerDialogHandlers }    from './ipc/dialog.js';
-import { registerShellHandlers }     from './ipc/shell.js';
-import { registerExportHandlers }    from './ipc/export.js';
-import { registerUpdateHandlers }    from './ipc/updater.js';
-import { registerNetworkHandlers }   from './ipc/network.js';
-import { registerProjectHandlers }   from './ipc/project.js';
-import { registerPdfHandlers }       from './ipc/pdf.js';
-import { registerQrHandlers }        from './ipc/qr.js';
+import { registerGeneratorHandlers }    from './ipc/generator.js';
+import { registerDialogHandlers }       from './ipc/dialog.js';
+import { registerShellHandlers }        from './ipc/shell.js';
+import { registerExportHandlers }       from './ipc/export.js';
+import { registerUpdateHandlers }       from './ipc/updater.js';
+import { registerNetworkHandlers }      from './ipc/network.js';
+import { registerProjectHandlers }      from './ipc/project.js';
+import { registerPdfHandlers }          from './ipc/pdf.js';
+import { registerQrHandlers }           from './ipc/qr.js';
+import { registerBackgroundHandlers }   from './ipc/background.js';
 
 const isDev = !app.isPackaged;
 const VITE_DEV_URL = 'http://localhost:5173';
@@ -79,6 +80,7 @@ function registerIpc(): void {
   registerProjectHandlers(ipcMain);
   registerPdfHandlers(ipcMain, dialog);
   registerQrHandlers(ipcMain, dialog);
+  registerBackgroundHandlers(ipcMain);
 }
 
 function configureAutoUpdater(): void {

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plated BG Worker</title>
+</head>
+<body>
+<script type="module">
+  /**
+   * bg-worker.html — hidden offscreen renderer for background removal.
+   *
+   * Loaded by ipc/background.ts in a hidden BrowserWindow.
+   * Listens for 'bg:process' with an image data URL (or https:// URL),
+   * runs @imgly/background-removal, sends 'bg:result' back to main.
+   *
+   * @imgly/background-removal uses WASM + Web Workers, so it MUST run
+   * in a renderer context — not the Node.js main process.
+   */
+  const { ipcRenderer } = require('electron');
+
+  // Dynamic import so Vite/tsc don’t need to resolve this at build time.
+  // The package is installed in node_modules and Electron can load it.
+  async function loadRemoveBackground() {
+    const mod = await import('@imgly/background-removal');
+    return mod.removeBackground ?? mod.default?.removeBackground ?? mod.default;
+  }
+
+  ipcRenderer.on('bg:process', async (_event, imageSource) => {
+    try {
+      const removeBackground = await loadRemoveBackground();
+
+      // removeBackground() accepts a URL string, Blob, or ArrayBuffer.
+      // We pass the data URL / https URL directly.
+      const resultBlob = await removeBackground(imageSource, {
+        // Use the fastest model for interactive use
+        model: 'small',
+        // Keep full output as PNG with alpha
+        output: { format: 'image/png', quality: 1 },
+      });
+
+      const arrayBuffer = await resultBlob.arrayBuffer();
+      ipcRenderer.send('bg:result', { ok: true, buffer: arrayBuffer });
+
+    } catch (err) {
+      ipcRenderer.send('bg:result', {
+        ok: false,
+        reason: err instanceof Error ? err.message : String(err),
+      });
+    }
+  });
+</script>
+</body>
+</html>
