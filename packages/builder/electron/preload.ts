@@ -37,6 +37,16 @@ contextBridge.exposeInMainWorld('plated', {
   exportPreview:       (schema: unknown) =>
     ipcRenderer.invoke('export:preview', schema),
 
+  // ─ PDF
+  exportMenuPdf:       (schema: unknown) =>
+    ipcRenderer.invoke('pdf:exportMenu', schema),
+
+  // ─ QR
+  generateQr:          (url: string, opts?: unknown) =>
+    ipcRenderer.invoke('qr:generate', { url, opts }),
+  saveQr:              (url: string, opts?: unknown) =>
+    ipcRenderer.invoke('qr:save',     { url, opts }),
+
   // ─ Updater
   updaterCheck:        () => ipcRenderer.invoke('updater:check'),
   updaterInstall:      () => ipcRenderer.invoke('updater:install'),

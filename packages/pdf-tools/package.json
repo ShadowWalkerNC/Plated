@@ -1,0 +1,31 @@
+{
+  "name": "@plated/pdf-tools",
+  "version": "0.0.0",
+  "description": "Menu PDF export and QR code generation for Plated",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@plated/types": "workspace:*",
+    "jspdf": "^2.5.1",
+    "qrcode": "^1.5.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0",
+    "@types/qrcode": "^1.5.5"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

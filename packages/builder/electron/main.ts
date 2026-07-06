@@ -11,6 +11,8 @@ import { registerExportHandlers }    from './ipc/export.js';
 import { registerUpdateHandlers }    from './ipc/updater.js';
 import { registerNetworkHandlers }   from './ipc/network.js';
 import { registerProjectHandlers }   from './ipc/project.js';
+import { registerPdfHandlers }       from './ipc/pdf.js';
+import { registerQrHandlers }        from './ipc/qr.js';
 
 const isDev = !app.isPackaged;
 const VITE_DEV_URL = 'http://localhost:5173';
@@ -75,6 +77,8 @@ function registerIpc(): void {
   registerUpdateHandlers(ipcMain, autoUpdater, mainWindow);
   registerNetworkHandlers(ipcMain);
   registerProjectHandlers(ipcMain);
+  registerPdfHandlers(ipcMain, dialog);
+  registerQrHandlers(ipcMain, dialog);
 }
 
 function configureAutoUpdater(): void {
