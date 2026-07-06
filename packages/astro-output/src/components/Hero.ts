@@ -1,11 +1,11 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildHeroComponent(schema: ProjectSchema): AstroFile {
   const name    = schema.business.name;
   const tagline = schema.business.tagline;
   const hero    = schema.branding.heroImageUrl;
-  const resUrl  = (schema.social as any).reservationUrl ?? '';
+  const resUrl  = schema.extensions?.reservations?.widgetUrl ?? '';
   const menuCTA = schema.menu.categories.length > 0;
 
   return {

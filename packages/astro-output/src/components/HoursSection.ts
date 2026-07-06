@@ -1,12 +1,12 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 export function buildHoursComponent(schema: ProjectSchema): AstroFile {
   const loc  = schema.locations?.[schema.primaryLocationIndex] ?? schema.locations?.[0];
-  const rows = loc?.hours?.schedule?.map((d: any) =>
-    `  <tr><th>${DAYS[d.day] ?? 'Day'}</th><td>${d.open ? `${d.openTime ?? ''}–${d.closeTime ?? ''}` : 'Closed'}</td></tr>`
+  const rows = loc?.hours?.schedule?.map((d) =>
+    `  <tr><th>${DAYS[d.day] ?? 'Day'}</th><td>${d.open ? `${d.openTime ?? ''}\u2013${d.closeTime ?? ''}` : 'Closed'}</td></tr>`
   ).join('\n') ?? '';
 
   return {

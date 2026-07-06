@@ -1,4 +1,4 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildFooterComponent(schema: ProjectSchema): AstroFile {
@@ -30,7 +30,7 @@ export function buildFooterComponent(schema: ProjectSchema): AstroFile {
       ${email ? `<a class="footer__contact" href="mailto:${email}">${email}</a>` : ''}
     </div>
     ${socialLinks ? `<div class="footer__social">${socialLinks}</div>` : ''}
-    <div class="footer__copy">&copy; {${year}} ${name}. Site by <a href="https://nexcms.io">NexCMS</a>.</div>
+    <div class="footer__copy">&copy; {${year}} ${name}. Site by <a href="https://plated.app">Plated</a>.</div>
   </div>
 </footer>
 

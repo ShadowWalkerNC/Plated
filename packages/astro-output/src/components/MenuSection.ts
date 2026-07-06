@@ -1,4 +1,4 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildMenuComponent(schema: ProjectSchema): AstroFile {
