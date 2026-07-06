@@ -1,4 +1,4 @@
-# AGENTS.md — NexCMS
+# AGENTS.md — Plated
 
 > **Extends:** `ShadowWalkerNC/.github/AGENTS.md` — all global rules apply unconditionally.
 > **Auto-loaded by:** Claude Code · GitHub Copilot · OpenAI Codex · Cursor · Windsurf
@@ -9,11 +9,11 @@
 ## Project Identity
 
 ```
-Project:      NexCMS
+Project:      Plated
 Version:      4.0
 Description:  Full-featured guided website builder for the restaurant and hospitality industry.
               Two modes: Local Builder (Electron desktop app, offline-capable, static Astro zip
-              export) and SaaS Hub (nexcms.io — live editing, Supabase-backed, mobile-first).
+              export) and SaaS Hub (PLATED_DOMAIN — live editing, Supabase-backed, mobile-first).
               Includes: Square POS, Meta/Instagram, Google Business, Apple Maps, Yelp integrations.
               AI writing tools via Google Gemini API.
               Block-level drag-and-drop editor (@dnd-kit).
@@ -27,11 +27,11 @@ Monorepo:     Yes — pnpm workspaces + Turborepo
 
 ---
 
-## ⚠️ CRITICAL — What NexCMS Is
+## ⚠️ CRITICAL — What Plated Is
 
-NexCMS is a **guided website builder** for hospitality businesses. Two modes:
+Plated is a **guided website builder** for hospitality businesses. Two modes:
 1. **Local Builder** — Electron desktop app, React 19 + Vite wizard, exports static Astro zip. Fully offline.
-2. **SaaS Hub** — nexcms.io, Astro hybrid, Supabase backend, live editing, mobile-first.
+2. **SaaS Hub** — PLATED_DOMAIN, Astro hybrid, Supabase backend, live editing, mobile-first.
 
 This is NOT a self-hosted CMS. NOT a Joomla/WordPress replacement. NOT a server you install.
 
@@ -96,7 +96,7 @@ Do NOT suggest: per-site static deploys, ISR rebuild pipelines, Netlify/Vercel f
 
 ### D2 — No Python. Node.js Only.
 All asset processing, SEO, AI, PDF, QR uses Node.js packages.
-Reason: `npx nexcms` must work without Python on any machine.
+Reason: `npx plated` must work without Python on any machine.
 Do NOT suggest: Python, Pillow, PIL, or any Python-based tooling.
 
 ### D3 — Template Decoupling: Structure vs. Style
@@ -116,25 +116,25 @@ Local: Netlify Forms or Formspree config in deploy instructions.
 ### D6 — Local Builder Shell: Electron
 Electron wraps React 19 + Vite wizard UI. IPC bridge via preload.ts.
 Key IPC channels:
-- `window.nexcms.exportSite(projectData)` → generator + sharp + satori + SEO tools
-- `window.nexcms.saveProject(data)` → writes project.json to filesystem
-- `window.nexcms.loadProject()` → reads project.json
-- `window.nexcms.openFile(filter)` → native file picker
-- `window.nexcms.removeBackground(imagePath)` → @imgly/background-removal
-- `window.nexcms.generateQR(url)` → qrcode
-- `window.nexcms.exportPDF(menuData)` → jsPDF
-CLI spawns Electron binary. `npx nexcms` is the entry point.
+- `window.plated.exportSite(projectData)` → generator + sharp + satori + SEO tools
+- `window.plated.saveProject(data)` → writes project.plated.json to filesystem
+- `window.plated.loadProject()` → reads project.plated.json
+- `window.plated.openFile(filter)` → native file picker
+- `window.plated.removeBackground(imagePath)` → @imgly/background-removal
+- `window.plated.generateQR(url)` → qrcode
+- `window.plated.exportPDF(menuData)` → jsPDF
+CLI spawns Electron binary. `npx plated` is the entry point.
 Do NOT suggest Tauri. Electron is locked. Pure JS/TS — no Rust.
 
 ### D7 — DnD: Block-Level (@dnd-kit)
 Block-level drag-and-drop. Blocks reorder within sections. Sections toggle + reorder on page.
-Block definitions in nexcms.template.json → `sections[].blocks[]`.
+Block definitions in plated.template.json → `sections[].blocks[]`.
 BlockSchema type in packages/types/.
 Library: @dnd-kit/core + @dnd-kit/sortable. Do NOT introduce other DnD libraries.
 
 ### D8 — Extension System: Three Layers
-Layer 1: JSON config (nexcms.config.json) — simple toggles, no code needed.
-Layer 2: npm plugins (nexcms-plugin-*) — self-register, export NexCMSPlugin object.
+Layer 1: JSON config (plated.config.json) — simple toggles, no code needed.
+Layer 2: npm plugins (plated-plugin-*) — self-register, export PlatedPlugin object.
 Layer 3: Script/CDN manager — CodeMirror editor for head/body injection + curated CDN list.
 Each layer is additive. All three can be active simultaneously.
 
@@ -186,13 +186,13 @@ Location switcher component available in all templates.
 ## Monorepo Structure
 
 ```
-nexcms/
+plated/
 ├── packages/
 │   ├── types/                ← All TypeScript interfaces — single source of truth
 │   │   ProjectSchema, SiteRecord, UserRecord, BlockSchema, PluginManifest,
 │   │   IntegrationRecord, LocationRecord, MenuSchema, ContentCollection types
-│   ├── generator/            ← project.json → Astro output files
-│   ├── template-engine/      ← nexcms.template.json manifest reader + block/slot mapper
+│   ├── generator/            ← project.plated.json → Astro output files
+│   ├── template-engine/      ← plated.template.json manifest reader + block/slot mapper
 │   ├── asset-tools/          ← sharp + satori (images, favicons, OG, WebP)
 │   ├── seo-tools/            ← Sitemap, robots.txt, meta, Schema.org
 │   ├── ai-tools/             ← Gemini API — writing, alt text, SEO, color palette
@@ -215,7 +215,7 @@ nexcms/
 │   │       ├── main.ts       ← Electron main process
 │   │       ├── preload.ts    ← Context bridge
 │   │       └── ipc/          ← IPC handlers: export, save, load, file, AI, PDF, QR
-│   ├── cli/                  ← nexcms CLI — spawns Electron, triggers export
+│   ├── cli/                  ← Plated CLI — spawns Electron, triggers export
 │   └── saas/                 ← SAAS: Astro hybrid (mobile-first, 390px)
 │       ├── dashboard/        ← Client dashboard + super-admin
 │       ├── editor/           ← Block-level DnD editor (SaaS)
@@ -263,8 +263,8 @@ nexcms/
 10. Mobile-first for SaaS (390px). Desktop-first for Local Builder (1280px).
 11. No secrets in committed files. `.env.example` updated with every new env var.
 12. DnD library: @dnd-kit only. No alternatives.
-13. OAuth tokens never in project.json (Local) or client-side (SaaS).
-14. npm plugins must export a valid NexCMSPlugin object. Invalid plugins throw at build time.
+13. OAuth tokens never in project.plated.json (Local) or client-side (SaaS).
+14. npm plugins must export a valid PlatedPlugin object. Invalid plugins throw at build time.
 15. AI calls: server-side in SaaS. User-provided GEMINI_API_KEY in Local.
 16. Phase sequence enforced. No SaaS code before Phase 4. No extension registry before Phase 6.
 17. Multi-location via `locations[]` array in ProjectSchema. Not a plugin or bolt-on.
@@ -383,7 +383,7 @@ Quick reference by category:
 | **5 — Content Engine** | Mar–May 2027 | Blog, events, specials, press. Multi-location. Email capture. Reservations widgets. |
 | **6 — Extensions** | May–Jul 2027 | npm plugin registry, CDN picker, script injection, GitHub push, one-click deploy |
 | **7 — Polish** | Jul–Sep 2027 | Analytics dashboard, Core Web Vitals, PWA, WCAG audit, print assets, multilingual, RTL |
-| **8 — Launch** | Q4 2027 | nexcms.io public, docs site, pricing, template marketplace |
+| **8 — Launch** | Q4 2027 | PLATED_DOMAIN public, docs site, pricing, template marketplace |
 
 ---
 
@@ -406,15 +406,15 @@ Next:      Phase 2 — Full Electron wizard UI
 After loading this file, confirm in DISPATCH:
 
 ```
-Project: NexCMS v4.0
+Project: Plated v4.0
 Stack: TypeScript · Astro 5 · Electron · React 19+Vite · Supabase · Gemini · sharp · satori · Turborepo
 Phase: 1 — Generator Core
-Product: Hospitality website builder — Electron Local (offline) + SaaS Hub (nexcms.io)
+Product: Restaurant website builder — Electron Local (offline) + SaaS Hub (PLATED_DOMAIN)
 Rules active: 20
 Decisions locked: 15
 Integrations: Square (full) · Meta/Instagram · Twitter/X · Google Business · Apple Maps · Yelp
 AI: Google Gemini API (description, menu, alt text, SEO, color)
-Extensions: JSON config · npm plugins (nexcms-plugin-*) · CDN/script manager
+Extensions: JSON config · npm plugins (plated-plugin-*) · CDN/script manager
 DnD: block-level — @dnd-kit/core + @dnd-kit/sortable
 Content: Astro Content Collections — blog, events, specials, press
 Service tiers: self_serve | managed | white_glove
@@ -424,5 +424,5 @@ Do NOT suggest: Tauri, Next.js, Python, Docker, Puppeteer, Contentful, Sanity, O
 
 ---
 
-*Version: 4.0 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: NexCMS*
-*Last updated: July 4, 2026 — Full reassessment complete. All features locked.*
+*Version: 4.0 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
+*Last updated: July 6, 2026 — Renamed from NexCMS to Plated.*
