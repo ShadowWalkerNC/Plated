@@ -1,27 +1,24 @@
 {
   "name": "@nexcms/generator",
-  "version": "0.0.0",
-  "description": "Core generator — project.json → Astro output files",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "version": "0.2.0",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     }
   },
   "scripts": {
     "build": "tsc",
-    "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@nexcms/types": "workspace:*",
-    "@nexcms/template-engine": "workspace:*",
-    "@nexcms/asset-tools": "workspace:*",
-    "@nexcms/seo-tools": "workspace:*"
+    "@nexcms/astro-output": "workspace:*",
+    "@nexcms/types": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.7.0",
+    "vitest": "^2.0.0"
   }
 }
