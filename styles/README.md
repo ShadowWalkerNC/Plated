@@ -1,4 +1,4 @@
-# NexCMS Themes
+# Plated Themes
 
 Each subdirectory is a self-contained CSS theme. The generator copies the selected theme into the output site's `public/styles/` directory.
 
