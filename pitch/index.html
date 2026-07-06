@@ -91,11 +91,9 @@
     .slide-num { position: absolute; bottom: 1.5rem; right: 2rem; font-size: 0.75rem; opacity: 0.25; letter-spacing: 0.1em; }
     .dark-slide .slide-num, .amber-slide .slide-num { color: var(--cream); }
 
-    /* code pill */
     .code-pill { display: inline-block; background: rgba(201,143,74,0.12); border: 1px solid rgba(201,143,74,0.25); border-radius: 8px; padding: 0.25rem 0.7rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.82rem; color: var(--amber); letter-spacing: 0.02em; }
     .dark-slide .code-pill { background: rgba(201,143,74,0.12); }
 
-    /* mode split */
     .mode-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
     .mode-card { border-radius: 20px; padding: 1.75rem; }
     .mode-card.standalone { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
@@ -109,7 +107,6 @@
     .mode-card ul li { font-size: 0.86rem; color: rgba(244,237,228,0.7); display: flex; gap: 0.5rem; }
     .mode-card ul li::before { content: '✓'; color: var(--amber); font-weight: 800; flex-shrink: 0; }
 
-    /* pricing cards */
     .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
     .p-card { background: #fff; border: 1px solid var(--border); border-radius: 24px; padding: 2rem 1.75rem; box-shadow: var(--shadow); position: relative; }
     .p-card.featured { border: 2px solid var(--sienna); box-shadow: 0 32px 80px rgba(138,75,47,0.18); }
@@ -130,7 +127,6 @@
     .value-bar { margin-top: 1.5rem; background: rgba(138,75,47,0.06); border: 1px solid var(--border); border-radius: 16px; padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 0.88rem; color: var(--mid); }
     .value-bar strong { color: var(--sienna); }
 
-    /* FAQ */
     .faq-list { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
     .faq-item { padding: 1.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
     .faq-item:last-child { border-bottom: none; }
@@ -138,12 +134,19 @@
     .faq-a { font-size: 0.9rem; color: rgba(244,237,228,0.6); line-height: 1.6; }
     .faq-a .code-pill { font-size: 0.78rem; }
 
-    /* ecosystem */
     .eco-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; margin-top: 2rem; }
     .eco-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 1.25rem; }
     .eco-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
     .eco-card h3 { font-size: 1rem; color: var(--cream); margin-bottom: 0.3rem; }
     .eco-card p { font-size: 0.82rem; color: rgba(244,237,228,0.55); line-height: 1.5; }
+
+    /* theme accent colours */
+    .t-hearth  { border-top: 3px solid #c98f4a; }
+    .t-canvas   { border-top: 3px solid #6b7280; }
+    .t-midnight { border-top: 3px solid #1e293b; }
+    .t-market   { border-top: 3px solid #4a7c59; }
+    .t-coast    { border-top: 3px solid #3b82f6; }
+    .t-ember    { border-top: 3px solid #b91c1c; }
 
     @media (max-width: 640px) {
       .card-grid.cols-2, .card-grid.cols-3, .mode-split, .pricing-grid, .eco-grid { grid-template-columns: 1fr; }
@@ -281,22 +284,37 @@
 <section class="slide light-slide" id="s5">
   <div class="slide-inner">
     <p class="kicker">Built for hospitality</p>
-    <h2>Three themes. All designed<br>for <strong>restaurants.</strong></h2>
+    <h2>Six themes. Every one designed<br>for <strong>restaurants.</strong></h2>
     <div class="card-grid cols-3" style="margin-top:2rem;">
-      <div class="card" style="border-top:3px solid #c98f4a;">
+      <div class="card t-hearth">
         <div class="card-label">Hearth</div>
-        <h3>Warm &amp; intimate</h3>
-        <p>Deep ambers, serif headlines, layout built around the chef’s story. Fine dining and neighbourhood favourites.</p>
+        <h3>Warm &amp; editorial</h3>
+        <p>Cormorant Garamond, deep ambers, serif-led layout. Full-service restaurants, farm-to-table, wine bars.</p>
       </div>
-      <div class="card" style="border-top:3px solid #1a1208;">
-        <div class="card-label">Editorial</div>
-        <h3>Refined &amp; photographic</h3>
-        <p>Clean whites, dramatic full-bleed food photography, restrained typography. Elevated and modern cuisine.</p>
+      <div class="card t-canvas">
+        <div class="card-label">Canvas</div>
+        <h3>Clean &amp; minimal</h3>
+        <p>Inter, cool neutrals, system-font precision. Fast-casual, modern bistros, contemporary cafes.</p>
       </div>
-      <div class="card" style="border-top:3px solid #8a4b2f;">
-        <div class="card-label">Bistro</div>
-        <h3>Casual &amp; energetic</h3>
-        <p>Bold layout, big personality. Casual dining, food trucks, bars — anything with a queue out the door.</p>
+      <div class="card t-midnight">
+        <div class="card-label">Midnight</div>
+        <h3>Dark &amp; premium</h3>
+        <p>Cormorant Garamond on near-black. Fine dining, cocktail bars, upscale supper clubs.</p>
+      </div>
+      <div class="card t-market">
+        <div class="card-label">Market</div>
+        <h3>Fresh &amp; ingredient-forward</h3>
+        <p>Playfair Display, fresh greens, casual warmth. Farmers-market cafes, healthy bowls, bakeries.</p>
+      </div>
+      <div class="card t-coast">
+        <div class="card-label">Coast</div>
+        <h3>Airy &amp; bright</h3>
+        <p>Lora, open whites, hospitality-forward layout. Seafood restaurants, beach bars, brunch spots.</p>
+      </div>
+      <div class="card t-ember">
+        <div class="card-label">Ember</div>
+        <h3>Bold &amp; dramatic</h3>
+        <p>Oswald, fire-lit contrast, heavy weight. Steakhouses, BBQ joints, wood-fired pizza.</p>
       </div>
     </div>
     <p class="sub" style="margin-top:1.5rem;">Every theme: menu · hours &amp; location · reservation CTA · delivery links · social · SEO-ready markup · mobile-first</p>
@@ -336,7 +354,7 @@
         </tr>
         <tr>
           <td>Restaurant-specific templates</td>
-          <td class="yes">✓ Always</td>
+          <td class="yes">✓ 6 themes</td>
           <td class="yes">✓ Custom</td>
           <td class="no">✕ Generic</td>
           <td class="no">✕ Plugin needed</td>
@@ -423,7 +441,7 @@
         <p class="p-desc">Full source code. Self-host anywhere. Use commercially with Plated branding visible.</p>
         <ul class="p-features">
           <li>Complete source code (MIT)</li>
-          <li>All 3 themes included</li>
+          <li>All 6 themes included</li>
           <li>CulinaryOS MCP integration</li>
           <li>Menu builder &amp; SEO markup</li>
           <li>Unlimited sites</li>
