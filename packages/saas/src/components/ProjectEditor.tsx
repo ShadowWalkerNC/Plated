@@ -3,10 +3,10 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Project } from '@/lib/db/schema';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import styles from './ProjectEditor.module.css';
 
-// ── Step metadata ────────────────────────────────────────────────────────────
+// ── Step metadata ────────────────────────────────────────────────────────────────────────────
 const STEPS = [
   { id: 1, title: 'Business',   hint: 'Name, tagline, contact' },
   { id: 2, title: 'Website',    hint: 'Existing site URL' },
@@ -118,7 +118,7 @@ export function ProjectEditor({ project }: Props) {
   );
 }
 
-// ── Step router ──────────────────────────────────────────────────────────────
+// ── Step router ────────────────────────────────────────────────────────────────────────────
 function StepView({
   step, schema, updateSchema,
 }: {
@@ -234,7 +234,7 @@ function StepView({
   }
 }
 
-// ── Primitive helpers ────────────────────────────────────────────────────────
+// ── Primitive helpers ────────────────────────────────────────────────────────────────────────────
 function FormSection({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   return (
     <div style={{ display: 'grid', gap: '1.5rem' }}>
@@ -265,7 +265,7 @@ function Grid3({ children }: { children: React.ReactNode }) {
   return <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>{children}</div>;
 }
 
-// ── Deep merge ───────────────────────────────────────────────────────────────
+// ── Deep merge ────────────────────────────────────────────────────────────────────────────────
 function deepMerge(target: unknown, source: unknown): unknown {
   if (!isObject(target) || !isObject(source)) return source;
   const result = { ...target };

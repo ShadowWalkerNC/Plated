@@ -124,18 +124,18 @@ export function DomainsClient({ projectId, domains: initial, canAdd, upgradeReas
                 <div className={styles.dnsRecord}>
                   <div className={styles.dnsRow}>
                     <span className={styles.dnsKey}>Host</span>
-                    <code className={styles.dnsVal}>_nexcms.{d.domain}</code>
+                    <code className={styles.dnsVal}>_plated.{d.domain}</code>
                   </div>
                   <div className={styles.dnsRow}>
                     <span className={styles.dnsKey}>Value</span>
-                    <code className={styles.dnsVal}>nexcms-verify={d.verificationToken}</code>
+                    <code className={styles.dnsVal}>plated-verify={d.verificationToken}</code>
                   </div>
                   <div className={styles.dnsRow}>
                     <span className={styles.dnsKey}>TTL</span>
                     <code className={styles.dnsVal}>300</code>
                   </div>
                 </div>
-                <p className={styles.hint}>Also add a <strong>CNAME</strong> record: <code>{d.domain}</code> → <code>cname.nexcms.io</code></p>
+                <p className={styles.hint}>Also add a <strong>CNAME</strong> record: <code>{d.domain}</code> → <code>cname.plated.io</code></p>
                 <button
                   className={styles.verifyBtn}
                   onClick={() => verify(d.id)}

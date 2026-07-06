@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './OnboardingWizard.module.css';
 
-type ThemeId = 'hearth' | 'editorial' | 'bistro';
+type ThemeId = 'hearth' | 'spark' | 'steel';
 
 interface WizardData {
   restaurantName: string;
@@ -115,8 +115,8 @@ export function OnboardingWizard() {
             <div className={styles.themeGrid}>
               {[
                 { id: 'hearth', name: 'Hearth', desc: 'Warm, intimate, chef-driven.' },
-                { id: 'editorial', name: 'Editorial', desc: 'Refined, photographic, elevated.' },
-                { id: 'bistro', name: 'Bistro', desc: 'Casual, neighborhood, energetic.' },
+                { id: 'spark',  name: 'Spark',  desc: 'Bold, modern, high-energy.' },
+                { id: 'steel',  name: 'Steel',  desc: 'Clean, minimal, industrial.' },
               ].map((theme) => (
                 <button
                   key={theme.id}
