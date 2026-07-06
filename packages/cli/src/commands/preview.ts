@@ -1,4 +1,4 @@
-// nexcms preview — serves the built dist directory locally
+// Plated CLI — preview command: serves the built dist directory locally
 import { spawn } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import { access } from 'node:fs/promises';
@@ -11,12 +11,12 @@ export async function cmdPreview(args: string[]): Promise<void> {
   try {
     await access(join(absDir, 'package.json'));
   } catch {
-    console.error(`❌ No built site found at: ${absDir}`);
-    console.error('   Run: nexcms export');
+    console.error(`\u274c No built site found at: ${absDir}`);
+    console.error('   Run: plated export');
     process.exit(1);
   }
 
-  console.log(`🔭 Previewing site at: ${absDir}`);
+  console.log(`\uD83D\uDD2D Previewing site at: ${absDir}`);
   console.log('   Press Ctrl+C to stop.\n');
 
   const child = spawn('npm', ['run', 'preview'], {

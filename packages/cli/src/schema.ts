@@ -1,5 +1,5 @@
-// Creates a minimal valid ProjectSchema for nexcms new
-import type { ProjectSchema } from '@nexcms/types';
+// Creates a minimal valid ProjectSchema for plated init
+import type { ProjectSchema } from '@plated/types';
 
 export function createDefaultSchema(name: string): ProjectSchema {
   return {

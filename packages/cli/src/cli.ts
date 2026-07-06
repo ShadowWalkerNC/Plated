@@ -1,6 +1,5 @@
-// nexcms CLI — command router
+// Plated CLI — command router
 
-import { resolve } from 'node:path';
 import { cmdLaunch } from './commands/launch.js';
 import { cmdNew } from './commands/new.js';
 import { cmdExport } from './commands/export.js';
@@ -15,6 +14,7 @@ export async function runCli(argv: string[]): Promise<void> {
     case 'launch':
       return cmdLaunch();
 
+    case 'init':
     case 'new':
       return cmdNew(rest);
 
@@ -33,7 +33,7 @@ export async function runCli(argv: string[]): Promise<void> {
       return printHelp();
 
     default:
-      console.error(`❌ Unknown command: "${command}"`);
+      console.error(`\u274c Unknown command: "${command}"`);
       printHelp();
       process.exit(1);
   }

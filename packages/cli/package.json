@@ -1,9 +1,9 @@
 {
-  "name": "nexcms",
+  "name": "plated",
   "version": "0.0.0",
-  "description": "NexCMS CLI — launch the guided website builder",
+  "description": "Plated CLI — launch the guided website builder",
   "bin": {
-    "nexcms": "./dist/bin.js"
+    "plated": "./dist/bin.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,8 +19,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@nexcms/generator": "workspace:*",
-    "@nexcms/types": "workspace:*"
+    "@plated/generator": "workspace:*",
+    "@plated/types": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
