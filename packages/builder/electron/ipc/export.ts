@@ -1,8 +1,8 @@
 import type { IpcMain, dialog as DialogModule } from 'electron';
-import { buildAstroProject } from '@nexcms/astro-output';
-import { generate }          from '@nexcms/generator';
-import { writeZip }          from '../zip';
-import type { ProjectSchema } from '@nexcms/types';
+import { buildAstroProject } from '@plated/astro-output';
+import { generate }          from '@plated/generator';
+import { writeZip }          from '../zip.js';
+import type { ProjectSchema } from '@plated/types';
 import { tmpdir }            from 'node:os';
 import { mkdtemp, rm }       from 'node:fs/promises';
 import { join }              from 'node:path';
@@ -21,7 +21,7 @@ export function registerExportHandlers(ipc: IpcMain, dialog: Dialog): void {
     if (canceled || !filePath) return { ok: false, reason: 'cancelled' };
 
     try {
-      const files  = buildAstroProject(schema);
+      const files = buildAstroProject(schema);
       await writeZip(files, filePath);
       return { ok: true, filePath };
     } catch (err) {
@@ -46,11 +46,11 @@ export function registerExportHandlers(ipc: IpcMain, dialog: Dialog): void {
     }
   });
 
-  // Preview: build into a tmp dir and return the list of generated files
+  // Preview: dry-run and return file count without writing
   ipc.handle('export:preview', async (_e, schema: ProjectSchema) => {
     let tmpDir: string | null = null;
     try {
-      tmpDir = await mkdtemp(join(tmpdir(), 'nexcms-preview-'));
+      tmpDir = await mkdtemp(join(tmpdir(), 'plated-preview-'));
       const result = await generate(schema, tmpDir, { dryRun: true });
       return { ok: true, filesWritten: result.filesWritten, warnings: result.warnings };
     } catch (err) {
@@ -62,5 +62,5 @@ export function registerExportHandlers(ipc: IpcMain, dialog: Dialog): void {
 }
 
 function slugify(s: string): string {
-  return (s || 'nexcms-site').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'nexcms-site';
+  return (s || 'plated-site').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'plated-site';
 }

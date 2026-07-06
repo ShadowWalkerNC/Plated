@@ -1,37 +1,27 @@
 // IPC handler — generator channels
-// Bridges nexcms:generate + nexcms:generate:dryRun to @nexcms/generator
-
 import type { IpcMain } from 'electron';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { generate } from '@nexcms/generator';
-import type { ProjectSchema } from '@nexcms/types';
+import { join }   from 'node:path';
+import { generate } from '@plated/generator';
+import type { ProjectSchema } from '@plated/types';
 
 export function registerGeneratorHandlers(ipcMain: IpcMain): void {
   // Full generation — writes to outputDir
   ipcMain.handle(
-    'nexcms:generate',
+    'generate',
     async (
       _event,
-      payload: { schema: ProjectSchema; outputDir: string; includeSource: boolean },
+      payload: { schema: ProjectSchema; outputDir: string; includeSource?: boolean },
     ) => {
-      return generate(payload.schema, {
-        outputDir: payload.outputDir,
-        includeSource: payload.includeSource ?? true,
-        dryRun: false,
-      });
+      return generate(payload.schema, payload.outputDir);
     },
   );
 
-  // Dry-run — resolves template and returns file count + warnings without writing
+  // Dry-run — returns file count + warnings without writing
   ipcMain.handle(
-    'nexcms:generate:dryRun',
+    'generate:dryRun',
     async (_event, payload: { schema: ProjectSchema }) => {
-      return generate(payload.schema, {
-        outputDir: join(tmpdir(), 'nexcms-dryrun'),
-        includeSource: true,
-        dryRun: true,
-      });
+      return generate(payload.schema, join(tmpdir(), 'plated-dryrun'), { dryRun: true });
     },
   );
 }

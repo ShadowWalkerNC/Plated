@@ -4,12 +4,13 @@ import {
 } from 'electron';
 import { join }            from 'node:path';
 import { autoUpdater }     from 'electron-updater';
-import { registerGeneratorHandlers } from './ipc/generator';
-import { registerDialogHandlers }    from './ipc/dialog';
-import { registerShellHandlers }     from './ipc/shell';
-import { registerExportHandlers }    from './ipc/export';
-import { registerUpdateHandlers }    from './ipc/updater';
-import { registerNetworkHandlers }   from './ipc/network';
+import { registerGeneratorHandlers } from './ipc/generator.js';
+import { registerDialogHandlers }    from './ipc/dialog.js';
+import { registerShellHandlers }     from './ipc/shell.js';
+import { registerExportHandlers }    from './ipc/export.js';
+import { registerUpdateHandlers }    from './ipc/updater.js';
+import { registerNetworkHandlers }   from './ipc/network.js';
+import { registerProjectHandlers }   from './ipc/project.js';
 
 const isDev = !app.isPackaged;
 const VITE_DEV_URL = 'http://localhost:5173';
@@ -73,18 +74,19 @@ function registerIpc(): void {
   registerExportHandlers(ipcMain, dialog);
   registerUpdateHandlers(ipcMain, autoUpdater, mainWindow);
   registerNetworkHandlers(ipcMain);
+  registerProjectHandlers(ipcMain);
 }
 
 function configureAutoUpdater(): void {
   autoUpdater.autoDownload         = true;
   autoUpdater.autoInstallOnAppQuit = true;
 
-  autoUpdater.on('checking-for-update',      () => send('checking'));
-  autoUpdater.on('update-available',   (i)  => send('available',     i));
-  autoUpdater.on('update-not-available',(i)  => send('not-available', i));
-  autoUpdater.on('download-progress',   (p)  => send('progress',     p));
-  autoUpdater.on('update-downloaded',   (i)  => send('downloaded',   i));
-  autoUpdater.on('error',               (e)  => send('error', { message: e.message }));
+  autoUpdater.on('checking-for-update',       () => send('checking'));
+  autoUpdater.on('update-available',    (i)  => send('available',     i));
+  autoUpdater.on('update-not-available', (i)  => send('not-available', i));
+  autoUpdater.on('download-progress',    (p)  => send('progress',      p));
+  autoUpdater.on('update-downloaded',    (i)  => send('downloaded',    i));
+  autoUpdater.on('error',                (e)  => send('error', { message: e.message }));
 }
 
 function send(type: string, payload?: unknown): void {
