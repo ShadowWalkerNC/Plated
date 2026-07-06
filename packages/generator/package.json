@@ -12,16 +12,18 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "vitest run",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@plated/types": "workspace:*",
-    "@plated/template-engine": "workspace:*"
+    "@plated/astro-output": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "vitest": "^1.0.0"
   },
   "engines": {
     "node": ">=22.0.0"

@@ -5,8 +5,7 @@ import { buildAstroProject }    from '@plated/astro-output';
 import type { ProjectSchema }   from '@plated/types';
 
 export interface GenerateOptions {
-  outputDir:      string;
-  dryRun?:        boolean;
+  dryRun?: boolean;
 }
 
 export interface GenerateResult {
@@ -22,9 +21,9 @@ export interface GenerateResult {
  * and writes it to outputDir. Pass dryRun:true to skip disk writes.
  */
 export async function generate(
-  schema:  ProjectSchema,
+  schema:    ProjectSchema,
   outputDir: string,
-  options: Partial<GenerateOptions> = {},
+  options:   GenerateOptions = {},
 ): Promise<GenerateResult> {
   const errors:   string[] = [];
   const warnings: string[] = [];

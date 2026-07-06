@@ -1,80 +1,78 @@
 import { describe, it, expect } from 'vitest';
-import { planFiles } from '../planFiles.js';
-import type { ProjectSchema } from '@nexcms/types';
+import { generate } from '../index.js';
+import type { ProjectSchema } from '@plated/types';
 
+// Minimal valid v2 schema — tests that generate() plans the right file set
 const SCHEMA: ProjectSchema = {
-  schemaVersion: '1.0.0',
-  generatedAt: '2026-01-01T00:00:00Z',
+  id: 'test-plan-001',
+  schemaVersion: '2.0',
+  createdAt: '2026-01-01T00:00:00Z',
+  updatedAt: '2026-01-01T00:00:00Z',
   businessType: 'restaurant',
+  styleTemplate: 'hearth',
+  colorTheme: 'default',
+  darkMode: false,
   business: {
     name: 'Plan Test',
-    tagline: '',
     description: '',
-    cuisineType: '',
-    phone: '',
-    email: '',
-    foundedYear: '',
-    existingWebsiteUrl: '',
   },
-  branding: {
-    primaryColor: '#000',
-    secondaryColor: '#fff',
-    accentColor: '#888',
-    logoUrl: '',
-    heroImageUrl: '',
-    faviconUrl: '',
-  },
-  seo: { siteTitle: 'Plan Test', metaDescription: '', ogImageUrl: '' },
-  social: {
-    instagram: '', facebook: '', twitter: '', googleBusiness: '',
-    yelp: '', tripadvisor: '', doordash: '', ubereats: '', grubhub: '', toast: '', chownow: '',
-  },
+  branding: {},
+  seo: {},
+  social: {},
+  integrations: {},
   locations: [],
   primaryLocationIndex: 0,
   menu: {
     categories: [
-      { id: 'c1', name: 'Starters', description: '', items: [
-        { id: 'i1', name: 'Bruschetta', description: '', price: '$9', dietaryTags: ['vegan'] },
-      ]},
+      {
+        id: 'c1',
+        name: 'Starters',
+        description: '',
+        displayOrder: 0,
+        items: [
+          { id: 'i1', name: 'Bruschetta', description: '', price: '$9', dietaryTags: ['vegan'], available: true, displayOrder: 0 },
+        ],
+      },
     ],
   },
   extensions: {},
+  deployment: {},
 };
 
-describe('planFiles', () => {
-  it('returns an array', () => {
-    expect(Array.isArray(planFiles(SCHEMA))).toBe(true);
+describe('generate file plan (dry run)', () => {
+  it('filesWritten is a positive number', async () => {
+    const result = await generate(SCHEMA, '/dev/null', { dryRun: true });
+    expect(result.filesWritten).toBeGreaterThan(0);
   });
 
-  it('includes an index route', () => {
-    const plan = planFiles(SCHEMA);
-    const paths = plan.map((f) => f.outputPath);
-    expect(paths.some((p) => p === 'src/pages/index.astro' || p.endsWith('index.astro'))).toBe(true);
+  it('success is true', async () => {
+    const result = await generate(SCHEMA, '/dev/null', { dryRun: true });
+    expect(result.success).toBe(true);
   });
 
-  it('includes a menu route', () => {
-    const plan = planFiles(SCHEMA);
-    const paths = plan.map((f) => f.outputPath);
-    expect(paths.some((p) => p.includes('menu'))).toBe(true);
+  it('errors array is empty', async () => {
+    const result = await generate(SCHEMA, '/dev/null', { dryRun: true });
+    expect(result.errors).toHaveLength(0);
   });
 
-  it('includes a site config file', () => {
-    const plan = planFiles(SCHEMA);
-    const paths = plan.map((f) => f.outputPath);
-    expect(paths.some((p) => p.includes('config') || p.includes('site'))).toBe(true);
+  it('generates at least 10 files for a minimal schema', async () => {
+    const result = await generate(SCHEMA, '/dev/null', { dryRun: true });
+    // base set: package.json, astro.config, tsconfig, env.d.ts,
+    // global.css, theme.css, Base layout, Nav, Footer, Hero,
+    // MenuSection, HoursSection, LocationSection, SocialLinks,
+    // Gallery, index.astro, menu.astro, contact.astro,
+    // robots.txt, manifest.json, plated-site.json, README.md
+    expect(result.filesWritten).toBeGreaterThanOrEqual(10);
   });
 
-  it('returns unique output paths', () => {
-    const plan = planFiles(SCHEMA);
-    const paths = plan.map((f) => f.outputPath);
-    const unique = new Set(paths);
-    expect(unique.size).toBe(paths.length);
-  });
-
-  it('every entry has a non-empty outputPath', () => {
-    const plan = planFiles(SCHEMA);
-    for (const entry of plan) {
-      expect(entry.outputPath.length).toBeGreaterThan(0);
-    }
+  it('generates more files when description is set (adds about page)', async () => {
+    const withAbout: ProjectSchema = {
+      ...SCHEMA,
+      id: 'test-plan-002',
+      business: { ...SCHEMA.business, description: 'A great place to eat.' },
+    };
+    const base  = await generate(SCHEMA,     '/dev/null', { dryRun: true });
+    const extra = await generate(withAbout,  '/dev/null', { dryRun: true });
+    expect(extra.filesWritten).toBeGreaterThan(base.filesWritten);
   });
 });

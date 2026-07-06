@@ -2,13 +2,18 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtemp, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { generate } from '../generate.js';
-import type { ProjectSchema } from '@nexcms/types';
+import { generate } from '../index.js';
+import type { ProjectSchema } from '@plated/types';
 
 const FULL_SCHEMA: ProjectSchema = {
-  schemaVersion: '1.0.0',
-  generatedAt: '2026-01-01T00:00:00Z',
+  id: 'test-smoke-001',
+  schemaVersion: '2.0',
+  createdAt: '2026-01-01T00:00:00Z',
+  updatedAt: '2026-01-01T00:00:00Z',
   businessType: 'restaurant',
+  styleTemplate: 'hearth',
+  colorTheme: 'default',
+  darkMode: false,
   business: {
     name: 'Generator Smoke Test',
     tagline: 'Testing is good.',
@@ -16,8 +21,8 @@ const FULL_SCHEMA: ProjectSchema = {
     cuisineType: 'Test Cuisine',
     phone: '555-9999',
     email: 'smoke@test.com',
-    foundedYear: '2024',
-    existingWebsiteUrl: '',
+    foundedYear: 2017,
+    existingWebsite: '',
   },
   branding: {
     primaryColor: '#8a4b2f',
@@ -25,7 +30,7 @@ const FULL_SCHEMA: ProjectSchema = {
     accentColor: '#c98f4a',
     logoUrl: '',
     heroImageUrl: '',
-    faviconUrl: '',
+    faviconSourceUrl: '',
   },
   seo: {
     siteTitle: 'Generator Smoke Test',
@@ -34,34 +39,25 @@ const FULL_SCHEMA: ProjectSchema = {
   },
   social: {
     instagram: 'https://instagram.com/test',
-    facebook: '',
-    twitter: '',
-    googleBusiness: '',
-    yelp: '',
-    tripadvisor: '',
-    doordash: '',
-    ubereats: '',
-    grubhub: '',
-    toast: '',
-    chownow: '',
   },
+  integrations: {},
   locations: [
     {
+      id: 'loc-main',
       name: 'Main',
       address1: '42 Test Blvd',
       address2: '',
       city: 'Testopolis',
       state: 'NC',
       zip: '27601',
+      country: 'US',
       phone: '555-9999',
       email: '',
       googleMapsUrl: '',
-      appleMapsUrl: '',
-      holidayNote: '',
       hours: {
-        timezone: 'America/New_York',
+        holidayNote: '',
         schedule: [
-          { day: 0, open: false, openTime: '', closeTime: '' },
+          { day: 0, open: false },
           { day: 1, open: true,  openTime: '11:00', closeTime: '21:00' },
           { day: 2, open: true,  openTime: '11:00', closeTime: '21:00' },
           { day: 3, open: true,  openTime: '11:00', closeTime: '21:00' },
@@ -79,31 +75,39 @@ const FULL_SCHEMA: ProjectSchema = {
         id: 'starters',
         name: 'Starters',
         description: 'To begin.',
+        displayOrder: 0,
         items: [
-          { id: 'bruschetta', name: 'Bruschetta', description: 'Toasted bread.', price: '$9', dietaryTags: ['vegan'] },
-          { id: 'soup',      name: 'Soup',       description: 'Daily soup.',    price: '$7', dietaryTags: [] },
+          { id: 'bruschetta', name: 'Bruschetta', description: 'Toasted bread.', price: '$9',  dietaryTags: ['vegan'], available: true, displayOrder: 0 },
+          { id: 'soup',      name: 'Soup',       description: 'Daily soup.',    price: '$7',  dietaryTags: [],        available: true, displayOrder: 1 },
         ],
       },
       {
         id: 'mains',
         name: 'Mains',
         description: 'Hearty plates.',
+        displayOrder: 1,
         items: [
-          { id: 'steak', name: 'Steak', description: 'Wood-fired.', price: '$42', dietaryTags: [] },
+          { id: 'steak', name: 'Steak', description: 'Wood-fired.', price: '$42', dietaryTags: [], available: true, displayOrder: 0 },
         ],
       },
     ],
   },
   extensions: {
-    googleAnalytics: { enabled: false },
-    reservations: { enabled: true },
+    analytics: {
+      plausible: { enabled: true },
+      ga4:      { enabled: false },
+    },
+    reservations: {
+      provider: 'opentable',
+    },
   },
+  deployment: {},
 };
 
 let tmpDir: string;
 
 beforeEach(async () => {
-  tmpDir = await mkdtemp(join(tmpdir(), 'nexcms-test-'));
+  tmpDir = await mkdtemp(join(tmpdir(), 'plated-test-'));
 });
 
 afterEach(async () => {
