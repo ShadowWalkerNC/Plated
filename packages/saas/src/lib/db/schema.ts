@@ -39,6 +39,28 @@ export const deployments = pgTable(
   }),
 );
 
-export type Project    = typeof projects.$inferSelect;
-export type NewProject = typeof projects.$inferInsert;
-export type Deployment = typeof deployments.$inferSelect;
+export const subscriptions = pgTable(
+  'subscriptions',
+  {
+    id:                 uuid('id').primaryKey().defaultRandom(),
+    userId:             text('user_id').notNull().unique(),
+    stripeCustomerId:   text('stripe_customer_id').notNull(),
+    stripeSubId:        text('stripe_subscription_id').notNull().unique(),
+    planId:             text('plan_id').notNull().default('free'),
+    status:             text('status').notNull().default('active'),
+    currentPeriodStart: timestamp('current_period_start', { withTimezone: true }),
+    currentPeriodEnd:   timestamp('current_period_end',   { withTimezone: true }),
+    cancelAtPeriodEnd:  boolean('cancel_at_period_end').notNull().default(false),
+    createdAt:          timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:          timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    userIdx:     index('subscriptions_user_id_idx').on(t.userId),
+    customerIdx: index('subscriptions_customer_id_idx').on(t.stripeCustomerId),
+  }),
+);
+
+export type Project      = typeof projects.$inferSelect;
+export type NewProject   = typeof projects.$inferInsert;
+export type Deployment   = typeof deployments.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;

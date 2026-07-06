@@ -9,7 +9,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Link href="/dashboard" className={styles.brand}>NexCMS</Link>
 
         <nav className={styles.nav}>
-          <Link href="/dashboard" className={styles.navLink}>Projects</Link>
+          <Link href="/dashboard"         className={styles.navLink}>Projects</Link>
+          <Link href="/dashboard/billing" className={styles.navLink}>Billing</Link>
           <Link href="/dashboard/account" className={styles.navLink}>Account</Link>
         </nav>
 

@@ -1,0 +1,44 @@
+.page   { display: grid; gap: 2rem; max-width: 900px; }
+.header { display: grid; gap: 0.35rem; }
+.title  { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-text); line-height: 1; }
+.subtitle { color: var(--color-text-muted); }
+.periodEnd { margin-left: 0.25rem; }
+.error { padding: 0.9rem 1rem; border-radius: 1rem; background: rgba(198,40,40,0.07); border: 1px solid rgba(198,40,40,0.18); color: #c62828; }
+
+.planGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+.planCard {
+  display: grid; gap: 1rem;
+  padding: 1.5rem; border-radius: var(--radius-card);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  position: relative;
+}
+.planCurrent { border-color: var(--color-accent); box-shadow: 0 0 0 2px rgba(201,143,74,0.2); }
+.currentBadge {
+  position: absolute; top: -1px; right: 1.25rem;
+  background: var(--color-accent); color: #1e1612;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.25rem 0.65rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+.planName  { font-weight: 800; font-size: 1.15rem; color: var(--color-text); }
+.planPrice { font-family: var(--font-display); font-size: 2.5rem; color: var(--color-text); line-height: 1; }
+.planInterval { font-size: 1rem; color: var(--color-text-muted); }
+
+.featureList { list-style: none; display: grid; gap: 0.5rem; }
+.featureList li { color: var(--color-text-muted); font-size: 0.92rem; }
+
+.upgradeBtn {
+  min-height: 46px; padding: 0.75rem 1rem; border-radius: 999px;
+  border: none; background: var(--color-primary); color: var(--color-primary-fg);
+  font-weight: 700; cursor: pointer; transition: opacity 120ms; margin-top: auto;
+}
+.upgradeBtn:hover { opacity: 0.85; }
+.portalBtn {
+  min-height: 46px; padding: 0.75rem 1rem; border-radius: 999px;
+  border: 1px solid var(--color-border); background: var(--color-bg);
+  color: var(--color-text); font-weight: 700; cursor: pointer; margin-top: auto;
+}
+
+@media (max-width: 700px) { .planGrid { grid-template-columns: 1fr; } }
