@@ -47,7 +47,7 @@ export function WizardShell() {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.brandBlock}>
-          <div className={styles.brand}>NexCMS</div>
+          <div className={styles.brand}>Plated</div>
           <div className={styles.projectName}>{schema.business.name || 'Untitled project'}</div>
         </div>
 

@@ -15,8 +15,8 @@ export function Step2Website() {
 
       <Field label="Current website URL" hint="Optional. Leave blank if this is a new launch.">
         <input
-          value={schema.business.existingWebsiteUrl}
-          onChange={(e) => updateSchema({ business: { existingWebsiteUrl: e.target.value } })}
+          value={schema.business.existingWebsite ?? ''}
+          onChange={(e) => updateSchema({ business: { existingWebsite: e.target.value } })}
           placeholder="https://www.example.com"
         />
       </Field>

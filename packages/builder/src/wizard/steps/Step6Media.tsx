@@ -1,16 +1,16 @@
-import { useNexcms } from '../../hooks/useNexcms.js';
+import { usePlated } from '../../hooks/usePlated.js';
 import { useWizardStore } from '../../store/useWizardStore.js';
 import { ColorPicker } from '../components/ColorPicker.js';
 import { ImageUpload } from '../components/ImageUpload.js';
 import styles from './Step.module.css';
 
 export function Step6Media() {
-  const nexcms = useNexcms();
+  const plated = usePlated();
   const branding = useWizardStore((s) => s.schema.branding);
   const updateSchema = useWizardStore((s) => s.updateSchema);
 
-  async function pickImage(field: 'logoUrl' | 'heroImageUrl' | 'faviconUrl') {
-    const filePath = await nexcms.pickFile({
+  async function pickImage(field: 'logoUrl' | 'heroImageUrl' | 'faviconSourceUrl') {
+    const filePath = await plated.pickFile({
       filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg'] }],
     });
     if (!filePath) return;
@@ -33,9 +33,9 @@ export function Step6Media() {
           onPick={() => pickImage('heroImageUrl')} />
       </div>
 
-      <ImageUpload label="Favicon" value={branding.faviconUrl}
-        onChange={(v) => updateSchema({ branding: { faviconUrl: v } })}
-        onPick={() => pickImage('faviconUrl')} />
+      <ImageUpload label="Favicon" value={branding.faviconSourceUrl}
+        onChange={(v) => updateSchema({ branding: { faviconSourceUrl: v } })}
+        onPick={() => pickImage('faviconSourceUrl')} />
 
       <div className={styles.grid3}>
         <ColorPicker label="Primary" value={branding.primaryColor}
