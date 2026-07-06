@@ -31,9 +31,15 @@ export interface WizardStore {
 }
 
 // Minimal default schema — wizard fills it in
-const DEFAULT_SCHEMA: ProjectSchema = {
+export const DEFAULT_SCHEMA: ProjectSchema = {
+  id: crypto.randomUUID(),
   schemaVersion: '2.0',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
   businessType: 'restaurant',
+  styleTemplate: 'hearth',
+  colorTheme: 'default',
+  darkMode: false,
   business: {
     name: '',
     tagline: '',
@@ -41,8 +47,7 @@ const DEFAULT_SCHEMA: ProjectSchema = {
     phone: '',
     email: '',
     cuisineType: '',
-    foundedYear: '',
-    existingWebsiteUrl: '',
+    existingWebsite: '',
   },
   branding: {
     logoUrl: '',
@@ -51,15 +56,17 @@ const DEFAULT_SCHEMA: ProjectSchema = {
     primaryColor: '#8a4b2f',
     secondaryColor: '#f4ede4',
     accentColor: '#c98f4a',
-    faviconUrl: '',
+    faviconSourceUrl: '',
   },
   locations: [],
   primaryLocationIndex: 0,
-  menu: { categories: [], syncSource: null },
+  menu: { categories: [] },
   social: {
     facebook: '',
     instagram: '',
     twitter: '',
+    tiktok: '',
+    youtube: '',
     googleBusiness: '',
     yelp: '',
     tripadvisor: '',
@@ -68,7 +75,9 @@ const DEFAULT_SCHEMA: ProjectSchema = {
     grubhub: '',
     toast: '',
     chownow: '',
+    opentable: '',
   },
+  integrations: {},
   seo: {
     siteTitle: '',
     metaDescription: '',
@@ -79,13 +88,11 @@ const DEFAULT_SCHEMA: ProjectSchema = {
     bodyEndSnippet: '',
   },
   extensions: {},
-  deployment: { subdomain: '', customDomain: '', tier: 'self-serve' },
+  deployment: { subdomain: '', customDomain: '' },
   blog: [],
   events: [],
   specials: [],
   press: [],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
 };
 
 export const useWizardStore = create<WizardStore>()(
@@ -127,6 +134,7 @@ export const useWizardStore = create<WizardStore>()(
       set((state) => ({
         schema: deepMerge(state.schema, patch) as ProjectSchema,
         isDirty: true,
+        updatedAt: new Date().toISOString(),
       })),
 
     setProjectFilePath: (path) => set({ projectFilePath: path }),
