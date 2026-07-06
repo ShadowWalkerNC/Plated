@@ -36,6 +36,3 @@ export function usePlated(): PlatedApi {
   }
   return window.plated;
 }
-
-// Backwards-compat alias — remove once all consumers updated
-export const useNexcms = usePlated;

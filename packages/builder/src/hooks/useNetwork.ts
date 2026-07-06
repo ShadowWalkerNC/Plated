@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
-const API = (window as any).nexcms as Record<string, (...a: any[]) => Promise<any>> | undefined;
+const API = (window as any).plated as Record<string, (...a: any[]) => Promise<any>> | undefined;
 
 export function useNetwork() {
   const [online, setOnline] = useState<boolean>(navigator.onLine);

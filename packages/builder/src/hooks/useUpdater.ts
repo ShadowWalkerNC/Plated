@@ -16,7 +16,7 @@ export interface UpdaterState {
   error:    string | null;
 }
 
-const API = (window as any).nexcms as Record<string, (...a: any[]) => Promise<any>>;
+const API = (window as any).plated as Record<string, (...a: any[]) => Promise<any>>;
 
 export function useUpdater() {
   const [state, setState] = useState<UpdaterState>({
