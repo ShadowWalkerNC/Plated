@@ -1,7 +1,7 @@
 {
-  "name": "@nexcms/template-engine",
+  "name": "@plated/template-engine",
   "version": "0.0.0",
-  "description": "Template engine — reads nexcms.template.json manifests and maps content slots",
+  "description": "Template resolution engine for Plated",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,9 +16,13 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@nexcms/types": "workspace:*"
+    "@plated/types": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

@@ -1,73 +1,23 @@
 {
   "name": "@plated/builder",
-  "version": "0.2.0",
-  "private": true,
-  "main": "dist-electron/main.js",
+  "version": "0.0.0",
+  "description": "Electron visual builder for Plated",
+  "main": "./dist/electron/main.js",
   "scripts": {
-    "dev":        "concurrently -n vite,electron \"vite\" \"wait-on tcp:5173 && electron .\"",
-    "build":      "vite build && tsc -p tsconfig.electron.json",
-    "dist:mac":   "npm run build && electron-builder --mac",
-    "dist:win":   "npm run build && electron-builder --win",
-    "dist:linux": "npm run build && electron-builder --linux",
-    "dist:all":   "npm run build && electron-builder --mac --win --linux",
-    "typecheck":  "tsc --noEmit && tsc --noEmit -p tsconfig.electron.json",
-    "test":       "vitest run"
-  },
-  "build": {
-    "appId":       "io.plated.builder",
-    "productName": "Plated Builder",
-    "copyright":   "Copyright \u00a9 2026 Plated",
-    "directories": { "output": "release" },
-    "files":       ["dist/**", "dist-electron/**", "splash.html"],
-    "publish": [
-      {
-        "provider": "github",
-        "owner":    "ShadowWalkerNC",
-        "repo":     "NexCMS"
-      }
-    ],
-    "mac": {
-      "category": "public.app-category.productivity",
-      "icon":     "assets/icon.icns",
-      "target":   [{ "target": "dmg", "arch": ["x64", "arm64"] }],
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements":        "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist"
-    },
-    "win": {
-      "icon":          "assets/icon.ico",
-      "target":        [{ "target": "nsis", "arch": ["x64"] }],
-      "publisherName": "Plated"
-    },
-    "linux": {
-      "icon":     "assets/icon.png",
-      "target":   [{ "target": "AppImage", "arch": ["x64"] }],
-      "category": "Utility"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@plated/astro-output": "workspace:*",
-    "@plated/generator":   "workspace:*",
-    "@plated/types":       "workspace:*",
-    "electron-updater":    "^6.3.0",
-    "react":               "^18.3.0",
-    "react-dom":           "^18.3.0"
+    "@plated/types": "workspace:*",
+    "@plated/generator": "workspace:*"
   },
   "devDependencies": {
-    "@types/react":         "^18.3.0",
-    "@types/react-dom":     "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.0",
-    "concurrently":         "^9.0.0",
-    "electron":             "^33.0.0",
-    "electron-builder":     "^25.0.0",
-    "typescript":           "^5.7.0",
-    "vite":                 "^6.0.0",
-    "vitest":               "^2.0.0",
-    "wait-on":              "^8.0.0"
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0",
+    "electron": "^30.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "@nexcms/seo-tools",
+  "name": "@plated/seo-tools",
   "version": "0.0.0",
-  "description": "Sitemap, robots.txt, meta tags, Schema.org structured data — zero dependencies",
+  "description": "SEO utilities for Plated",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -15,7 +15,14 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
+  "dependencies": {
+    "@plated/types": "workspace:*"
+  },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

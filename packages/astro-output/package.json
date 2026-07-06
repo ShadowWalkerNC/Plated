@@ -1,19 +1,28 @@
 {
-  "name": "@nexcms/astro-output",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
+  "name": "@plated/astro-output",
+  "version": "0.0.0",
+  "description": "Astro file output helpers for Plated",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@nexcms/types": "workspace:*"
+    "@plated/types": "workspace:*"
   },
   "devDependencies": {
-    "astro": "^5.0.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

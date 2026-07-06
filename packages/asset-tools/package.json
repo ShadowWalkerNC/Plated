@@ -1,7 +1,7 @@
 {
-  "name": "@nexcms/asset-tools",
+  "name": "@plated/asset-tools",
   "version": "0.0.0",
-  "description": "Image optimization, favicon generation, and OG image generation",
+  "description": "Image and asset processing tools for Plated",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,11 +16,13 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "sharp": "^0.33.0",
-    "satori": "^0.10.0"
+    "@plated/types": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
     "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

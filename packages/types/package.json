@@ -1,7 +1,7 @@
 {
-  "name": "@nexcms/types",
+  "name": "@plated/types",
   "version": "0.0.0",
-  "description": "Shared TypeScript types and interfaces — single source of truth for all NexCMS packages",
+  "description": "Shared TypeScript types for Plated",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
