@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'NexCMS', template: '%s — NexCMS' },
+  title: { default: 'Plated', template: '%s — Plated' },
   description: 'Restaurant website builder. Go from zero to a live site in minutes.',
 };
 

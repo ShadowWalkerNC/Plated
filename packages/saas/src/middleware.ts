@@ -10,19 +10,19 @@ const isPublicRoute = createRouteMatcher([
   '/api/health',
 ]);
 
-const APP_HOST    = process.env.NEXT_PUBLIC_APP_HOST    ?? 'app.nexcms.io';
-const NEXCMS_HOST = process.env.NEXT_PUBLIC_NEXCMS_HOST ?? 'nexcms.io';
+const APP_HOST    = process.env.NEXT_PUBLIC_APP_HOST    ?? 'app.plated.io';
+const PLATED_HOST = process.env.NEXT_PUBLIC_PLATED_HOST ?? 'plated.io';
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
   const url      = req.nextUrl;
   const hostname = req.headers.get('host') ?? '';
   const bare     = hostname.replace(/:\d+$/, '');
 
-  // ─ Custom domain routing ─────────────────────────────────────────
-  // If the request comes in on a domain that is neither app.nexcms.io nor
-  // nexcms.io, treat it as a custom domain and proxy to /sites/[domain].
+  // ─ Custom domain routing ────────────────────────────────────
+  // If the request comes in on a domain that is neither app.plated.io nor
+  // plated.io, treat it as a custom domain and proxy to /sites/[domain].
   const isKnownHost = bare === APP_HOST ||
-    bare === NEXCMS_HOST ||
+    bare === PLATED_HOST ||
     bare === 'localhost'  ||
     bare.endsWith('.vercel.app') ||
     bare.endsWith('.netlify.app');
@@ -34,7 +34,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
     return NextResponse.rewrite(rewritten);
   }
 
-  // ─ Auth protection ──────────────────────────────────────────────────
+  // ─ Auth protection ───────────────────────────────────────
   if (!isPublicRoute(req)) await auth.protect();
 });
 
