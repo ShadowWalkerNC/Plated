@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NexCMS">
+  <!-- Background -->
+  <rect width="64" height="64" rx="16" fill="#1a1208"/>
+
+  <!-- N stroke -->
+  <path d="M14 46 L14 18 L26 34 L26 18" stroke="#f4ede4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Accent diamond -->
+  <path d="M36 18 L42 26 L36 34 L30 26 Z" fill="#c98f4a"/>
+
+  <!-- C arc -->
+  <path d="M50 24 C54 24 56 28 56 32 C56 36 54 40 50 40" stroke="#8a4b2f" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+  <!-- Dot -->
+  <circle cx="32" cy="52" r="3" fill="#c98f4a"/>
+</svg>

@@ -2,13 +2,16 @@ import { auth }              from '@clerk/nextjs/server';
 import { NextResponse }      from 'next/server';
 import { getProject, createDeployment, updateDeploymentStatus } from '@/lib/db/queries';
 import { deployRatelimit }   from '@/lib/ratelimit';
-import { canDeploy, canUseTheme } from '@/lib/stripe/gates';
+import { canDeploy, canUseTheme, getUserPlan } from '@/lib/stripe/gates';
 import { generate }          from '@nexcms/generator';
+import { sendDeploySuccess, sendDeployFailure } from '@/lib/email/send';
+import { currentUser }       from '@clerk/nextjs/server';
 import { tmpdir }            from 'node:os';
 import { mkdtemp, rm }       from 'node:fs/promises';
 import { join }              from 'node:path';
 
-interface Ctx { params: { id: string } }
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.nexcms.io';
+interface Ctx  { params: { id: string } }
 
 async function deployToVercel(slug: string, outputDir: string): Promise<string> {
   const token  = process.env.VERCEL_TOKEN;
@@ -86,10 +89,13 @@ export async function POST(req: Request, { params }: Ctx) {
   const themeGate = await canUseTheme(userId, project.theme);
   if (!themeGate.allowed) return NextResponse.json({ error: themeGate.reason }, { status: 403 });
 
-  const body     = await req.json() as { provider?: string };
-  const provider = body.provider ?? 'download';
-
+  const body       = await req.json() as { provider?: string };
+  const provider   = body.provider ?? 'download';
   const deployment = await createDeployment({ projectId: project.id, userId, provider, status: 'building' });
+
+  // Resolve user email for notifications (non-blocking)
+  const userEmail = await currentUser().then((u) => u?.emailAddresses[0]?.emailAddress ?? null).catch(() => null);
+  const dashboardUrl = `${BASE_URL}/dashboard/projects/${project.id}`;
 
   let tmpDir: string | null = null;
   try {
@@ -97,16 +103,30 @@ export async function POST(req: Request, { params }: Ctx) {
     const result = await generate(project.schema, tmpDir);
     if (!result.success) {
       await updateDeploymentStatus(deployment.id, 'failed', { buildLog: result.errors.join('\n'), finishedAt: new Date() });
+      if (userEmail) {
+        await sendDeployFailure(userEmail, { projectName: project.name, provider, errorMessage: result.errors[0] ?? 'Build failed', dashboardUrl }).catch(() => {});
+      }
       return NextResponse.json({ error: 'Build failed', errors: result.errors }, { status: 500 });
     }
+
     let deployUrl: string | undefined;
     if (provider === 'vercel')  deployUrl = await deployToVercel(project.slug, tmpDir);
     if (provider === 'netlify') deployUrl = await deployToNetlify(project.slug, tmpDir);
+
     await updateDeploymentStatus(deployment.id, 'success', { filesCount: result.filesWritten, deployUrl, finishedAt: new Date() });
+
+    if (userEmail && deployUrl) {
+      await sendDeploySuccess(userEmail, { projectName: project.name, provider, deployUrl, filesWritten: result.filesWritten, dashboardUrl }).catch(() => {});
+    }
+
     return NextResponse.json({ ok: true, deploymentId: deployment.id, filesWritten: result.filesWritten, warnings: result.warnings, deployUrl });
   } catch (err) {
-    await updateDeploymentStatus(deployment.id, 'failed', { buildLog: err instanceof Error ? err.message : String(err), finishedAt: new Date() });
-    return NextResponse.json({ error: err instanceof Error ? err.message : 'Unexpected error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Unexpected error';
+    await updateDeploymentStatus(deployment.id, 'failed', { buildLog: msg, finishedAt: new Date() });
+    if (userEmail) {
+      await sendDeployFailure(userEmail, { projectName: project.name, provider, errorMessage: msg, dashboardUrl }).catch(() => {});
+    }
+    return NextResponse.json({ error: msg }, { status: 500 });
   } finally {
     if (tmpDir) await rm(tmpDir, { recursive: true, force: true }).catch(() => {});
   }

@@ -9,36 +9,44 @@
       width: 480px; height: 300px;
       background: #1a1208;
       border-radius: 20px;
-      display: grid;
-      place-items: center;
-      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.1rem;
       box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-      -webkit-app-region: no-drag;
     }
-    .logo {
+    .icon {
+      width: 64px; height: 64px;
+    }
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
       font-family: 'Georgia', serif;
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       font-weight: 700;
+      letter-spacing: -0.03em;
       color: #f4ede4;
-      letter-spacing: -0.02em;
     }
-    .logo span { color: #c98f4a; }
+    .wordmark .cms { color: #c98f4a; }
     .tagline {
       font-family: system-ui, sans-serif;
-      font-size: 0.9rem;
-      color: rgba(244,237,228,0.55);
-      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+      color: rgba(244,237,228,0.45);
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
     .bar-track {
-      width: 200px; height: 3px;
-      background: rgba(255,255,255,0.1);
+      width: 160px; height: 2px;
+      background: rgba(255,255,255,0.08);
       border-radius: 999px;
       overflow: hidden;
+      margin-top: 0.4rem;
     }
     .bar-fill {
       height: 100%;
-      background: #c98f4a;
+      background: linear-gradient(90deg, #8a4b2f, #c98f4a);
       border-radius: 999px;
       animation: load 1.4s ease-in-out forwards;
     }
@@ -47,7 +55,15 @@
 </head>
 <body>
   <div class="card">
-    <div class="logo">Nex<span>CMS</span></div>
+    <!-- SVG icon mark -->
+    <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#2a1e0f"/>
+      <path d="M14 46 L14 18 L26 34 L26 18" stroke="#f4ede4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M36 18 L42 26 L36 34 L30 26 Z" fill="#c98f4a"/>
+      <path d="M50 24 C54 24 56 28 56 32 C56 36 54 40 50 40" stroke="#8a4b2f" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <circle cx="32" cy="52" r="3" fill="#c98f4a"/>
+    </svg>
+    <div class="wordmark">Nex<span class="cms">CMS</span></div>
     <div class="tagline">Builder</div>
     <div class="bar-track"><div class="bar-fill"></div></div>
   </div>

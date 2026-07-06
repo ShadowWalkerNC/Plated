@@ -1,0 +1,11 @@
+<svg width="140" height="36" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NexCMS">
+  <!-- Icon mark -->
+  <rect x="0" y="0" width="36" height="36" rx="9" fill="#1a1208"/>
+  <path d="M7 27 L7 9 L15 19.5 L15 9" stroke="#f4ede4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M20 9 L24 14.5 L20 20 L16 14.5 Z" fill="#c98f4a"/>
+  <path d="M29 13 C31.5 13 33 15.2 33 18 C33 20.8 31.5 23 29 23" stroke="#8a4b2f" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="18" cy="30" r="1.8" fill="#c98f4a"/>
+
+  <!-- Wordmark -->
+  <text x="46" y="25" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="700" fill="#1a1208" letter-spacing="-0.5">Nex<tspan fill="#c98f4a">CMS</tspan></text>
+</svg>
