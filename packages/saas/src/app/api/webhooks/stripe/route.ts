@@ -11,7 +11,7 @@ import {
 import type Stripe       from 'stripe';
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
-const BASE_URL       = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.nexcms.io';
+const BASE_URL       = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.plated.io';
 
 export async function POST(req: Request) {
   const body      = await req.text();
@@ -53,7 +53,6 @@ export async function POST(req: Request) {
             updatedAt: new Date(),
           },
         });
-        // Send upgrade confirmation email
         if (customer.email) {
           await sendUpgradeConfirmed(customer.email, {
             name:      customer.name ?? 'there',
@@ -87,7 +86,6 @@ export async function POST(req: Request) {
         await db.update(subscriptions)
           .set({ status: 'past_due', updatedAt: new Date() })
           .where(eq(subscriptions.stripeSubId, subId));
-        // Send payment-failed email
         const custId  = invoice.customer as string;
         if (custId) {
           const cust = await stripe.customers.retrieve(custId) as Stripe.Customer;

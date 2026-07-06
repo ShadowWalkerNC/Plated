@@ -3,7 +3,7 @@ import { NextResponse }   from 'next/server';
 import { sendWelcome }    from '@/lib/email/send';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET!;
-const BASE_URL       = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.nexcms.io';
+const BASE_URL       = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.plated.io';
 
 export async function POST(req: Request) {
   const body      = await req.text();

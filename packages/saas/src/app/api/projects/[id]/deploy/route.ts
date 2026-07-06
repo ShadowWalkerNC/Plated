@@ -3,14 +3,14 @@ import { NextResponse }      from 'next/server';
 import { getProject, createDeployment, updateDeploymentStatus } from '@/lib/db/queries';
 import { deployRatelimit }   from '@/lib/ratelimit';
 import { canDeploy, canUseTheme, getUserPlan } from '@/lib/stripe/gates';
-import { generate }          from '@nexcms/generator';
+import { generate }          from '@plated/generator';
 import { sendDeploySuccess, sendDeployFailure } from '@/lib/email/send';
 import { currentUser }       from '@clerk/nextjs/server';
 import { tmpdir }            from 'node:os';
 import { mkdtemp, rm }       from 'node:fs/promises';
 import { join }              from 'node:path';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.nexcms.io';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.plated.io';
 interface Ctx  { params: { id: string } }
 
 async function deployToVercel(slug: string, outputDir: string): Promise<string> {
@@ -93,13 +93,12 @@ export async function POST(req: Request, { params }: Ctx) {
   const provider   = body.provider ?? 'download';
   const deployment = await createDeployment({ projectId: project.id, userId, provider, status: 'building' });
 
-  // Resolve user email for notifications (non-blocking)
   const userEmail = await currentUser().then((u) => u?.emailAddresses[0]?.emailAddress ?? null).catch(() => null);
   const dashboardUrl = `${BASE_URL}/dashboard/projects/${project.id}`;
 
   let tmpDir: string | null = null;
   try {
-    tmpDir = await mkdtemp(join(tmpdir(), 'nexcms-deploy-'));
+    tmpDir = await mkdtemp(join(tmpdir(), 'plated-deploy-'));
     const result = await generate(project.schema, tmpDir);
     if (!result.success) {
       await updateDeploymentStatus(deployment.id, 'failed', { buildLog: result.errors.join('\n'), finishedAt: new Date() });

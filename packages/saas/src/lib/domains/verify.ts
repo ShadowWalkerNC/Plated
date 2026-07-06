@@ -4,7 +4,7 @@ import { eq, and }          from 'drizzle-orm';
 import { promises as dns }  from 'node:dns';
 
 /**
- * Verify a domain's TXT record contains the NexCMS verification token.
+ * Verify a domain's TXT record contains the Plated verification token.
  * Resolves { verified: boolean; reason?: string }.
  */
 export async function verifyDomainOwnership(
@@ -12,11 +12,11 @@ export async function verifyDomainOwnership(
   token: string,
 ): Promise<{ verified: boolean; reason?: string }> {
   try {
-    const records = await dns.resolveTxt(`_nexcms.${domain}`);
+    const records = await dns.resolveTxt(`_plated.${domain}`);
     const flat    = records.flat();
-    const found   = flat.some((r) => r === `nexcms-verify=${token}`);
+    const found   = flat.some((r) => r === `plated-verify=${token}`);
     if (found) return { verified: true };
-    return { verified: false, reason: `TXT record _nexcms.${domain} not found or token mismatch.` };
+    return { verified: false, reason: `TXT record _plated.${domain} not found or token mismatch.` };
   } catch (err) {
     return { verified: false, reason: `DNS lookup failed: ${err instanceof Error ? err.message : String(err)}` };
   }

@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { getProject } from '@/lib/db/queries';
 import { apiRatelimit } from '@/lib/ratelimit';
-import { generate } from '@nexcms/generator';
+import { generate } from '@plated/generator';
 import { tmpdir } from 'node:os';
 import { mkdtemp, rm, readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
@@ -21,14 +21,12 @@ export async function GET(_req: Request, { params }: Ctx) {
 
   let tmpDir: string | null = null;
   try {
-    tmpDir = await mkdtemp(join(tmpdir(), 'nexcms-zip-'));
+    tmpDir = await mkdtemp(join(tmpdir(), 'plated-zip-'));
     const result = await generate(project.schema, tmpDir);
     if (!result.success) {
       return NextResponse.json({ error: 'Build failed', errors: result.errors }, { status: 500 });
     }
 
-    // Build a ZIP in memory using the native CompressionStream + zip format
-    // We use a minimal manual ZIP builder to avoid adding a dependency
     const zipBytes = await buildZip(tmpDir);
 
     return new NextResponse(zipBytes, {
@@ -44,7 +42,7 @@ export async function GET(_req: Request, { params }: Ctx) {
   }
 }
 
-// ── Minimal ZIP builder (no external deps) ───────────────────────────────────
+// ── Minimal ZIP builder (no external deps) ──────────────────────────────────────────
 async function buildZip(dir: string): Promise<ArrayBuffer> {
   const entries: Array<{ name: string; data: Uint8Array }> = [];
 
@@ -108,17 +106,17 @@ function buildLocalFileHeader(name: Uint8Array, data: Uint8Array, _offset: numbe
   const crc    = crc32(data);
   const buf    = new ArrayBuffer(30 + name.length);
   const view   = new DataView(buf);
-  writeU32LE(0x04034b50, view, 0);   // signature
-  writeU16LE(20, view, 4);           // version needed
-  writeU16LE(0, view, 6);            // flags
-  writeU16LE(0, view, 8);            // compression: stored
-  writeU16LE(0, view, 10);           // mod time
-  writeU16LE(0, view, 12);           // mod date
-  writeU32LE(crc, view, 14);         // crc32
-  writeU32LE(data.length, view, 18); // compressed size
-  writeU32LE(data.length, view, 22); // uncompressed size
-  writeU16LE(name.length, view, 26); // filename length
-  writeU16LE(0, view, 28);           // extra length
+  writeU32LE(0x04034b50, view, 0);
+  writeU16LE(20, view, 4);
+  writeU16LE(0, view, 6);
+  writeU16LE(0, view, 8);
+  writeU16LE(0, view, 10);
+  writeU16LE(0, view, 12);
+  writeU32LE(crc, view, 14);
+  writeU32LE(data.length, view, 18);
+  writeU32LE(data.length, view, 22);
+  writeU16LE(name.length, view, 26);
+  writeU16LE(0, view, 28);
   new Uint8Array(buf).set(name, 30);
   return { header: new Uint8Array(buf), crc };
 }
@@ -126,23 +124,23 @@ function buildLocalFileHeader(name: Uint8Array, data: Uint8Array, _offset: numbe
 function buildCentralDirEntry(name: Uint8Array, data: Uint8Array, offset: number, crc: number) {
   const buf  = new ArrayBuffer(46 + name.length);
   const view = new DataView(buf);
-  writeU32LE(0x02014b50, view, 0);   // signature
-  writeU16LE(20, view, 4);           // version made by
-  writeU16LE(20, view, 6);           // version needed
-  writeU16LE(0, view, 8);            // flags
-  writeU16LE(0, view, 10);           // compression
-  writeU16LE(0, view, 12);           // mod time
-  writeU16LE(0, view, 14);           // mod date
-  writeU32LE(crc, view, 16);         // crc32
-  writeU32LE(data.length, view, 20); // compressed size
-  writeU32LE(data.length, view, 24); // uncompressed size
-  writeU16LE(name.length, view, 28); // filename length
-  writeU16LE(0, view, 30);           // extra length
-  writeU16LE(0, view, 32);           // comment length
-  writeU16LE(0, view, 34);           // disk start
-  writeU16LE(0, view, 36);           // internal attributes
-  writeU32LE(0, view, 38);           // external attributes
-  writeU32LE(offset, view, 42);      // local header offset
+  writeU32LE(0x02014b50, view, 0);
+  writeU16LE(20, view, 4);
+  writeU16LE(20, view, 6);
+  writeU16LE(0, view, 8);
+  writeU16LE(0, view, 10);
+  writeU16LE(0, view, 12);
+  writeU16LE(0, view, 14);
+  writeU32LE(crc, view, 16);
+  writeU32LE(data.length, view, 20);
+  writeU32LE(data.length, view, 24);
+  writeU16LE(name.length, view, 28);
+  writeU16LE(0, view, 30);
+  writeU16LE(0, view, 32);
+  writeU16LE(0, view, 34);
+  writeU16LE(0, view, 36);
+  writeU32LE(0, view, 38);
+  writeU32LE(offset, view, 42);
   new Uint8Array(buf).set(name, 46);
   return new Uint8Array(buf);
 }
@@ -150,14 +148,14 @@ function buildCentralDirEntry(name: Uint8Array, data: Uint8Array, offset: number
 function buildEOCD(count: number, cdSize: number, cdOffset: number) {
   const buf  = new ArrayBuffer(22);
   const view = new DataView(buf);
-  writeU32LE(0x06054b50, view, 0);  // signature
-  writeU16LE(0, view, 4);           // disk number
-  writeU16LE(0, view, 6);           // disk with cd
-  writeU16LE(count, view, 8);       // entries on disk
-  writeU16LE(count, view, 10);      // total entries
-  writeU32LE(cdSize, view, 12);     // cd size
-  writeU32LE(cdOffset, view, 16);   // cd offset
-  writeU16LE(0, view, 20);          // comment length
+  writeU32LE(0x06054b50, view, 0);
+  writeU16LE(0, view, 4);
+  writeU16LE(0, view, 6);
+  writeU16LE(count, view, 8);
+  writeU16LE(count, view, 10);
+  writeU32LE(cdSize, view, 12);
+  writeU32LE(cdOffset, view, 16);
+  writeU16LE(0, view, 20);
   return new Uint8Array(buf);
 }
 
