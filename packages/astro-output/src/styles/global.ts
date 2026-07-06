@@ -1,10 +1,10 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
-export function buildGlobalCss(schema: ProjectSchema): AstroFile {
+export function buildGlobalCss(_schema: ProjectSchema): AstroFile {
   return {
     path: 'src/styles/global.css',
-    content: `/* NexCMS — global reset & layout */
+    content: `/* Plated - global reset & layout */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {

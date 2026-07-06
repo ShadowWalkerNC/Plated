@@ -1,4 +1,4 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 const THEME_TOKENS: Record<string, string> = {
@@ -16,7 +16,7 @@ const THEME_TOKENS: Record<string, string> = {
   --radius-btn:         0.5rem;
   --radius-card:        1.25rem;`,
 
-  canvas: `
+  spark: `
   --color-bg:           #ffffff;
   --color-surface:      #f8f8f8;
   --color-border:       #e5e5e5;
@@ -30,7 +30,7 @@ const THEME_TOKENS: Record<string, string> = {
   --radius-btn:         0.375rem;
   --radius-card:        0.75rem;`,
 
-  midnight: `
+  steel: `
   --color-bg:           #0e0e0e;
   --color-surface:      #181818;
   --color-border:       rgba(255,255,255,0.08);
@@ -44,7 +44,7 @@ const THEME_TOKENS: Record<string, string> = {
   --radius-btn:         999px;
   --radius-card:        1rem;`,
 
-  market: `
+  bloom: `
   --color-bg:           #fdfaf4;
   --color-surface:      #fff9ee;
   --color-border:       #ddd5c4;
@@ -58,21 +58,7 @@ const THEME_TOKENS: Record<string, string> = {
   --radius-btn:         0.5rem;
   --radius-card:        1.25rem;`,
 
-  coast: `
-  --color-bg:           #f7fbfe;
-  --color-surface:      #ffffff;
-  --color-border:       #cde4f0;
-  --color-text:         #162433;
-  --color-text-muted:   #5a7a8e;
-  --color-primary:      #1b6fa8;
-  --color-primary-fg:   #ffffff;
-  --color-accent:       #f0a855;
-  --font-display:       'Lora', Georgia, serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         999px;
-  --radius-card:        1.25rem;`,
-
-  ember: `
+  obsidian: `
   --color-bg:           #120a07;
   --color-surface:      #1e1108;
   --color-border:       rgba(255,120,40,0.12);
@@ -85,12 +71,25 @@ const THEME_TOKENS: Record<string, string> = {
   --font-body:          'Inter', system-ui, sans-serif;
   --radius-btn:         0.375rem;
   --radius-card:        0.75rem;`,
+
+  ghost: `
+  --color-bg:           #f7fbfe;
+  --color-surface:      #ffffff;
+  --color-border:       #cde4f0;
+  --color-text:         #162433;
+  --color-text-muted:   #5a7a8e;
+  --color-primary:      #1b6fa8;
+  --color-primary-fg:   #ffffff;
+  --color-accent:       #f0a855;
+  --font-display:       'Lora', Georgia, serif;
+  --font-body:          'Inter', system-ui, sans-serif;
+  --radius-btn:         999px;
+  --radius-card:        1.25rem;`,
 };
 
 export function buildThemeCss(schema: ProjectSchema): AstroFile {
-  const themeId  = (schema as any).theme ?? 'hearth';
+  const themeId  = schema.styleTemplate ?? 'hearth';
   const tokens   = THEME_TOKENS[themeId] ?? THEME_TOKENS['hearth']!;
-  // Allow per-project color overrides from branding
   const primary   = schema.branding.primaryColor;
   const secondary = schema.branding.secondaryColor;
   const accent    = schema.branding.accentColor;

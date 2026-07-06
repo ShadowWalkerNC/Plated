@@ -1,12 +1,12 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildBaseLayout(schema: ProjectSchema): AstroFile {
   const siteTitle = schema.seo.siteTitle || schema.business.name;
   const metaDesc  = schema.seo.metaDescription || schema.business.description || '';
   const ogImage   = schema.seo.ogImageUrl   || schema.branding.heroImageUrl  || '';
-  const favicon   = schema.branding.faviconUrl || '';
-  const gaId      = (schema.extensions as any)?.googleAnalytics?.trackingId ?? '';
+  const favicon   = schema.branding.faviconSourceUrl || '';
+  const gaId      = schema.extensions?.analytics?.ga4?.measurementId ?? '';
 
   const gaSnippet = gaId ? `
     <!-- Google Analytics -->
@@ -21,7 +21,7 @@ export function buildBaseLayout(schema: ProjectSchema): AstroFile {
   return {
     path: 'src/layouts/Base.astro',
     content: `---
-import Nav  from '../components/Nav.astro';
+import Nav    from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 const {
   title       = ${JSON.stringify(siteTitle)},

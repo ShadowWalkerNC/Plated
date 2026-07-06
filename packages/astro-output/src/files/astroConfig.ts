@@ -1,9 +1,10 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildAstroConfig(schema: ProjectSchema): AstroFile {
-  const subdomain = (schema as any).deployment?.subdomain ?? 'example';
-  const siteUrl   = `https://${subdomain}.nexcms.io`;
+  const subdomain   = schema.deployment?.subdomain ?? 'example';
+  const customDomain = schema.deployment?.customDomain;
+  const siteUrl     = customDomain ? `https://${customDomain}` : `https://${subdomain}.plated.app`;
   return {
     path: 'astro.config.mjs',
     content: `import { defineConfig } from 'astro/config';

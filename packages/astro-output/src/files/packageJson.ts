@@ -1,9 +1,9 @@
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import type { AstroFile } from '../types.js';
 
 export function buildPackageJson(schema: ProjectSchema): AstroFile {
-  const name = (schema.business.name || 'nexcms-site')
-    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'nexcms-site';
+  const name = (schema.business.name || 'plated-site')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'plated-site';
 
   return {
     path: 'package.json',
