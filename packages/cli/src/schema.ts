@@ -3,17 +3,22 @@ import type { ProjectSchema } from '@plated/types';
 
 export function createDefaultSchema(name: string): ProjectSchema {
   return {
+    id: crypto.randomUUID(),
     schemaVersion: '2.0',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     businessType: 'restaurant',
+    styleTemplate: 'hearth',
+    colorTheme: 'light',
+    darkMode: false,
     business: {
-      name: name,
+      name,
       tagline: '',
       description: '',
       phone: '',
       email: '',
       cuisineType: '',
-      foundedYear: '',
-      existingWebsiteUrl: '',
+      existingWebsite: '',
     },
     branding: {
       logoUrl: '',
@@ -22,18 +27,19 @@ export function createDefaultSchema(name: string): ProjectSchema {
       primaryColor: '#8a4b2f',
       secondaryColor: '#f4ede4',
       accentColor: '#c98f4a',
-      faviconUrl: '',
+      faviconSourceUrl: '',
     },
     locations: [],
     primaryLocationIndex: 0,
     menu: {
       categories: [],
-      syncSource: null,
     },
     social: {
       facebook: '',
       instagram: '',
       twitter: '',
+      tiktok: '',
+      youtube: '',
       googleBusiness: '',
       yelp: '',
       tripadvisor: '',
@@ -42,7 +48,9 @@ export function createDefaultSchema(name: string): ProjectSchema {
       grubhub: '',
       toast: '',
       chownow: '',
+      opentable: '',
     },
+    integrations: {},
     seo: {
       siteTitle: name,
       metaDescription: '',
@@ -56,13 +64,10 @@ export function createDefaultSchema(name: string): ProjectSchema {
     deployment: {
       subdomain: '',
       customDomain: '',
-      tier: 'self-serve',
     },
     blog: [],
     events: [],
     specials: [],
     press: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   } satisfies ProjectSchema;
 }

@@ -1,11 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { renderTemplate } from '../renderTemplate.js';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 const BASE_SCHEMA: ProjectSchema = {
-  schemaVersion: '1.0.0',
-  generatedAt: '2026-01-01T00:00:00Z',
+  id: 'test-id',
+  schemaVersion: '2.0',
+  createdAt: '2026-01-01T00:00:00Z',
+  updatedAt: '2026-01-01T00:00:00Z',
   businessType: 'restaurant',
+  styleTemplate: 'hearth',
+  colorTheme: 'light',
+  darkMode: false,
   business: {
     name: 'The Test Kitchen',
     tagline: 'Freshly tested.',
@@ -13,8 +18,6 @@ const BASE_SCHEMA: ProjectSchema = {
     cuisineType: 'Fusion',
     phone: '555-0000',
     email: 'test@example.com',
-    foundedYear: '2020',
-    existingWebsiteUrl: '',
   },
   branding: {
     primaryColor: '#111',
@@ -22,36 +25,31 @@ const BASE_SCHEMA: ProjectSchema = {
     accentColor: '#999',
     logoUrl: '',
     heroImageUrl: '',
-    faviconUrl: '',
+    faviconSourceUrl: '',
   },
   seo: {
     siteTitle: 'The Test Kitchen',
     metaDescription: 'A test restaurant.',
     ogImageUrl: '',
   },
-  social: {
-    instagram: '', facebook: '', twitter: '', googleBusiness: '',
-    yelp: '', tripadvisor: '', doordash: '', ubereats: '', grubhub: '', toast: '', chownow: '',
-  },
+  social: {},
+  integrations: {},
   locations: [
     {
+      id: 'loc-1',
       name: '',
       address1: '1 Test Ave',
-      address2: '',
       city: 'Testville',
       state: 'TX',
       zip: '00000',
-      phone: '',
-      email: '',
-      googleMapsUrl: '',
-      appleMapsUrl: '',
-      holidayNote: '',
-      hours: { timezone: 'UTC', schedule: [] },
+      country: 'US',
+      hours: { schedule: [] },
     },
   ],
   primaryLocationIndex: 0,
   menu: { categories: [] },
   extensions: {},
+  deployment: {},
 };
 
 describe('renderTemplate', () => {

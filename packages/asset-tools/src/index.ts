@@ -1,4 +1,4 @@
-// @nexcms/asset-tools — Phase 1 stub
+// @plated/asset-tools — Phase 1 stub
 // Tools: sharp (image optimization, favicons) + satori (OG images)
 // No Python. No Puppeteer. No headless browser. Node.js only.
 

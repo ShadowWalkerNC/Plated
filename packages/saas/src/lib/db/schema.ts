@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, uuid, integer, boolean, jsonb, index } from 'drizzle-orm/pg-core';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 export const projects = pgTable(
   'projects',
@@ -70,7 +70,7 @@ export const customDomains = pgTable(
     verificationToken: text('verification_token').notNull(),
     verified:        boolean('verified').notNull().default(false),
     verifiedAt:      timestamp('verified_at',  { withTimezone: true }),
-    provider:        text('provider'),          // 'vercel' | 'netlify' | null
+    provider:        text('provider'),
     providerDomainId: text('provider_domain_id'),
     createdAt:       timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt:       timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),

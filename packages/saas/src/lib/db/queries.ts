@@ -2,7 +2,7 @@ import { eq, and, desc } from 'drizzle-orm';
 import { db } from './client.js';
 import { projects, deployments } from './schema.js';
 import type { NewProject } from './schema.js';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 export async function getProjectsByUser(userId: string) {
   return db

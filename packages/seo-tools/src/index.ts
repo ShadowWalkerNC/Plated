@@ -1,8 +1,8 @@
-// @nexcms/seo-tools — Phase 1 stub
+// @plated/seo-tools — Phase 1 stub
 // Zero external dependencies. Native Node.js only.
 // Generates: sitemap.xml, robots.txt, meta tags, Schema.org JSON-LD
 
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 export interface SitemapOptions {
   baseUrl: string;

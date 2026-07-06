@@ -1,12 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { resolveTokens } from '../resolveTokens.js';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 
 function makeSchema(overrides: Partial<ProjectSchema> = {}): ProjectSchema {
   return {
-    schemaVersion: '1.0.0',
-    generatedAt: '2026-01-01T00:00:00Z',
+    id: 'test-id',
+    schemaVersion: '2.0',
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-01-01T00:00:00Z',
     businessType: 'restaurant',
+    styleTemplate: 'hearth',
+    colorTheme: 'light',
+    darkMode: false,
     business: {
       name: 'Hearth & Vine',
       tagline: 'Wood-fired food.',
@@ -14,8 +19,6 @@ function makeSchema(overrides: Partial<ProjectSchema> = {}): ProjectSchema {
       cuisineType: 'American',
       phone: '555-0100',
       email: 'hi@example.com',
-      foundedYear: '2019',
-      existingWebsiteUrl: '',
     },
     branding: {
       primaryColor: '#8a4b2f',
@@ -23,7 +26,7 @@ function makeSchema(overrides: Partial<ProjectSchema> = {}): ProjectSchema {
       accentColor: '#c98f4a',
       logoUrl: '',
       heroImageUrl: '',
-      faviconUrl: '',
+      faviconSourceUrl: '',
     },
     seo: {
       siteTitle: 'Hearth & Vine',
@@ -33,38 +36,24 @@ function makeSchema(overrides: Partial<ProjectSchema> = {}): ProjectSchema {
     social: {
       instagram: 'https://instagram.com/hearthandvine',
       facebook: '',
-      twitter: '',
-      googleBusiness: '',
-      yelp: '',
-      tripadvisor: '',
-      doordash: '',
-      ubereats: '',
-      grubhub: '',
-      toast: '',
-      chownow: '',
     },
+    integrations: {},
     locations: [
       {
+        id: 'loc-1',
         name: 'Downtown',
         address1: '123 Main St',
-        address2: '',
         city: 'Charleston',
         state: 'SC',
         zip: '29401',
-        phone: '555-0100',
-        email: '',
-        googleMapsUrl: '',
-        appleMapsUrl: '',
-        holidayNote: '',
-        hours: {
-          timezone: 'America/New_York',
-          schedule: [],
-        },
+        country: 'US',
+        hours: { schedule: [] },
       },
     ],
     primaryLocationIndex: 0,
     menu: { categories: [] },
     extensions: {},
+    deployment: {},
     ...overrides,
   };
 }
