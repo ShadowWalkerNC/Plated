@@ -1,8 +1,8 @@
 {
-  "name": "nexcms",
+  "name": "plated",
   "version": "0.0.0",
   "private": true,
-  "description": "Guided website builder for the restaurant and hospitality industry",
+  "description": "Open-source restaurant website builder — standalone or native to CulinaryOS",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
