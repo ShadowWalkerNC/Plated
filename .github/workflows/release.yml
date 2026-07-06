@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build workspace packages
+        run: pnpm --filter @nexcms/types build || true
+
+      - name: Build astro-output
+        run: pnpm --filter @nexcms/astro-output build || true
+
+      - name: Build generator
+        run: pnpm --filter @nexcms/generator build || true
+
+      - name: Build & package Electron app
+        env:
+          GH_TOKEN:         ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK:         ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          WIN_CSC_LINK:         ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        working-directory: packages/builder
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            pnpm dist:mac
+          elif [ "${{ matrix.os }}" = "windows-latest" ]; then
+            pnpm dist:win
+          else
+            pnpm dist:linux
+          fi
+        shell: bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NexCMS-Builder-${{ matrix.os }}
+          path: packages/builder/release/**
+          if-no-files-found: warn

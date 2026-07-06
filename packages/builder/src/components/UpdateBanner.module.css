@@ -1,0 +1,30 @@
+.banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem; font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+.checking, .available, .downloading {
+  background: rgba(30,20,10,0.82);
+  color: rgba(244,237,228,0.9);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.downloaded {
+  background: rgba(42,100,52,0.9);
+  color: #e8f5e9;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.error {
+  background: rgba(150,30,20,0.88);
+  color: #fde8e8;
+  border-top: 1px solid rgba(255,100,100,0.2);
+}
+.msg  { flex: 1; text-align: center; }
+.btn  {
+  padding: 0.35rem 0.9rem; border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  background: transparent; color: inherit;
+  font-weight: 700; font-size: 0.82rem; cursor: pointer;
+}
+.btn:hover { background: rgba(255,255,255,0.1); }

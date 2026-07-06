@@ -1,32 +1,73 @@
 {
   "name": "@nexcms/builder",
-  "version": "0.0.0",
-  "description": "Local Builder — Electron shell + React 19 + Vite wizard UI (desktop-first)",
-  "main": "./dist/electron/main.js",
+  "version": "0.2.0",
+  "private": true,
+  "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "build": "vite build && tsc -p tsconfig.electron.json",
-    "build:electron": "tsc -p tsconfig.electron.json",
-    "dist": "npm run build && electron-builder",
-    "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "dev":           "concurrently -n vite,electron \"vite\" \"wait-on tcp:5173 && electron .\"",
+    "build":         "vite build && tsc -p tsconfig.electron.json",
+    "dist:mac":      "npm run build && electron-builder --mac",
+    "dist:win":      "npm run build && electron-builder --win",
+    "dist:linux":    "npm run build && electron-builder --linux",
+    "dist:all":      "npm run build && electron-builder --mac --win --linux",
+    "typecheck":     "tsc --noEmit && tsc --noEmit -p tsconfig.electron.json",
+    "test":          "vitest run"
+  },
+  "build": {
+    "appId":         "io.nexcms.builder",
+    "productName":   "NexCMS Builder",
+    "copyright":     "Copyright © 2026 NexCMS",
+    "directories":   { "output": "release" },
+    "files":         ["dist/**", "dist-electron/**", "splash.html"],
+    "publish": [
+      {
+        "provider": "github",
+        "owner":    "ShadowWalkerNC",
+        "repo":     "NexCMS"
+      }
+    ],
+    "mac": {
+      "category":   "public.app-category.productivity",
+      "icon":       "assets/icon.icns",
+      "target":     [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist"
+    },
+    "win": {
+      "icon":       "assets/icon.ico",
+      "target":     [{ "target": "nsis", "arch": ["x64"] }],
+      "publisherName": "NexCMS"
+    },
+    "linux": {
+      "icon":       "assets/icon.png",
+      "target":     [{ "target": "AppImage", "arch": ["x64"] }],
+      "category":   "Utility"
+    },
+    "nsis": {
+      "oneClick":           false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "dependencies": {
-    "@nexcms/generator": "workspace:*",
-    "@nexcms/template-engine": "workspace:*",
-    "@nexcms/types": "workspace:*",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@nexcms/astro-output": "workspace:*",
+    "@nexcms/generator":    "workspace:*",
+    "@nexcms/types":        "workspace:*",
+    "electron-updater":     "^6.3.0",
+    "react":                "^18.3.0",
+    "react-dom":            "^18.3.0"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^4.0.0",
-    "concurrently": "^9.0.0",
-    "electron": "^33.0.0",
-    "electron-builder": "^25.0.0",
-    "typescript": "^5.4.0",
-    "vite": "^5.0.0",
-    "wait-on": "^8.0.0"
+    "@types/react":          "^18.3.0",
+    "@types/react-dom":      "^18.3.0",
+    "@vitejs/plugin-react":  "^4.3.0",
+    "concurrently":          "^9.0.0",
+    "electron":              "^33.0.0",
+    "electron-builder":      "^25.0.0",
+    "typescript":            "^5.7.0",
+    "vite":                  "^6.0.0",
+    "vitest":                "^2.0.0",
+    "wait-on":               "^8.0.0"
   }
 }

@@ -1,0 +1,22 @@
+.badge {
+  position: fixed; top: 0.75rem; left: 50%; transform: translateX(-50%);
+  z-index: 9998;
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: rgba(30,20,10,0.88); color: rgba(244,237,228,0.9);
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.dot {
+  width: 8px; height: 8px;
+  background: #f0a040;
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}

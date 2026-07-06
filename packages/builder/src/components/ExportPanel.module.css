@@ -1,0 +1,37 @@
+.panel { display: grid; gap: 1.25rem; max-width: 540px; padding: 2rem; }
+.title { font-family: var(--font-display, Georgia, serif); font-size: 1.75rem; color: var(--color-text, #1e1612); line-height: 1; }
+.sub   { color: var(--color-text-muted, #7a6254); font-size: 0.95rem; }
+
+.modeRow { display: flex; gap: 0.75rem; }
+.modeBtn {
+  flex: 1; min-height: 48px; border-radius: var(--radius-btn, 0.5rem);
+  border: 1.5px solid var(--color-border, #ddd); background: var(--color-surface, #fff);
+  color: var(--color-text, #1e1612); font-weight: 700; font-size: 0.9rem; cursor: pointer;
+  transition: border-color 120ms;
+}
+.modeBtn:hover { border-color: var(--color-primary, #8a4b2f); }
+.active { border-color: var(--color-primary, #8a4b2f); background: rgba(138,75,47,0.06); }
+
+.hint { font-size: 0.88rem; color: var(--color-text-muted, #7a6254); }
+.hint code { font-family: ui-monospace, monospace; color: var(--color-accent, #c98f4a); }
+
+.offlineNote {
+  padding: 0.75rem 1rem; border-radius: 0.75rem;
+  background: rgba(240,160,64,0.08); border: 1px solid rgba(240,160,64,0.25);
+  color: var(--color-text, #1e1612); font-size: 0.88rem;
+}
+
+.exportBtn {
+  min-height: 52px; border-radius: 999px; border: none;
+  background: var(--color-primary, #8a4b2f); color: var(--color-primary-fg, #fff8f2);
+  font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 120ms;
+}
+.exportBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.exportBtn:not(:disabled):hover { opacity: 0.85; }
+
+.result {
+  padding: 0.75rem 1rem; border-radius: 0.75rem;
+  font-size: 0.9rem; font-weight: 600;
+}
+.ok   { background: rgba(42,100,52,0.08); border: 1px solid rgba(42,100,52,0.2); color: #1b5e20; }
+.fail { background: rgba(150,30,20,0.07); border: 1px solid rgba(150,30,20,0.18); color: #b71c1c; }
