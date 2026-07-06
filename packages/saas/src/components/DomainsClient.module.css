@@ -1,0 +1,68 @@
+.page  { display: grid; gap: 1.5rem; max-width: 700px; }
+.title { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-text); line-height: 1; }
+.sub   { color: var(--color-text-muted); }
+
+.upgradeBanner {
+  padding: 0.9rem 1rem; border-radius: 1rem;
+  background: rgba(138,75,47,0.06); border: 1px solid rgba(138,75,47,0.18);
+  color: var(--color-text); font-size: 0.9rem;
+}
+.upgradeLink { color: var(--color-primary); font-weight: 700; margin-left: 0.5rem; }
+.error {
+  padding: 0.9rem 1rem; border-radius: 1rem;
+  background: rgba(198,40,40,0.07); border: 1px solid rgba(198,40,40,0.18);
+  color: #c62828; font-size: 0.9rem;
+}
+
+.addRow { display: flex; gap: 0.75rem; }
+.input  {
+  flex: 1; min-height: 48px; padding: 0 1rem;
+  border-radius: 0.75rem; border: 1.5px solid var(--color-border);
+  background: var(--color-surface); color: var(--color-text);
+  font-size: 0.95rem;
+}
+.input:focus { outline: none; border-color: var(--color-primary); }
+.addBtn {
+  min-height: 48px; padding: 0 1.25rem; border-radius: 999px;
+  border: none; background: var(--color-primary); color: var(--color-primary-fg);
+  font-weight: 700; cursor: pointer;
+}
+.addBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.empty { color: var(--color-text-muted); font-size: 0.95rem; }
+
+.list  { list-style: none; display: grid; gap: 1rem; }
+.domainRow {
+  display: grid; gap: 0.75rem;
+  padding: 1.25rem; border-radius: var(--radius-card);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+}
+.domainMain  { display: flex; align-items: center; gap: 0.75rem; }
+.domainName  { font-weight: 700; font-size: 1rem; color: var(--color-text); }
+.badge       { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2rem 0.6rem; border-radius: 999px; }
+.verified    { background: rgba(42,100,52,0.1); color: #2a6434; }
+.pending     { background: rgba(240,160,64,0.12); color: #9a6020; }
+
+.instructions { display: grid; gap: 0.75rem; }
+.instrLabel   { font-size: 0.88rem; font-weight: 600; color: var(--color-text); }
+.dnsRecord    { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 0.75rem; overflow: hidden; }
+.dnsRow       { display: grid; grid-template-columns: 80px 1fr; gap: 0.5rem; padding: 0.6rem 1rem; border-bottom: 1px solid var(--color-border); }
+.dnsRow:last-child { border-bottom: none; }
+.dnsKey       { font-size: 0.82rem; font-weight: 700; color: var(--color-text-muted); align-self: center; }
+.dnsVal       { font-family: ui-monospace, monospace; font-size: 0.82rem; color: var(--color-text); word-break: break-all; }
+.hint         { font-size: 0.82rem; color: var(--color-text-muted); }
+.hint code    { font-family: ui-monospace, monospace; color: var(--color-accent); }
+
+.verifyBtn {
+  justify-self: start; min-height: 40px; padding: 0 1rem; border-radius: 999px;
+  border: 1.5px solid var(--color-primary); background: transparent;
+  color: var(--color-primary); font-weight: 700; font-size: 0.88rem; cursor: pointer;
+}
+.verifyBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.removeBtn {
+  justify-self: end; min-height: 34px; padding: 0 0.75rem; border-radius: 999px;
+  border: 1px solid var(--color-border); background: transparent;
+  color: var(--color-text-muted); font-size: 0.82rem; cursor: pointer;
+}
+.removeBtn:hover { border-color: #c62828; color: #c62828; }

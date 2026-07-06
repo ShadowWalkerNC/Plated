@@ -60,7 +60,29 @@ export const subscriptions = pgTable(
   }),
 );
 
+export const customDomains = pgTable(
+  'custom_domains',
+  {
+    id:              uuid('id').primaryKey().defaultRandom(),
+    projectId:       uuid('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+    userId:          text('user_id').notNull(),
+    domain:          text('domain').notNull().unique(),
+    verificationToken: text('verification_token').notNull(),
+    verified:        boolean('verified').notNull().default(false),
+    verifiedAt:      timestamp('verified_at',  { withTimezone: true }),
+    provider:        text('provider'),          // 'vercel' | 'netlify' | null
+    providerDomainId: text('provider_domain_id'),
+    createdAt:       timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt:       timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    projectIdx: index('custom_domains_project_id_idx').on(t.projectId),
+    userIdx:    index('custom_domains_user_id_idx').on(t.userId),
+  }),
+);
+
 export type Project      = typeof projects.$inferSelect;
 export type NewProject   = typeof projects.$inferInsert;
 export type Deployment   = typeof deployments.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
+export type CustomDomain = typeof customDomains.$inferSelect;
