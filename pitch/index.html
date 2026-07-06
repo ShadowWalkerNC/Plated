@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plated — Pitch Deck</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #fcf8f3;
+      --warm:    #f5f0ea;
+      --sienna:  #8a4b2f;
+      --amber:   #c98f4a;
+      --dark:    #1a1208;
+      --mid:     #3d2a1d;
+      --muted:   #7a6254;
+      --border:  rgba(138,75,47,0.14);
+      --shadow:  0 24px 64px rgba(46,28,15,0.10);
+    }
+
+    html { scroll-snap-type: y mandatory; overflow-y: scroll; font-size: 16px; }
+    body { background: var(--dark); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--dark); }
+
+    /* ---- SLIDE BASE ---- */
+    .slide {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-inner {
+      width: min(900px, 100%);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- TYPOGRAPHY ---- */
+    .kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-family: Georgia, serif; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.02; }
+    h2 { font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.08; }
+    h3 { font-family: Georgia, serif; font-size: clamp(1.3rem, 2.5vw, 1.9rem); line-height: 1.2; }
+
+    .lead { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.65; max-width: 62ch; }
+    .sub  { font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
+
+    strong { color: var(--sienna); }
+
+    /* ---- NAV DOTS ---- */
+    #nav {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      z-index: 100;
+    }
+
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+    }
+    .dot.active { background: var(--amber); transform: scale(1.4); }
+
+    /* ---- SLIDE THEMES ---- */
+    .dark-slide  { background: var(--dark); color: var(--cream); }
+    .dark-slide .kicker { color: var(--amber); }
+    .dark-slide h1, .dark-slide h2, .dark-slide h3 { color: var(--cream); }
+    .dark-slide .lead { color: rgba(244,237,228,0.85); }
+    .dark-slide .sub  { color: rgba(244,237,228,0.45); }
+    .dark-slide strong { color: var(--amber); }
+
+    .light-slide { background: var(--cream); color: var(--dark); }
+    .amber-slide { background: var(--sienna); color: var(--cream); }
+    .amber-slide .kicker { color: var(--amber); }
+    .amber-slide h1, .amber-slide h2, .amber-slide h3 { color: var(--cream); }
+    .amber-slide .lead { color: rgba(244,237,228,0.88); }
+    .amber-slide strong { color: var(--amber); }
+
+    /* ---- COMPONENTS ---- */
+    .pill {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      background: rgba(201,143,74,0.15);
+      color: var(--amber);
+      border: 1px solid rgba(201,143,74,0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .card-grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .card-grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 1.5rem;
+    }
+    .light-slide .card {
+      background: #fff;
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+    .amber-slide .card {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .card-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+    }
+    .light-slide .card-label { color: var(--sienna); }
+
+    .card h3 { margin-bottom: 0.4rem; }
+    .card p  { font-size: 0.92rem; line-height: 1.55; }
+    .dark-slide .card p, .amber-slide .card p { color: rgba(244,237,228,0.65); }
+    .light-slide .card p { color: var(--muted); }
+
+    .stat-big {
+      font-family: Georgia, serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--amber);
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+      opacity: 0.65;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 2rem;
+      counter-reset: step;
+    }
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      counter-increment: step;
+    }
+    .light-slide .step { border-bottom-color: var(--border); }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      background: rgba(201,143,74,0.15);
+      color: var(--amber);
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .step-num::before { content: counter(step); }
+    .step-body strong { display: block; margin-bottom: 0.2rem; }
+    .dark-slide .step-body strong, .amber-slide .step-body strong { color: var(--cream); }
+    .step-body p { font-size: 0.9rem; }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      font-size: 0.92rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .compare-table tr td:first-child { font-weight: 700; color: var(--dark); }
+    .compare-table .yes { color: #2d7a3a; font-weight: 700; }
+    .compare-table .no  { color: #b3261e; }
+    .compare-table .plated-col { color: var(--sienna); font-weight: 800; }
+    .compare-table .highlight td { background: rgba(201,143,74,0.06); }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .logo-word {
+      font-family: Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+
+    .cta-btn {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 1rem 2rem;
+      border-radius: 999px;
+      background: var(--amber);
+      color: var(--dark);
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .quote {
+      font-family: Georgia, serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      line-height: 1.35;
+      font-style: italic;
+      max-width: 22ch;
+      margin-bottom: 1.5rem;
+    }
+    .quote-attr {
+      font-size: 0.85rem;
+      opacity: 0.5;
+      letter-spacing: 0.06em;
+    }
+
+    /* bg accents */
+    .bg-ring {
+      position: absolute;
+      border-radius: 999px;
+      border: 1px solid rgba(201,143,74,0.08);
+      pointer-events: none;
+    }
+
+    /* slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 2rem;
+      font-size: 0.75rem;
+      opacity: 0.25;
+      letter-spacing: 0.1em;
+    }
+    .dark-slide .slide-num, .amber-slide .slide-num { color: var(--cream); }
+
+    @media (max-width: 640px) {
+      .card-grid.cols-2, .card-grid.cols-3 { grid-template-columns: 1fr; }
+      .stat-row { gap: 2rem; }
+      #nav { display: none; }
+    }
+
+    @media print {
+      html { scroll-snap-type: none; font-size: 13px; }
+      #nav { display: none; }
+      .slide { min-height: 100vh; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav id="nav" aria-label="Slide navigation"></nav>
+
+<!-- ======================== SLIDE 1 — TITLE ======================== -->
+<section class="slide dark-slide" id="s1">
+  <div class="bg-ring" style="width:700px;height:700px;top:-200px;right:-200px;"></div>
+  <div class="bg-ring" style="width:400px;height:400px;bottom:-100px;left:-100px;"></div>
+  <div class="slide-inner">
+    <div class="logo-mark">
+      <svg width="44" height="44" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="#2a1e0f"/>
+        <circle cx="32" cy="32" r="18" stroke="#f4ede4" stroke-width="3" fill="none"/>
+        <circle cx="32" cy="32" r="12" stroke="#f4ede4" stroke-width="1.5" fill="none" opacity="0.4"/>
+        <line x1="16" y1="20" x2="16" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="20" x2="19" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="22" y1="20" x2="22" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="28" x2="19" y2="44" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="45" y1="20" x2="45" y2="44" stroke="#8a4b2f" stroke-width="2" stroke-linecap="round"/>
+        <path d="M45 20 C48 22 48 28 45 30" stroke="#8a4b2f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="logo-word">Plated</span>
+    </div>
+    <p class="kicker">For restaurant owners</p>
+    <h1>Your restaurant<br>deserves a<br><span style="color:var(--amber)">better website.</span></h1>
+    <p class="lead" style="margin-top:1.5rem;">Plated builds a beautiful, professional restaurant site in minutes — no developer, no designer, no monthly agency retainer.</p>
+  </div>
+  <span class="slide-num">1 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 2 — THE PROBLEM ======================== -->
+<section class="slide light-slide" id="s2">
+  <div class="slide-inner">
+    <p class="kicker">The problem</p>
+    <h2>Your current website<br>is costing you <strong>tables.</strong></h2>
+    <div class="card-grid cols-3" style="margin-top:2.5rem;">
+      <div class="card">
+        <div class="card-label">Too expensive</div>
+        <h3>Agency sites<br>start at $3,000</h3>
+        <p>And another $200/mo to maintain. Most restaurants pay it once, then watch it go stale for two years.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Too generic</div>
+        <h3>Squarespace wasn’t built for restaurants</h3>
+        <p>No menu builder. No food truck schedule. No delivery links. You spend hours fighting templates designed for yoga studios.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Too technical</div>
+        <h3>WordPress takes a weekend to set up</h3>
+        <p>Plugins, hosting, SSL, backups — that’s not what you signed up for when you opened a restaurant.</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">2 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 3 — THE TRUTH ======================== -->
+<section class="slide dark-slide" id="s3">
+  <div class="bg-ring" style="width:600px;height:600px;top:-150px;left:-150px;"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <p class="kicker">The reality</p>
+    <div class="stat-row" style="justify-content:center;">
+      <div>
+        <div class="stat-big">77%</div>
+        <div class="stat-label">of diners check a restaurant’s website<br>before visiting for the first time</div>
+      </div>
+      <div>
+        <div class="stat-big">3 sec</div>
+        <div class="stat-label">is all you get before they’re gone<br>if your site loads slowly or looks bad</div>
+      </div>
+      <div>
+        <div class="stat-big">$0</div>
+        <div class="stat-label">is what most restaurants<br>invested in their site last year</div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:3rem;max-width:54ch;margin-left:auto;margin-right:auto;">A bad website doesn’t just look unprofessional. <strong>It sends hungry customers to your competitor.</strong></p>
+  </div>
+  <span class="slide-num">3 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 4 — THE SOLUTION ======================== -->
+<section class="slide amber-slide" id="s4">
+  <div class="slide-inner">
+    <p class="kicker">The solution</p>
+    <h2>Plated builds your<br>site <strong>in minutes.</strong></h2>
+    <p class="lead" style="margin-top:1.25rem;">Answer a few questions about your restaurant. We handle everything else.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Tell us about your restaurant</strong>
+          <p>Name, cuisine, city, what makes you special. Takes about 2 minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Pick a theme</strong>
+          <p>Hearth, Editorial, or Bistro — each designed specifically for hospitality.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Choose your goal</strong>
+          <p>Book a table? Order online? Call now? We build the site around your #1 conversion.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Go live</strong>
+          <p>One click to publish. Your domain, your site, ready to take reservations today.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">4 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 5 — THEMES ======================== -->
+<section class="slide light-slide" id="s5">
+  <div class="slide-inner">
+    <p class="kicker">Built for hospitality</p>
+    <h2>Three themes, all designed<br>for <strong>restaurants.</strong></h2>
+    <div class="card-grid cols-3" style="margin-top:2rem;">
+      <div class="card" style="border-top:3px solid #c98f4a;">
+        <div class="card-label">Hearth</div>
+        <h3>Warm &amp; intimate</h3>
+        <p>Deep ambers, serif headlines, and a layout built around the chef’s story. Perfect for fine dining and neighbourhood favourites.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #1a1208;">
+        <div class="card-label">Editorial</div>
+        <h3>Refined &amp; photographic</h3>
+        <p>Clean whites, dramatic full-bleed food photography, and restrained typography. Elevated dining and modern cuisine.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #8a4b2f;">
+        <div class="card-label">Bistro</div>
+        <h3>Casual &amp; energetic</h3>
+        <p>Bold layout, big personality. Great for casual dining, food trucks, bars, and anything with a queue out the door.</p>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:1.5rem;">Every theme includes: menu section · hours &amp; location · reservation CTA · delivery links · social media · SEO-ready markup.</p>
+  </div>
+  <span class="slide-num">5 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 6 — COMPARISON ======================== -->
+<section class="slide light-slide" id="s6">
+  <div class="slide-inner">
+    <p class="kicker">How we compare</p>
+    <h2>Everything they charge extra for.<br><strong>Included by default.</strong></h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="plated-col">🍽️ Plated</th>
+          <th>Squarespace</th>
+          <th>Agency</th>
+          <th>WordPress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Setup time</td>
+          <td class="plated-col">~5 min</td>
+          <td>Hours</td>
+          <td>Weeks</td>
+          <td>Days</td>
+        </tr>
+        <tr>
+          <td>Restaurant-specific templates</td>
+          <td class="yes">✓ Always</td>
+          <td class="no">✕ Generic</td>
+          <td class="yes">✓ Custom</td>
+          <td class="no">✕ Plugins needed</td>
+        </tr>
+        <tr>
+          <td>Menu builder</td>
+          <td class="yes">✓ Built-in</td>
+          <td class="no">✕ Extra cost</td>
+          <td class="yes">✓ Bespoke</td>
+          <td class="no">✕ Plugin</td>
+        </tr>
+        <tr>
+          <td>Delivery platform links</td>
+          <td class="yes">✓ Yes</td>
+          <td class="no">✕ No</td>
+          <td class="yes">✓ Custom</td>
+          <td class="no">✕ Manual</td>
+        </tr>
+        <tr>
+          <td>Custom domain</td>
+          <td class="yes">✓ Included</td>
+          <td>Extra plan</td>
+          <td>✓ Included</td>
+          <td>✓ Self-manage</td>
+        </tr>
+        <tr class="highlight">
+          <td>Monthly cost</td>
+          <td class="plated-col">From $0</td>
+          <td>$23–$65/mo</td>
+          <td>$200+/mo</td>
+          <td>$15–$50/mo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="slide-num">6 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 7 — PROOF / SOCIAL ======================== -->
+<section class="slide dark-slide" id="s7">
+  <div class="bg-ring" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+  <div class="slide-inner">
+    <p class="kicker">Why it works</p>
+    <h2>Restaurants using Plated<br>see results <strong>immediately.</strong></h2>
+    <div class="card-grid cols-2" style="margin-top:2rem;">
+      <div class="card">
+        <p class="quote">“I had a site live before my dinner service. I didn’t touch a single line of code.”</p>
+        <p class="quote-attr">RESTAURANT OWNER · CHARLOTTE, NC</p>
+      </div>
+      <div class="card">
+        <p class="quote">“Finally a website that shows my menu the way I want it — not shoved into a generic template.”</p>
+        <p class="quote-attr">FOOD TRUCK OPERATOR · RALEIGH, NC</p>
+      </div>
+    </div>
+    <div class="stat-row" style="margin-top:2.5rem;">
+      <div>
+        <div class="stat-big">5 min</div>
+        <div class="stat-label">average time to a live site</div>
+      </div>
+      <div>
+        <div class="stat-big">100%</div>
+        <div class="stat-label">mobile-first — looks great on every phone</div>
+      </div>
+      <div>
+        <div class="stat-big">$0</div>
+        <div class="stat-label">to get started on the free plan</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">7 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 8 — PRICING ======================== -->
+<section class="slide light-slide" id="s8">
+  <div class="slide-inner">
+    <p class="kicker">Simple pricing</p>
+    <h2>Pay for what you need.<br><strong>Nothing more.</strong></h2>
+    <div class="card-grid cols-3" style="margin-top:2rem;">
+      <div class="card">
+        <div class="card-label">Free</div>
+        <h3 style="font-size:2rem;">$0<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
+        <p style="margin-top:0.75rem;">1 restaurant site · Plated subdomain · All themes · Menu builder · SEO basics</p>
+      </div>
+      <div class="card" style="border:2px solid var(--sienna);position:relative;">
+        <div style="position:absolute;top:-12px;left:1.5rem;background:var(--sienna);color:#fff8f2;font-size:0.72rem;font-weight:800;padding:0.25rem 0.75rem;border-radius:999px;letter-spacing:0.1em;">MOST POPULAR</div>
+        <div class="card-label">Pro</div>
+        <h3 style="font-size:2rem;">$19<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
+        <p style="margin-top:0.75rem;">3 sites · Custom domain · Priority deploy · Delivery platform links · Analytics</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Agency</div>
+        <h3 style="font-size:2rem;">$49<span style="font-size:1rem;font-family:sans-serif;font-weight:400;color:var(--muted);">/mo</span></h3>
+        <p style="margin-top:0.75rem;">Unlimited sites · White-label · All Pro features · Priority support</p>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:1.5rem;text-align:center;">No contracts. Cancel anytime. Start free — upgrade when you’re ready.</p>
+  </div>
+  <span class="slide-num">8 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 9 — HOW TO GET STARTED ======================== -->
+<section class="slide dark-slide" id="s9">
+  <div class="slide-inner">
+    <p class="kicker">Getting started</p>
+    <h2>Your site could be live<br><strong>before dinner service.</strong></h2>
+    <div class="steps" style="margin-top:2rem;">
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Sign up free at plated.io</strong>
+          <p>No credit card required. Takes 30 seconds.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Run the onboarding wizard</strong>
+          <p>4 quick questions. Plated generates your starter site instantly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Add your menu &amp; photos</strong>
+          <p>Fill in the details. Add your logo, hours, and social links.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <strong>Publish</strong>
+          <p>Hit deploy. Your site goes live immediately on a fast global CDN.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">9 / 10</span>
+</section>
+
+<!-- ======================== SLIDE 10 — CTA ======================== -->
+<section class="slide amber-slide" id="s10">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="logo-mark" style="justify-content:center;">
+      <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="rgba(255,255,255,0.12)"/>
+        <circle cx="32" cy="32" r="18" stroke="#f4ede4" stroke-width="3" fill="none"/>
+        <circle cx="32" cy="32" r="12" stroke="#f4ede4" stroke-width="1.5" fill="none" opacity="0.4"/>
+        <line x1="16" y1="20" x2="16" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="20" x2="19" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="22" y1="20" x2="22" y2="28" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="28" x2="19" y2="44" stroke="#c98f4a" stroke-width="2" stroke-linecap="round"/>
+        <line x1="45" y1="20" x2="45" y2="44" stroke="#8a4b2f" stroke-width="2" stroke-linecap="round"/>
+        <path d="M45 20 C48 22 48 28 45 30" stroke="#8a4b2f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="logo-word">Plated</span>
+    </div>
+    <h1 style="max-width:14ch;margin:0 auto;">Ready to fill<br>more tables?</h1>
+    <p class="lead" style="margin:1.5rem auto 0;max-width:46ch;">Start free. No credit card. Your restaurant site live in under 5 minutes.</p>
+    <a class="cta-btn" href="https://plated.io">Get started free →</a>
+    <p class="quote-attr" style="margin-top:2.5rem;">plated.io &nbsp;·&nbsp; hello@plated.io</p>
+  </div>
+  <span class="slide-num">10 / 10</span>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const nav    = document.getElementById('nav');
+
+  slides.forEach((slide, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot';
+    btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    btn.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
+    nav.appendChild(btn);
+  });
+
+  const dots = nav.querySelectorAll('.dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // keyboard nav
+  document.addEventListener('keydown', (e) => {
+    const active = Array.from(dots).findIndex(d => d.classList.contains('active'));
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && active < slides.length - 1) {
+      slides[active + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && active > 0) {
+      slides[active - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>
