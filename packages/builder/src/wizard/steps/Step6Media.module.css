@@ -1,0 +1,83 @@
+.slot {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.slotHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.slotLabel {
+  display: block;
+  font-weight: 700;
+  color: var(--app-text, #241712);
+  margin-bottom: 0.15rem;
+}
+
+.slotHint {
+  display: block;
+  font-size: 0.8rem;
+  color: #8a7262;
+}
+
+.slotActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pickBtn {
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 47, 35, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--app-text, #241712);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pickBtn:hover { background: rgba(255, 255, 255, 1); }
+
+.toolBtn {
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(138, 75, 47, 0.25);
+  background: rgba(138, 75, 47, 0.06);
+  color: var(--app-accent, #8a4b2f);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.toolBtn:hover { background: rgba(138, 75, 47, 0.12); }
+
+.preview {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(74, 47, 35, 0.18);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+.previewImg {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  display: block;
+}
+
+.previewEmpty {
+  color: #8a7262;
+  font-size: 0.9rem;
+}

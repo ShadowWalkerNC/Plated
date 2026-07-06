@@ -1,0 +1,100 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 12, 8, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  background: #fdfaf6;
+  border-radius: 1.4rem;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-width: 860px;
+  width: 92vw;
+  max-height: 88vh;
+  box-shadow: 0 24px 64px rgba(18, 12, 8, 0.35);
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid rgba(74, 47, 35, 0.1);
+}
+
+.dialogTitle {
+  font-weight: 700;
+  color: #241712;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(74, 47, 35, 0.07);
+  color: #241712;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn:hover { background: rgba(74, 47, 35, 0.14); }
+
+.cropWrap {
+  overflow: auto;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0ebe4;
+}
+
+.cropImage {
+  max-width: 100%;
+  max-height: 60vh;
+  display: block;
+}
+
+.dialogFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.4rem;
+  border-top: 1px solid rgba(74, 47, 35, 0.1);
+}
+
+.cancelBtn {
+  min-height: 42px;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 47, 35, 0.18);
+  background: transparent;
+  color: #6e5a4d;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  min-height: 42px;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--app-accent, #8a4b2f);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirmBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
