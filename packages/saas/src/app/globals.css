@@ -1,32 +1,39 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Plated SaaS — global styles
+ * Token import must be first so all --app-* vars are available
+ * to every module-level CSS file in the app.
+ */
+@import '../styles/tokens.css';
 
-:root {
-  --color-bg:         #fcf8f3;
-  --color-surface:    #ffffff;
-  --color-border:     rgba(74,47,35,0.1);
-  --color-text:       #1e1612;
-  --color-text-muted: #7a6254;
-  --color-primary:    #8a4b2f;
-  --color-primary-fg: #fff8f2;
-  --color-accent:     #c98f4a;
-  --radius-card:      1.25rem;
-  --font-sans:        'Inter', system-ui, sans-serif;
-  --font-display:     'Cormorant Garamond', Georgia, serif;
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text);
-  line-height: 1.6;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  background: var(--app-bg);
+  color: var(--app-text);
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: inherit; text-decoration: none; }
+a   { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--app-accent-subtle);
+  color: var(--app-text);
+}
 
 .container {
   width: min(100%, 1280px);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: var(--space-6);
 }

@@ -2,6 +2,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.js';
+import './styles/tokens.css'; // ← must come before base.css
 import './styles/base.css';
 
 const root = document.getElementById('root');
