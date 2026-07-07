@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Test & Type-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # ── Cache Turbo remote cache (local filesystem fallback) ──────────────
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ── Build dependency chain required by tests ──────────────────────────
+      # types must build first; astro-output depends on types;
+      # generator depends on both and is what the tests import.
+      - name: Build @plated/types
+        run: pnpm --filter @plated/types build
+
+      - name: Build @plated/astro-output
+        run: pnpm --filter @plated/astro-output build
+
+      - name: Build @plated/generator
+        run: pnpm --filter @plated/generator build
+
+      # ── Tests ─────────────────────────────────────────────────────────────
+      # turbo run test picks up every package that has a "test" script.
+      # Currently: @plated/generator and @plated/saas.
+      # NEXT_PUBLIC_* stubs prevent saas from crashing on missing env.
+      - name: Run tests
+        run: pnpm turbo run test
+        env:
+          NEXT_PUBLIC_APP_HOST:    app.plated.io
+          NEXT_PUBLIC_PLATED_HOST: plated.io
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
+
+      # ── Type-check ────────────────────────────────────────────────────────
+      - name: Type-check all packages
+        run: pnpm turbo run type-check
+        env:
+          NEXT_PUBLIC_APP_HOST:    app.plated.io
+          NEXT_PUBLIC_PLATED_HOST: plated.io
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
+
+      # ── Coverage artifact ─────────────────────────────────────────────────
+      # Only upload if coverage directories exist (avoids failure when
+      # a package has no coverage output).
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ github.run_id }}
+          path: |
+            packages/generator/coverage/
+            packages/saas/coverage/
+          if-no-files-found: ignore
+          retention-days: 7
