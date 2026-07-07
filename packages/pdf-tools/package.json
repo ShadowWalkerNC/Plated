@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "vitest run",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -23,7 +24,8 @@
   "devDependencies": {
     "typescript": "^5.4.0",
     "@types/node": "^22.0.0",
-    "@types/qrcode": "^1.5.5"
+    "@types/qrcode": "^1.5.5",
+    "vitest": "^1.0.0"
   },
   "engines": {
     "node": ">=22.0.0"
