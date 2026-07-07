@@ -14,6 +14,7 @@ import { registerProjectHandlers }      from './ipc/project.js';
 import { registerPdfHandlers }          from './ipc/pdf.js';
 import { registerQrHandlers }           from './ipc/qr.js';
 import { registerBackgroundHandlers }   from './ipc/background.js';
+import { registerPreviewHandlers }      from './ipc/preview.js';
 
 const isDev = !app.isPackaged;
 const VITE_DEV_URL = 'http://localhost:5173';
@@ -81,6 +82,7 @@ function registerIpc(): void {
   registerPdfHandlers(ipcMain, dialog);
   registerQrHandlers(ipcMain, dialog);
   registerBackgroundHandlers(ipcMain);
+  registerPreviewHandlers(ipcMain);
 }
 
 function configureAutoUpdater(): void {
@@ -116,6 +118,8 @@ app.on('window-all-closed', () => {
 app.on('web-contents-created', (_e, contents) => {
   contents.on('will-navigate', (event, url) => {
     if (isDev && url.startsWith(VITE_DEV_URL)) return;
+    // Allow the preview server origin through
+    if (url.startsWith('http://127.0.0.1:')) return;
     event.preventDefault();
   });
 });
