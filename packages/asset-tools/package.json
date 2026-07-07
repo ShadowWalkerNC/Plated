@@ -16,7 +16,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@plated/types": "workspace:*"
+    "@plated/types": "workspace:*",
+    "sharp": "^0.33.0",
+    "satori": "^0.10.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
