@@ -1,27 +1,31 @@
-// IPC handler — generator channels
+/**
+ * generator.ts — IPC handlers for the Plated generator pipeline.
+ *
+ * Channels:
+ *   generate        → runs the full generate() pipeline (files written to outputDir)
+ *   generate:dryRun → returns the file plan without writing anything
+ */
 import type { IpcMain } from 'electron';
-import { tmpdir } from 'node:os';
-import { join }   from 'node:path';
-import { generate } from '@plated/generator';
+import { generate, dryRun } from '@plated/generator';
 import type { ProjectSchema } from '@plated/types';
 
 export function registerGeneratorHandlers(ipcMain: IpcMain): void {
-  // Full generation — writes to outputDir
-  ipcMain.handle(
-    'generate',
-    async (
-      _event,
-      payload: { schema: ProjectSchema; outputDir: string; includeSource?: boolean },
-    ) => {
-      return generate(payload.schema, payload.outputDir);
-    },
-  );
+  // ── generate ────────────────────────────────────────────────────────────────
+  ipcMain.handle('generate', async (_event, payload: {
+    schema: ProjectSchema;
+    outputDir: string;
+    includeSource?: boolean;
+  }) => {
+    const { schema, outputDir, includeSource = false } = payload;
+    const files = await generate(schema, outputDir, { includeSource });
+    return { ok: true, fileCount: files.length, outputDir };
+  });
 
-  // Dry-run — returns file count + warnings without writing
-  ipcMain.handle(
-    'generate:dryRun',
-    async (_event, payload: { schema: ProjectSchema }) => {
-      return generate(payload.schema, join(tmpdir(), 'plated-dryrun'), { dryRun: true });
-    },
-  );
+  // ── generate:dryRun ─────────────────────────────────────────────────────────
+  ipcMain.handle('generate:dryRun', async (_event, payload: {
+    schema: ProjectSchema;
+  }) => {
+    const files = await dryRun(payload.schema);
+    return { ok: true, files: files.map(f => f.path) };
+  });
 }

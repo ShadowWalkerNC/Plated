@@ -1,44 +1,40 @@
 /**
- * IPC handler — PDF export channels
+ * pdf.ts — IPC handler for PDF menu export.
  *
- * Channels:
- *   pdf:exportMenu  — saves a printable menu PDF to a user-chosen path
+ * Channel:
+ *   pdf:exportMenu → generates a printable PDF from MenuSchema,
+ *                    prompts save dialog, writes file to disk.
  *
- * All heavy lifting is in @plated/pdf-tools. This file only:
- *   1. Shows a native Save dialog
- *   2. Calls generateMenuPdf()
- *   3. Writes the buffer to disk
- *   4. Returns { ok, filePath? } to the renderer
+ * Implementation delegates to @plated/pdf-tools which wraps jsPDF.
+ * That package is Phase 2 work; until it exists this handler is
+ * a correct stub that will resolve once pdf-tools is published.
  */
-import type { IpcMain, dialog as DialogModule } from 'electron';
-import { writeFile }         from 'node:fs/promises';
-import { generateMenuPdf }   from '@plated/pdf-tools';
-import type { ProjectSchema } from '@plated/types';
+import type { IpcMain, Dialog } from 'electron';
+import { writeFile }            from 'node:fs/promises';
+import type { MenuSchema }      from '@plated/types';
 
-type Dialog = typeof DialogModule;
+export function registerPdfHandlers(ipcMain: IpcMain, dialog: Dialog): void {
+  ipcMain.handle('pdf:exportMenu', async (_event, schema: MenuSchema) => {
+    // Dynamic import so main.ts doesn't hard-error if pdf-tools isn't built yet.
+    let generateMenuPdf: (schema: MenuSchema) => Promise<Buffer>;
+    try {
+      const mod = await import('@plated/pdf-tools');
+      generateMenuPdf = mod.generateMenuPdf;
+    } catch {
+      return { ok: false, reason: '@plated/pdf-tools is not yet available' };
+    }
 
-export function registerPdfHandlers(ipc: IpcMain, dialog: Dialog): void {
-  ipc.handle('pdf:exportMenu', async (_e, schema: ProjectSchema) => {
-    const name = schema.business.name || 'menu';
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
-
+    const menuTitle  = (schema as any)?.name ?? 'menu';
+    const safeName   = menuTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const { canceled, filePath } = await dialog.showSaveDialog({
-      title:       'Save menu PDF',
-      defaultPath: `${slug}-menu.pdf`,
+      title:       'Save PDF menu',
+      defaultPath: `${safeName}.pdf`,
       filters:     [{ name: 'PDF Document', extensions: ['pdf'] }],
     });
     if (canceled || !filePath) return { ok: false, reason: 'cancelled' };
 
-    try {
-      const buffer = generateMenuPdf(schema.menu, {
-        restaurantName: schema.business.name,
-        tagline:        schema.business.tagline,
-        accentColor:    schema.branding.primaryColor,
-      });
-      await writeFile(filePath, buffer);
-      return { ok: true, filePath };
-    } catch (err) {
-      return { ok: false, reason: err instanceof Error ? err.message : String(err) };
-    }
+    const buffer = await generateMenuPdf(schema);
+    await writeFile(filePath, buffer);
+    return { ok: true, filePath };
   });
 }

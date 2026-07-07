@@ -1,29 +1,42 @@
-import type { IpcMain, BrowserWindow } from 'electron';
-import type { AppUpdater } from 'electron-updater';
+/**
+ * updater.ts — IPC handlers for electron-updater auto-update.
+ *
+ * Channels:
+ *   updater:check   → manually trigger an update check
+ *   updater:install → quit and install a downloaded update
+ *   updater:version → returns the current running app version
+ *
+ * Update lifecycle events are pushed to the renderer via
+ * 'updater:event' (handled by main.ts configureAutoUpdater).
+ */
+import type { IpcMain }   from 'electron';
+import { app }            from 'electron';
+import type { AutoUpdater } from 'electron-updater';
+import type { BrowserWindow } from 'electron';
 
 export function registerUpdateHandlers(
-  ipc:     IpcMain,
-  updater: AppUpdater,
-  win:     BrowserWindow | null,
+  ipcMain: IpcMain,
+  autoUpdater: AutoUpdater,
+  mainWindow: BrowserWindow | null,
 ): void {
-  // Renderer can manually trigger an update check
-  ipc.handle('updater:check', async () => {
+  // ── updater:check ─────────────────────────────────────────────────────────────
+  ipcMain.handle('updater:check', async () => {
     try {
-      const result = await updater.checkForUpdates();
-      return { ok: true, updateInfo: result?.updateInfo ?? null };
-    } catch (err) {
-      return { ok: false, error: err instanceof Error ? err.message : String(err) };
+      const result = await autoUpdater.checkForUpdates();
+      return { ok: true, result };
+    } catch (err: unknown) {
+      return { ok: false, reason: (err as Error).message };
     }
   });
 
-  // Quit and install the downloaded update
-  ipc.handle('updater:install', () => {
-    updater.quitAndInstall(false, true);
+  // ── updater:install ───────────────────────────────────────────────────────────
+  ipcMain.handle('updater:install', () => {
+    autoUpdater.quitAndInstall();
+    return { ok: true };
   });
 
-  // Expose current app version
-  ipc.handle('updater:version', () => {
-    const { app } = require('electron') as typeof import('electron');
-    return app.getVersion();
+  // ── updater:version ───────────────────────────────────────────────────────────
+  ipcMain.handle('updater:version', () => {
+    return { ok: true, version: app.getVersion() };
   });
 }

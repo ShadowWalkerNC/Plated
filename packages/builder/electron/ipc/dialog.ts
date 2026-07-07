@@ -1,39 +1,36 @@
-// IPC handler — native dialog channels
+/**
+ * dialog.ts — IPC wrappers for Electron dialog.show*.
+ *
+ * Channels:
+ *   dialog:pickOutputDir  → open-directory dialog → string | null
+ *   dialog:pickFile       → open-file dialog → string | null
+ *   dialog:saveFile       → save dialog → string | null
+ */
 import type { IpcMain, Dialog } from 'electron';
 
 export function registerDialogHandlers(ipcMain: IpcMain, dialog: Dialog): void {
+  // ── dialog:pickOutputDir ─────────────────────────────────────────────────────
   ipcMain.handle('dialog:pickOutputDir', async () => {
-    const result = await dialog.showOpenDialog({
-      title:      'Choose export folder',
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      title:      'Choose output folder',
+      buttonLabel: 'Select Folder',
       properties: ['openDirectory', 'createDirectory'],
     });
-    return result.canceled ? null : result.filePaths[0] ?? null;
+    return canceled ? null : filePaths[0] ?? null;
   });
 
-  ipcMain.handle(
-    'dialog:pickFile',
-    async (_event, options?: { filters?: Electron.FileFilter[] }) => {
-      const result = await dialog.showOpenDialog({
-        title:      'Choose a file',
-        properties: ['openFile'],
-        filters:    options?.filters,
-      });
-      return result.canceled ? null : result.filePaths[0] ?? null;
-    },
-  );
+  // ── dialog:pickFile ──────────────────────────────────────────────────────────
+  ipcMain.handle('dialog:pickFile', async (_event, options?: Electron.OpenDialogOptions) => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      ...options,
+    });
+    return canceled ? null : filePaths[0] ?? null;
+  });
 
-  ipcMain.handle(
-    'dialog:saveFile',
-    async (
-      _event,
-      options?: { defaultPath?: string; filters?: Electron.FileFilter[] },
-    ) => {
-      const result = await dialog.showSaveDialog({
-        title:       'Save file',
-        defaultPath: options?.defaultPath,
-        filters:     options?.filters,
-      });
-      return result.canceled ? null : result.filePath ?? null;
-    },
-  );
+  // ── dialog:saveFile ──────────────────────────────────────────────────────────
+  ipcMain.handle('dialog:saveFile', async (_event, options?: Electron.SaveDialogOptions) => {
+    const { canceled, filePath } = await dialog.showSaveDialog(options ?? {});
+    return canceled ? null : filePath ?? null;
+  });
 }
