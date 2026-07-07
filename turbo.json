@@ -7,17 +7,23 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "outputs": []
+      "outputs": [],
+      "cache": false
     },
     "test:coverage": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "lint": {
       "outputs": []
     },
-    "typecheck": {
-      "outputs": []
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
