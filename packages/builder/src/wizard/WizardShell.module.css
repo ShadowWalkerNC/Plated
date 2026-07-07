@@ -136,11 +136,20 @@
 .footerNav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
 }
 
+/* Groups the right-side button(s) — one on steps 1-7, two on step 8 */
+.footerNavRight {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .backBtn,
-.nextBtn {
+.nextBtn,
+.editorBtn {
   min-height: 48px;
   padding: 0.85rem 1.5rem;
   border-radius: 999px;
@@ -159,6 +168,19 @@
   background: #8a4b2f;
   color: #fff8f2;
   box-shadow: 0 4px 18px rgba(138, 75, 47, 0.22);
+}
+
+/* Secondary editor button — amber outline, sits left of the primary */
+.editorBtn {
+  border: 1.5px solid rgba(201, 143, 74, 0.55);
+  background: rgba(201, 143, 74, 0.08);
+  color: #8a5a10;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.editorBtn:hover {
+  background: rgba(201, 143, 74, 0.16);
+  border-color: rgba(201, 143, 74, 0.8);
 }
 
 .placeholder {

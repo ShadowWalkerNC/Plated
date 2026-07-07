@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useWizardStore } from '../store/useWizardStore.js';
-import { Step1Business } from './steps/Step1Business.js';
-import { Step2Website } from './steps/Step2Website.js';
-import { Step3Social } from './steps/Step3Social.js';
-import { Step4Location } from './steps/Step4Location.js';
-import { Step5Menu } from './steps/Step5Menu.js';
-import { Step6Media } from './steps/Step6Media.js';
-import { Step7Template } from './steps/Step7Template.js';
+import { Step1Business }   from './steps/Step1Business.js';
+import { Step2Website }    from './steps/Step2Website.js';
+import { Step3Social }     from './steps/Step3Social.js';
+import { Step4Location }   from './steps/Step4Location.js';
+import { Step5Menu }       from './steps/Step5Menu.js';
+import { Step6Media }      from './steps/Step6Media.js';
+import { Step7Template }   from './steps/Step7Template.js';
 import { Step8Extensions } from './steps/Step8Extensions.js';
 import styles from './WizardShell.module.css';
 
@@ -26,8 +26,10 @@ export function WizardShell() {
   const prevStep     = useWizardStore((s) => s.prevStep);
   const nextStep     = useWizardStore((s) => s.nextStep);
   const goToStep     = useWizardStore((s) => s.goToStep);
+  const openEditor   = useWizardStore((s) => s.openEditor);
   const schema       = useWizardStore((s) => s.schema);
   const progress     = useMemo(() => (currentStep / STEP_META.length) * 100, [currentStep]);
+  const isLastStep   = currentStep === STEP_META.length;
 
   const stepView = (() => {
     switch (currentStep) {
@@ -91,11 +93,26 @@ export function WizardShell() {
 
       <main className={styles.main}>
         <div className={styles.card}>{stepView}</div>
+
         <div className={styles.footerNav}>
+          {/* Back — always left */}
           <button className={styles.backBtn} onClick={prevStep}>Back</button>
-          <button className={styles.nextBtn} onClick={nextStep}>
-            {currentStep === STEP_META.length ? 'Export →' : 'Continue'}
-          </button>
+
+          {/* Right side: two buttons on step 8, one button elsewhere */}
+          <div className={styles.footerNavRight}>
+            {isLastStep && (
+              <button
+                className={styles.editorBtn}
+                onClick={openEditor}
+                type="button"
+              >
+                🧱 Open Editor
+              </button>
+            )}
+            <button className={styles.nextBtn} onClick={nextStep}>
+              {isLastStep ? 'Finish & Export →' : 'Continue'}
+            </button>
+          </div>
         </div>
       </main>
     </div>
