@@ -1,6 +1,6 @@
 import { useWizardStore } from '../../store/useWizardStore.js';
 import { StylePicker }    from '../components/StylePicker.js';
-import type { StyleTemplate, BusinessType, ColorTheme } from '@plated/types';
+import type { StyleTemplate, ColorTheme } from '@plated/types';
 import styles from './Step.module.css';
 
 /**
@@ -8,6 +8,8 @@ import styles from './Step.module.css';
  *   - packages/generator/src/themeRegistry.ts (THEME_REGISTRY)
  *   - packages/types/src/template.ts (StyleTemplate)
  *   - styles/<id>/variables.css (on-disk CSS)
+ *
+ * Business type selection was moved to Step 2 (Step2Website).
  */
 const STYLE_OPTIONS: Array<{
   id:          StyleTemplate;
@@ -66,17 +68,6 @@ const VARIANT_OPTIONS: Array<{ value: ColorTheme; label: string; hint: string }>
   { value: 'cool',    label: 'Cool',    hint: 'Shifts accents toward cooler tones.' },
 ];
 
-const BUSINESS_TYPE_OPTIONS: Array<{ value: BusinessType; label: string }> = [
-  { value: 'restaurant',    label: 'Restaurant' },
-  { value: 'food-truck',    label: 'Food Truck' },
-  { value: 'bar',           label: 'Bar' },
-  { value: 'cafe',          label: 'Cafe' },
-  { value: 'bakery',        label: 'Bakery' },
-  { value: 'catering',      label: 'Catering' },
-  { value: 'food-stand',    label: 'Food Stand' },
-  { value: 'ghost-kitchen', label: 'Ghost Kitchen' },
-];
-
 export function Step7Template() {
   const schema       = useWizardStore((s) => s.schema);
   const updateSchema = useWizardStore((s) => s.updateSchema);
@@ -84,30 +75,18 @@ export function Step7Template() {
   return (
     <section className={styles.step}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Template &amp; Style</h1>
+        <h1 className={styles.title}>Style &amp; Colour</h1>
         <p className={styles.subtitle}>
-          Choose the business type, design direction, and colour variant for your site.
+          Choose a design direction and colour variant for your site.
+          Business type was set in Step 2.
         </p>
       </header>
-
-      {/* ── Business type ──────────────────────────────────── */}
-      <label className={styles.choiceCard}>
-        <span className={styles.choiceLabel}>Business type</span>
-        <select
-          value={schema.businessType}
-          onChange={(e) => updateSchema({ businessType: e.target.value as BusinessType })}
-        >
-          {BUSINESS_TYPE_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </label>
 
       {/* ── Style picker ───────────────────────────────────── */}
       <StylePicker
         value={schema.styleTemplate ?? 'hearth'}
         options={STYLE_OPTIONS}
-        onChange={(styleTemplate) => updateSchema({ styleTemplate })}
+        onChange={(styleTemplate) => updateSchema({ styleTemplate: styleTemplate as StyleTemplate })}
       />
 
       {/* ── Variant picker ─────────────────────────────────── */}
