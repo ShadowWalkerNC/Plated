@@ -8,12 +8,58 @@ Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(s
 
 > Jul–Sep 2026. In progress.
 
-### Planned
+### Completed — Jul 6–7, 2026
+
+#### feat(asset-tools): implement all four pipeline functions
+- `generateFavicons(sourceImagePath)` — ICO (16+32px, pure-Node binary builder) + Apple 180px +
+  Android 192/512px. All 5 sizes in parallel via `Promise.all`. Alpha flattened to white before
+  resize so transparent logos don’t bleed into ICO frames.
+- `optimizeImage(input, output, options?)` — WebP at configurable quality (default 82), max width
+  1920 with `withoutEnlargement`. Blur placeholder: 8px-wide quality-20 WebP → base64 data URL.
+  Returns `{ width, height, blurDataUrl }`.
+- `generateOgImage(opts)` — satori (JSX object tree → SVG) + sharp (SVG → PNG), 1200×630.
+  Left-2/3 white panel + right-1/3 accent bar. Tries Inter from `@fontsource/inter` at 3 pnpm
+  hoist paths; falls back to sharp SVG composite so pipeline never hard-crashes.
+- `extractPrimaryColor(imagePath)` — flatten alpha to white, resize to 100×100, channel-mean
+  R/G/B stats → `#rrggbb`. More stable than sharp’s histogram-based `dominant` for logos.
+- `FaviconSet` and `OgImageOptions` types defined once in `index.ts` (no duplication).
+- Deps added: `sharp ^0.33`, `satori ^0.10`.
+- Commits: `a62d126`
+
+#### feat(builder): Step2Website — business type card grid + existing URL
+- Full rewrite of `Step2Website.tsx`. New title: “Business Type”.
+- 4×2 visual card grid covering all 8 `BusinessType` values (restaurant, food-truck, bar, cafe,
+  bakery, catering, food-stand, ghost-kitchen). Each card: emoji icon + name + one-line description.
+- Card click calls `updateSchema({ businessType })`. Active card gets amber ring matching
+  `StylePicker` convention.
+- Existing website URL field preserved below the grid (`type="url"`).
+- Contextual note card: swaps between “New launch” and “Migrating from an existing site”
+  depending on whether a URL has been entered.
+- New CSS module: `Step2Website.module.css` (4-col grid, hover + active states).
+- Commit: `09f3fcf`
+
+#### refactor(builder): Step7Template — remove business type select
+- Business type `<select>` and `BUSINESS_TYPE_OPTIONS` array removed from `Step7Template.tsx`.
+- Step 7 is now style picker + colour variant only.
+- Title updated to “Style & Colour”. Subtitle notes business type was set in Step 2.
+- Commit: `09f3fcf`
+
+#### docs(readme): v5.1 — full README rewrite
+- Removed stale Next.js 15 / Clerk / Drizzle / Vercel / Netlify references.
+- Stack badge corrected: Astro 5 + Electron + React 19.
+- Monorepo structure updated to match actual packages/ layout.
+- 8-step wizard table added (was incorrectly documented as 4 steps).
+- Key features expanded: asset pipeline, AI tools, DnD editor, media library, PDF/QR, integrations.
+- Phase roadmap table added.
+- Env vars table updated to match `.env.example`.
+- Commit: `5701ef9`
+
+### Planned — Phase 1 remaining
 - `packages/generator/` — full `generate()` implementation: ProjectSchema → Astro file output
-- `packages/builder/electron/` — Electron main.ts, preload.ts, IPC handler stubs
+- `packages/template-engine/` — plated.template.json reader + block/slot mapper
+- `templates/restaurant/` — complete plated.template.json manifest
+- `styles/hearth/` — complete variables.css tokens
 - `packages/cli/` — CLI wired to spawn Electron binary
-- CulinaryOS extension install command (confirm name + integration contract)
-- White-label license purchase URL
 - Turborepo pipeline: generator build verified end-to-end
 
 ---

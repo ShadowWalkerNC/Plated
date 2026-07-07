@@ -10,7 +10,7 @@
 
 ```
 Project:      Plated
-Version:      4.0
+Version:      4.1
 Description:  Full-featured guided website builder for the restaurant and hospitality industry.
               Two modes: Local Builder (Electron desktop app, offline-capable, static Astro zip
               export) and SaaS Hub (PLATED_DOMAIN — live editing, Supabase-backed, mobile-first).
@@ -393,10 +393,41 @@ Quick reference by category:
 Phase:     1 — Generator Core
 Goal:      Build packages/generator/ and packages/template-engine/.
            Restaurant template + Hearth style → working Astro zip output.
-           Electron shell scaffold in packages/builder/electron/.
-           CLI spawns Electron binary. No full wizard UI yet.
+           Electron shell + IPC handlers in packages/builder/electron/.
+           CLI spawns Electron binary.
 Timeline:  Jul–Sep 2026
-Next:      Phase 2 — Full Electron wizard UI
+
+Completed so far (Jul 6–7, 2026):
+  ✓ packages/asset-tools/ — fully implemented
+      generateFavicons   — ICO (16+32) + Apple 180 + Android 192/512, pure-Node ICO builder
+      optimizeImage      — WebP output + blur placeholder data URL
+      generateOgImage    — satori → SVG → sharp → PNG, Inter font + fallback renderer
+      extractPrimaryColor — channel-mean hex, alpha-flatten before stats()
+  ✓ packages/builder/src/wizard/ — all 8 steps functional
+      Step1Business  — name, tagline, description, contact, founded year
+      Step2Website   — REWRITTEN: 4×2 business type card grid + existing URL field
+      Step3Social    — social profiles, review platforms, delivery links
+      Step4Location  — address + hours builder
+      Step5Menu      — MenuBuilder: categories, items, prices, dietary tags, reorder
+      Step6Media     — logo/hero upload, brand color extraction
+      Step7Template  — TRIMMED: style picker + colour variant (business type moved to Step 2)
+      Step8Extensions — analytics toggles, add-ons
+  ✓ packages/builder/electron/bg-worker.html — complete and correctly wired
+      @imgly/background-removal → ArrayBuffer → IPC round-trip
+  ✓ MenuBuilder.module.css — confirmed complete (all 25+ classes present)
+  ✓ README.md v5.1 — stack, wizard, features, roadmap all updated
+
+Remaining Phase 1 items:
+  □ packages/generator/ — full generate() implementation: ProjectSchema → Astro file output
+  □ packages/template-engine/ — plated.template.json reader + block/slot mapper
+  □ templates/restaurant/ — complete plated.template.json manifest
+  □ styles/hearth/ — complete variables.css tokens
+  □ packages/cli/ — CLI wired to spawn Electron binary
+  □ Turborepo pipeline: generator build verified end-to-end
+
+Note: Wizard UI is substantially complete ahead of the Phase 2 schedule.
+      Phase 2 will focus on block DnD editor, media library, and remaining
+      template/style stubs rather than rebuilding the wizard from scratch.
 ```
 
 ---
@@ -406,7 +437,7 @@ Next:      Phase 2 — Full Electron wizard UI
 After loading this file, confirm in DISPATCH:
 
 ```
-Project: Plated v4.0
+Project: Plated v4.1
 Stack: TypeScript · Astro 5 · Electron · React 19+Vite · Supabase · Gemini · sharp · satori · Turborepo
 Phase: 1 — Generator Core
 Product: Restaurant website builder — Electron Local (offline) + SaaS Hub (PLATED_DOMAIN)
@@ -424,5 +455,5 @@ Do NOT suggest: Tauri, Next.js, Python, Docker, Puppeteer, Contentful, Sanity, O
 
 ---
 
-*Version: 4.0 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
-*Last updated: July 6, 2026 — Renamed from NexCMS to Plated.*
+*Version: 4.1 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
+*Last updated: July 7, 2026 — Phase 1 wizard progress documented.*
