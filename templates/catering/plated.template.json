@@ -1,0 +1,96 @@
+{
+  "manifestVersion": "2.0",
+  "businessType": "catering",
+  "displayName": "Catering",
+  "description": "Full-service catering company with services overview, event gallery, testimonials, and contact / quote form. Lead-generation focused.",
+  "defaultStyle": "hearth",
+  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "slots": [
+    { "field": "business.name",        "type": "text",     "required": true,  "label": "Company Name",              "hint": "Your catering company name.",                                                             "wizardStep": 1 },
+    { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Unforgettable events, exceptional food.\"",                                       "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Company",       "hint": "What events you cater, how many guests, experience, accolades.",                       "wizardStep": 1 },
+    { "field": "business.phone",       "type": "text",     "required": true,  "label": "Phone Number",              "hint": "Primary contact for booking inquiries.",                                                  "wizardStep": 1 },
+    { "field": "business.email",       "type": "text",     "required": true,  "label": "Email",                     "hint": "Primary email for quotes and contracts.",                                                "wizardStep": 1 },
+    { "field": "branding.logoUrl",     "type": "image",    "required": false, "label": "Logo",                      "hint": "PNG or SVG. Minimum 512x512.",                                                          "wizardStep": 6 },
+    { "field": "branding.heroImageUrl","type": "image",    "required": false, "label": "Hero Image",                "hint": "A beautiful event or dish shot. Min 1600x900.",                                        "wizardStep": 6 },
+    { "field": "branding.primaryColor","type": "text",     "required": false, "label": "Primary Brand Color",       "hint": "e.g. #1a3a2e for an elegant forest green.",                                           "wizardStep": 6 },
+    { "field": "menu",                 "type": "menu",     "required": false, "label": "Sample Menus / Packages",   "hint": "Breakfast, lunch, dinner, cocktail hour packages.",                                    "wizardStep": 5 },
+    { "field": "specials",             "type": "schedule", "required": false, "label": "Services Offered",          "hint": "Wedding, corporate, private dining, festivals, etc.",                                  "wizardStep": 5 },
+    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Event photography drives catering leads.",                                               "wizardStep": 3 },
+    { "field": "social.facebook",      "type": "text",     "required": false, "label": "Facebook Page URL",         "hint": "Optional.",                                                                            "wizardStep": 3 },
+    { "field": "seo.siteTitle",        "type": "text",     "required": false, "label": "Site Title (SEO)",          "wizardStep": 7 },
+    { "field": "seo.metaDescription",  "type": "text",     "required": false, "label": "Meta Description (SEO)",    "hint": "Max 160 characters.",                                                                  "wizardStep": 7 }
+  ],
+  "pages": [
+    {
+      "id": "home", "path": "/", "title": "Home", "optional": false,
+      "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","specials"],
+      "sections": [
+        { "id": "cat-hero",         "name": "Hero",           "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-hero",         "type": "hero",          "order": 0, "visible": true, "config": { "overlayOpacity": 0.45, "ctaLabel": "Get a Quote", "ctaHref": "/contact" } }
+        ]},
+        { "id": "cat-services",     "name": "Services",        "order": 1, "visible": true, "blocks": [
+          { "id": "b-cat-services",     "type": "specials",       "order": 0, "visible": true, "config": {} }
+        ]},
+        { "id": "cat-testimonials", "name": "Testimonials",    "order": 2, "visible": true, "blocks": [
+          { "id": "b-cat-testimonials", "type": "testimonials",   "order": 0, "visible": true, "config": {} }
+        ]},
+        { "id": "cat-gallery",      "name": "Gallery",          "order": 3, "visible": true, "blocks": [
+          { "id": "b-cat-gallery",      "type": "gallery",        "order": 0, "visible": true, "config": { "columns": 3 } }
+        ]},
+        { "id": "cat-cta",          "name": "Get a Quote CTA",  "order": 4, "visible": true, "blocks": [
+          { "id": "b-cat-cta",          "type": "cta",            "order": 0, "visible": true, "config": { "label": "Request a Quote", "href": "/contact" } }
+        ]}
+      ]
+    },
+    {
+      "id": "services", "path": "/services", "title": "Services", "optional": false,
+      "usesSlots": ["specials","menu"],
+      "sections": [
+        { "id": "cat-svc-list",  "name": "What We Offer",   "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-svc-list",  "type": "specials",     "order": 0, "visible": true, "config": {} }
+        ]},
+        { "id": "cat-svc-menus", "name": "Sample Menus",   "order": 1, "visible": true, "blocks": [
+          { "id": "b-cat-svc-menus", "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 99, "showPrices": false } }
+        ]}
+      ]
+    },
+    {
+      "id": "gallery", "path": "/gallery", "title": "Gallery", "optional": false,
+      "usesSlots": [],
+      "sections": [
+        { "id": "cat-gallery-full", "name": "Event Gallery", "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-gallery-full", "type": "gallery", "order": 0, "visible": true, "config": { "columns": 3 } }
+        ]}
+      ]
+    },
+    {
+      "id": "testimonials", "path": "/testimonials", "title": "Testimonials", "optional": true,
+      "usesSlots": [],
+      "sections": [
+        { "id": "cat-testimonials-full", "name": "Client Reviews", "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-testimonials-full", "type": "testimonials", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "about", "path": "/about", "title": "About", "optional": false,
+      "usesSlots": ["business.name","business.description","branding.logoUrl"],
+      "sections": [
+        { "id": "cat-about", "name": "Our Story", "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-about", "type": "text", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "contact", "path": "/contact", "title": "Contact & Quote", "optional": false,
+      "usesSlots": ["business.phone","business.email"],
+      "sections": [
+        { "id": "cat-contact", "name": "Get in Touch", "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-contact", "type": "text", "order": 0, "visible": true, "config": {} },
+          { "id": "b-cat-quote",   "type": "cta",  "order": 1, "visible": true, "config": { "label": "Email Us for a Quote", "href": "mailto:" } }
+        ]}
+      ]
+    }
+  ]
+}

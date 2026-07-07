@@ -1,0 +1,99 @@
+{
+  "manifestVersion": "2.0",
+  "businessType": "bakery",
+  "displayName": "Bakery",
+  "description": "Artisan bakery or pastry shop with product menu, gallery, online pre-order CTA, and about story. Soft warm aesthetic by default.",
+  "defaultStyle": "bloom",
+  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "slots": [
+    { "field": "business.name",        "type": "text",     "required": true,  "label": "Bakery Name",               "hint": "The name on your storefront.",                                                           "wizardStep": 1 },
+    { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Baked with love since 2012\"",                                                  "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Bakery",        "hint": "Your story, your specialities, what makes your bread / pastries unique.",               "wizardStep": 1 },
+    { "field": "business.phone",       "type": "text",     "required": false, "label": "Phone Number",              "hint": "For pre-orders and wholesale.",                                                          "wizardStep": 1 },
+    { "field": "business.email",       "type": "text",     "required": false, "label": "Email",                     "hint": "Custom orders and wholesale inquiries.",                                                  "wizardStep": 1 },
+    { "field": "branding.logoUrl",     "type": "image",    "required": false, "label": "Logo",                      "hint": "PNG or SVG. Minimum 512x512.",                                                          "wizardStep": 6 },
+    { "field": "branding.heroImageUrl","type": "image",    "required": false, "label": "Hero Photo",                "hint": "Your best product shot or storefront. Min 1600x900.",                                 "wizardStep": 6 },
+    { "field": "branding.primaryColor","type": "text",     "required": false, "label": "Primary Brand Color",       "hint": "Soft pastels or warm creams work well. e.g. #d4a96a.",                                 "wizardStep": 6 },
+    { "field": "locations",            "type": "location", "required": false, "label": "Location & Hours",          "hint": "Address and opening hours — bakeries are often early!",                                  "wizardStep": 4 },
+    { "field": "menu",                 "type": "menu",     "required": false, "label": "Products / Menu",           "hint": "Breads, pastries, cakes, seasonal items. Prices optional.",                            "wizardStep": 5 },
+    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Product photography drives bakery traffic.",                                             "wizardStep": 3 },
+    { "field": "social.facebook",      "type": "text",     "required": false, "label": "Facebook Page URL",         "hint": "Good for local community reach.",                                                        "wizardStep": 3 },
+    { "field": "social.googleBusiness","type": "text",     "required": false, "label": "Google Business Profile",   "hint": "Helps morning commuters find you.",                                                     "wizardStep": 3 },
+    { "field": "seo.siteTitle",        "type": "text",     "required": false, "label": "Site Title (SEO)",          "wizardStep": 7 },
+    { "field": "seo.metaDescription",  "type": "text",     "required": false, "label": "Meta Description (SEO)",    "hint": "Max 160 characters.",                                                                  "wizardStep": 7 }
+  ],
+  "pages": [
+    {
+      "id": "home", "path": "/", "title": "Home", "optional": false,
+      "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","menu","social.instagram"],
+      "sections": [
+        { "id": "bk-hero",      "name": "Hero",           "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-hero",      "type": "hero",        "order": 0, "visible": true, "config": { "overlayOpacity": 0.25, "ctaLabel": "Shop Our Menu", "ctaHref": "/menu" } }
+        ]},
+        { "id": "bk-menu",      "name": "Featured Items", "order": 1, "visible": true, "blocks": [
+          { "id": "b-bk-menu",      "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
+        ]},
+        { "id": "bk-order",     "name": "Pre-Order CTA",  "order": 2, "visible": true, "blocks": [
+          { "id": "b-bk-order",     "type": "cta",          "order": 0, "visible": true, "config": { "label": "Place a Custom Order", "href": "/order" } }
+        ]},
+        { "id": "bk-gallery",   "name": "Gallery",        "order": 3, "visible": true, "blocks": [
+          { "id": "b-bk-gallery",   "type": "gallery",      "order": 0, "visible": true, "config": { "columns": 3 } }
+        ]},
+        { "id": "bk-social",    "name": "Instagram",      "order": 4, "visible": true, "blocks": [
+          { "id": "b-bk-social",    "type": "social-feed",  "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
+        ]},
+        { "id": "bk-hours",     "name": "Hours & Map",    "order": 5, "visible": true, "blocks": [
+          { "id": "b-bk-hours",     "type": "hours",        "order": 0, "visible": true, "config": {} },
+          { "id": "b-bk-map",       "type": "map",          "order": 1, "visible": true, "config": { "height": 280 } }
+        ]}
+      ]
+    },
+    {
+      "id": "menu", "path": "/menu", "title": "Menu", "optional": false,
+      "usesSlots": ["menu"],
+      "sections": [
+        { "id": "bk-menu-full", "name": "Full Menu", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-menu-full", "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 99, "showPrices": true } }
+        ]}
+      ]
+    },
+    {
+      "id": "gallery", "path": "/gallery", "title": "Gallery", "optional": true,
+      "usesSlots": [],
+      "sections": [
+        { "id": "bk-gallery-full", "name": "Photo Gallery", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-gallery-full", "type": "gallery", "order": 0, "visible": true, "config": { "columns": 4 } }
+        ]}
+      ]
+    },
+    {
+      "id": "order", "path": "/order", "title": "Order", "optional": true,
+      "usesSlots": ["business.phone","business.email"],
+      "sections": [
+        { "id": "bk-order-info", "name": "How to Order", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-order-info", "type": "text", "order": 0, "visible": true, "config": {} },
+          { "id": "b-bk-order-cta", "type": "cta",  "order": 1, "visible": true, "config": { "label": "Email Your Order", "href": "mailto:" } }
+        ]}
+      ]
+    },
+    {
+      "id": "about", "path": "/about", "title": "About", "optional": false,
+      "usesSlots": ["business.name","business.description","branding.logoUrl"],
+      "sections": [
+        { "id": "bk-about", "name": "Our Story", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-about", "type": "text", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "contact", "path": "/contact", "title": "Contact", "optional": false,
+      "usesSlots": ["business.phone","business.email","locations"],
+      "sections": [
+        { "id": "bk-contact", "name": "Contact", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-contact", "type": "text", "order": 0, "visible": true, "config": {} },
+          { "id": "b-bk-map",     "type": "map",  "order": 1, "visible": true, "config": { "height": 300 } }
+        ]}
+      ]
+    }
+  ]
+}

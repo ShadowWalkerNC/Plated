@@ -1,0 +1,85 @@
+{
+  "manifestVersion": "2.0",
+  "businessType": "ghost-kitchen",
+  "displayName": "Ghost Kitchen",
+  "description": "Delivery-only or virtual restaurant. Landing page focused on ordering CTAs, delivery platform links, menu, and brand story.",
+  "defaultStyle": "steel",
+  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "slots": [
+    { "field": "business.name",        "type": "text",     "required": true,  "label": "Brand Name",                "hint": "The name customers see on DoorDash, Uber Eats, etc.",                                    "wizardStep": 1 },
+    { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Restaurant quality. Delivery speed.\"",                                          "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Brand",         "hint": "What you make, why it’s great, your concept.",                                        "wizardStep": 1 },
+    { "field": "business.phone",       "type": "text",     "required": false, "label": "Phone / Text",              "hint": "Optional — mainly for catering inquiries.",                                            "wizardStep": 1 },
+    { "field": "business.email",       "type": "text",     "required": false, "label": "Email",                     "hint": "For catering and wholesale.",                                                           "wizardStep": 1 },
+    { "field": "business.cuisineType", "type": "text",     "required": false, "label": "Cuisine Type",              "hint": "e.g. Smash Burgers, Vegan Wings, Ramen.",                                              "wizardStep": 1 },
+    { "field": "branding.logoUrl",     "type": "image",    "required": false, "label": "Logo",                      "hint": "PNG or SVG. Minimum 512x512.",                                                         "wizardStep": 6 },
+    { "field": "branding.heroImageUrl","type": "image",    "required": false, "label": "Hero Photo",                "hint": "Your best food photography. Min 1600x900.",                                           "wizardStep": 6 },
+    { "field": "branding.primaryColor","type": "text",     "required": false, "label": "Primary Brand Color",       "hint": "Bold colors perform well for delivery brands. e.g. #e63946.",                         "wizardStep": 6 },
+    { "field": "menu",                 "type": "menu",     "required": false, "label": "Menu",                      "hint": "Your full delivery menu.",                                                              "wizardStep": 5 },
+    { "field": "social.doordash",      "type": "text",     "required": false, "label": "DoorDash URL",              "hint": "Your most important link — add it.",                                                   "wizardStep": 3 },
+    { "field": "social.ubereats",      "type": "text",     "required": false, "label": "Uber Eats URL",             "hint": "Second most important.",                                                               "wizardStep": 3 },
+    { "field": "social.grubhub",       "type": "text",     "required": false, "label": "Grubhub URL",              "hint": "Optional.",                                                                            "wizardStep": 3 },
+    { "field": "social.chownow",       "type": "text",     "required": false, "label": "ChowNow URL",              "hint": "Good for direct, commission-free orders.",                                             "wizardStep": 3 },
+    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Food content + delivery links = strong acquisition funnel.",                          "wizardStep": 3 },
+    { "field": "social.tiktok",        "type": "text",     "required": false, "label": "TikTok URL",               "hint": "Viral food content drives delivery orders.",                                            "wizardStep": 3 },
+    { "field": "seo.siteTitle",        "type": "text",     "required": false, "label": "Site Title (SEO)",          "wizardStep": 7 },
+    { "field": "seo.metaDescription",  "type": "text",     "required": false, "label": "Meta Description (SEO)",    "hint": "Max 160 characters.",                                                                  "wizardStep": 7 }
+  ],
+  "pages": [
+    {
+      "id": "home", "path": "/", "title": "Home", "optional": false,
+      "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","social.doordash","social.ubereats","social.grubhub","social.chownow"],
+      "sections": [
+        { "id": "gk-hero",     "name": "Hero",           "order": 0, "visible": true, "blocks": [
+          { "id": "b-gk-hero",     "type": "hero",          "order": 0, "visible": true, "config": { "overlayOpacity": 0.4, "ctaLabel": "Order Now", "ctaHref": "/order" } }
+        ]},
+        { "id": "gk-delivery", "name": "Order Online",   "order": 1, "visible": true, "blocks": [
+          { "id": "b-gk-delivery", "type": "delivery-links", "order": 0, "visible": true, "config": {} }
+        ]},
+        { "id": "gk-menu",     "name": "Menu Preview",   "order": 2, "visible": true, "blocks": [
+          { "id": "b-gk-menu",     "type": "menu-preview",  "order": 0, "visible": true, "config": { "maxCategories": 3, "showPrices": true } }
+        ]},
+        { "id": "gk-social",   "name": "Social Feed",   "order": 3, "visible": true, "blocks": [
+          { "id": "b-gk-social",   "type": "social-feed",   "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
+        ]}
+      ]
+    },
+    {
+      "id": "menu", "path": "/menu", "title": "Menu", "optional": false,
+      "usesSlots": ["menu"],
+      "sections": [
+        { "id": "gk-menu-full", "name": "Full Menu", "order": 0, "visible": true, "blocks": [
+          { "id": "b-gk-menu-full", "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 99, "showPrices": true } }
+        ]}
+      ]
+    },
+    {
+      "id": "order", "path": "/order", "title": "Order", "optional": false,
+      "usesSlots": ["social.doordash","social.ubereats","social.grubhub","social.chownow"],
+      "sections": [
+        { "id": "gk-order", "name": "Where to Order", "order": 0, "visible": true, "blocks": [
+          { "id": "b-gk-delivery-full", "type": "delivery-links", "order": 0, "visible": true, "config": {} },
+          { "id": "b-gk-order-cta",     "type": "cta",            "order": 1, "visible": true, "config": { "label": "View Full Menu", "href": "/menu" } }
+        ]}
+      ]
+    },
+    {
+      "id": "about", "path": "/about", "title": "About", "optional": false,
+      "usesSlots": ["business.name","business.description","branding.logoUrl"],
+      "sections": [
+        { "id": "gk-about", "name": "Our Story", "order": 0, "visible": true, "blocks": [
+          { "id": "b-gk-about", "type": "text", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "contact", "path": "/contact", "title": "Contact", "optional": false,
+      "usesSlots": ["business.phone","business.email"],
+      "sections": [
+        { "id": "gk-contact", "name": "Contact", "order": 0, "visible": true, "blocks": [
+          { "id": "b-gk-contact", "type": "text", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    }
+  ]
+}

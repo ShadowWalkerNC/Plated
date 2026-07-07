@@ -1,0 +1,88 @@
+{
+  "manifestVersion": "2.0",
+  "businessType": "bar",
+  "displayName": "Bar",
+  "description": "Craft bar, cocktail lounge, or pub with drinks menu, weekly events, specials board, and social feed. Dark-mode-first design.",
+  "defaultStyle": "obsidian",
+  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "slots": [
+    { "field": "business.name",        "type": "text",     "required": true,  "label": "Bar Name",                  "hint": "The name above the door.",                                                              "wizardStep": 1 },
+    { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Craft cocktails. No rules.\"",                                                   "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Bar",            "hint": "Vibe, concept, history — tell the story.",                                               "wizardStep": 1 },
+    { "field": "business.phone",       "type": "text",     "required": false, "label": "Phone Number",              "hint": "For reservations and event bookings.",                                                   "wizardStep": 1 },
+    { "field": "business.email",       "type": "text",     "required": false, "label": "Email",                     "hint": "For events and private hire inquiries.",                                                 "wizardStep": 1 },
+    { "field": "branding.logoUrl",     "type": "image",    "required": false, "label": "Logo",                      "hint": "PNG or SVG. Minimum 512x512.",                                                          "wizardStep": 6 },
+    { "field": "branding.heroImageUrl","type": "image",    "required": false, "label": "Hero Image",                "hint": "Moody bar interior or cocktail shot. Min 1600x900.",                                    "wizardStep": 6 },
+    { "field": "branding.primaryColor","type": "text",     "required": false, "label": "Accent Color",              "hint": "A pop of color against dark backgrounds. e.g. #d4af37.",                                "wizardStep": 6 },
+    { "field": "locations",            "type": "location", "required": false, "label": "Location & Hours",          "hint": "Address, city, opening hours.",                                                         "wizardStep": 4 },
+    { "field": "menu",                 "type": "menu",     "required": false, "label": "Drinks Menu",               "hint": "Cocktails, beer, wine, spirits. Use categories freely.",                               "wizardStep": 5 },
+    { "field": "specials",             "type": "schedule", "required": false, "label": "Specials / Happy Hour",     "hint": "Daily specials, happy hour times, promotions.",                                         "wizardStep": 5 },
+    { "field": "events",               "type": "schedule", "required": false, "label": "Events",                    "hint": "DJ nights, trivia, live music, private hire dates.",                                    "wizardStep": 8 },
+    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Cocktail shots drive traffic.",                                                          "wizardStep": 3 },
+    { "field": "social.facebook",      "type": "text",     "required": false, "label": "Facebook Page URL",         "hint": "Good for events promotion.",                                                            "wizardStep": 3 },
+    { "field": "social.googleBusiness","type": "text",     "required": false, "label": "Google Business Profile",   "hint": "Reviews drive walk-ins.",                                                              "wizardStep": 3 },
+    { "field": "seo.siteTitle",        "type": "text",     "required": false, "label": "Site Title (SEO)",          "hint": "e.g. \"The Copper Still | Craft Cocktail Bar, Nashville\"",                             "wizardStep": 7 },
+    { "field": "seo.metaDescription",  "type": "text",     "required": false, "label": "Meta Description (SEO)",    "hint": "Max 160 characters.",                                                                  "wizardStep": 7 }
+  ],
+  "pages": [
+    {
+      "id": "home", "path": "/", "title": "Home", "optional": false,
+      "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","specials","social.instagram"],
+      "sections": [
+        { "id": "bar-hero",      "name": "Hero",           "order": 0, "visible": true, "blocks": [
+          { "id": "b-bar-hero",      "type": "hero",        "order": 0, "visible": true, "config": { "overlayOpacity": 0.6, "ctaLabel": "See the Menu", "ctaHref": "/drinks" } }
+        ]},
+        { "id": "bar-specials",  "name": "Specials",       "order": 1, "visible": true, "blocks": [
+          { "id": "b-bar-specials",  "type": "specials",    "order": 0, "visible": true, "config": {} }
+        ]},
+        { "id": "bar-events",    "name": "Upcoming Events","order": 2, "visible": true, "blocks": [
+          { "id": "b-bar-events",    "type": "events-list", "order": 0, "visible": true, "config": { "maxItems": 3 } }
+        ]},
+        { "id": "bar-social",    "name": "Instagram",      "order": 3, "visible": true, "blocks": [
+          { "id": "b-bar-social",    "type": "social-feed", "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
+        ]},
+        { "id": "bar-hours",     "name": "Hours & Map",    "order": 4, "visible": true, "blocks": [
+          { "id": "b-bar-hours",     "type": "hours",       "order": 0, "visible": true, "config": {} },
+          { "id": "b-bar-map",       "type": "map",         "order": 1, "visible": true, "config": { "height": 300 } }
+        ]}
+      ]
+    },
+    {
+      "id": "drinks", "path": "/drinks", "title": "Drinks", "optional": false,
+      "usesSlots": ["menu"],
+      "sections": [
+        { "id": "bar-menu", "name": "Drinks Menu", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bar-menu", "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 99, "showPrices": true } }
+        ]}
+      ]
+    },
+    {
+      "id": "events", "path": "/events", "title": "Events", "optional": false,
+      "usesSlots": ["events"],
+      "sections": [
+        { "id": "bar-events-full", "name": "All Events", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bar-events-full", "type": "events-list", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "about", "path": "/about", "title": "About", "optional": false,
+      "usesSlots": ["business.name","business.description","branding.logoUrl"],
+      "sections": [
+        { "id": "bar-about", "name": "Our Story", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bar-about", "type": "text", "order": 0, "visible": true, "config": {} }
+        ]}
+      ]
+    },
+    {
+      "id": "contact", "path": "/contact", "title": "Contact", "optional": false,
+      "usesSlots": ["business.phone","business.email","locations"],
+      "sections": [
+        { "id": "bar-contact", "name": "Contact", "order": 0, "visible": true, "blocks": [
+          { "id": "b-bar-contact", "type": "text", "order": 0, "visible": true, "config": {} },
+          { "id": "b-bar-cta",     "type": "cta",  "order": 1, "visible": true, "config": { "label": "Book a Private Event", "href": "mailto:" } }
+        ]}
+      ]
+    }
+  ]
+}
