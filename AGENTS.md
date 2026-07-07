@@ -10,7 +10,7 @@
 
 ```
 Project:      Plated
-Version:      4.2
+Version:      4.3
 Description:  Full-featured guided website builder for the restaurant and hospitality industry.
               Two modes: Local Builder (Electron desktop app, offline-capable, static Astro zip
               export) and SaaS Hub (PLATED_DOMAIN — live editing, Supabase-backed, mobile-first).
@@ -20,7 +20,7 @@ Description:  Full-featured guided website builder for the restaurant and hospit
               Dual extension system: JSON config toggles + npm plugin registry.
               Blog/events/specials content engine. Multi-location support.
               PDF menu export, QR code generation, PWA support.
-Status:       Phase 1 — Generator Core (active)
+Status:       Phase 2 — Local Builder (active)
 Open-source:  Yes (MIT)
 Monorepo:     Yes — pnpm workspaces + Turborepo
 ```
@@ -208,14 +208,14 @@ plated/
 │   │   └── index.ts          ← Integration registry + shared types
 │   ├── builder/              ← LOCAL: Electron + React 19 + Vite wizard UI
 │   │   ├── src/              ← Wizard UI (desktop-first, 1280px)
-│   │   │   ├── steps/        ← 8 wizard step components
-│   │   │   ├── editor/       ← Block-level DnD editor (local)
-│   │   │   └── media/        ← Media library, crop, background removal
+│   │   │   ├── steps/        ← 8 wizard step components (all complete ✓)
+│   │   │   ├── editor/       ← Block-level DnD editor (local) ← Phase 2
+│   │   │   └── media/        ← Media library, crop, background removal ← Phase 2
 │   │   └── electron/
-│   │       ├── main.ts       ← Electron main process
-│   │       ├── preload.ts    ← Context bridge
+│   │       ├── main.ts       ← Electron main process ✓
+│   │       ├── preload.ts    ← Context bridge ✓
 │   │       └── ipc/          ← IPC handlers: export, save, load, file, AI, PDF, QR
-│   ├── cli/                  ← Plated CLI — spawns Electron, triggers export
+│   ├── cli/                  ← Plated CLI — spawns Electron, triggers export ✓
 │   └── saas/                 ← SAAS: Astro hybrid (mobile-first, 390px)
 │       ├── dashboard/        ← Client dashboard + super-admin
 │       ├── editor/           ← Block-level DnD editor (SaaS)
@@ -376,8 +376,8 @@ Quick reference by category:
 | Phase | Timeline | Deliverables |
 |---|---|---|
 | **0 — Plan** | ✅ Jul 2026 | Types, manifest, schema, scaffold, docs |
-| **1 — Generator** | Jul–Sep 2026 | generator + template-engine, restaurant+hearth output, Electron shell, CLI |
-| **2 — Local Builder** | Sep–Nov 2026 | Full Electron wizard (8 steps), all 8 types, all 6 styles, block DnD, media library, PDF/QR |
+| **1 — Generator** | ✅ Jul 2026 | generator + template-engine + CLI, all 8 manifests, all 6 styles, turbo pipeline |
+| **2 — Local Builder** | Sep–Nov 2026 | Block DnD editor, full IPC handler suite, media library, PDF/QR, preview window |
 | **3 — Integrations** | Nov 2026–Jan 2027 | Square full suite, Meta, Google, Apple Maps, Yelp, AI tools, existing site import |
 | **4 — SaaS Foundation** | Jan–Mar 2027 | Supabase, auth, mobile dashboard, live editing, super-admin, tiers, custom domains |
 | **5 — Content Engine** | Mar–May 2027 | Blog, events, specials, press. Multi-location. Email capture. Reservations widgets. |
@@ -390,61 +390,63 @@ Quick reference by category:
 ## Current Phase Context
 
 ```
-Phase:     1 — Generator Core
-Goal:      Build packages/generator/ and packages/template-engine/.
-           Restaurant template + Hearth style → working Astro zip output.
-           Electron shell + IPC handlers in packages/builder/electron/.
-           CLI spawns Electron binary.
-Timeline:  Jul–Sep 2026
+Phase:     2 — Local Builder
+Goal:      Complete the Electron Local Builder to a shippable v0.1 desktop app.
+           User opens app → wizard → export → gets a working Astro site zip.
+           Block-level DnD editor wired and functional.
+           All IPC handlers implemented and tested.
+           Media library (upload, crop, background removal) fully working.
+           PDF menu export + QR code generation via IPC.
+           In-app preview window (Astro dev server or static serve).
+Timeline:  Sep–Nov 2026
 
-Completed (Jul 6–7, 2026):
-  ✓ packages/asset-tools/ — fully implemented
-      generateFavicons   — ICO (16+32) + Apple 180 + Android 192/512, pure-Node ICO builder
-      optimizeImage      — WebP output + blur placeholder data URL
-      generateOgImage    — satori → SVG → sharp → PNG, Inter font + fallback renderer
-      extractPrimaryColor — channel-mean hex, alpha-flatten before stats()
-  ✓ packages/builder/src/wizard/ — all 8 steps functional
-      Step1Business  — name, tagline, description, contact, founded year
-      Step2Website   — REWRITTEN: 4×2 business type card grid + existing URL field
-      Step3Social    — social profiles, review platforms, delivery links
-      Step4Location  — address + hours builder
-      Step5Menu      — MenuBuilder: categories, items, prices, dietary tags, reorder
-      Step6Media     — logo/hero upload, brand color extraction
-      Step7Template  — TRIMMED: style picker + colour variant (business type moved to Step 2)
-      Step8Extensions — analytics toggles, add-ons
-  ✓ packages/builder/electron/bg-worker.html — complete and correctly wired
-      @imgly/background-removal → ArrayBuffer → IPC round-trip
-  ✓ MenuBuilder.module.css — confirmed complete (all 25+ classes present)
-  ✓ README.md v5.1 — stack, wizard, features, roadmap all updated
-  ✓ packages/generator/ — fully implemented
-      index.ts         — generate(): loadManifests → buildAstroProject → write to disk
-      manifestLoader.ts — imports all 8 template JSONs, registers with astro-output (idempotent)
-      themeRegistry.ts — all 6 themes with swatches/fonts/bestFor, resolveStyleFile()
-      astro-output/    — buildAstroProject(), renderManifestPages(), all 16 components,
-                         Base layout, global.ts + theme.ts, 5 file builders, 4 fallback pages
-      __tests__/       — 4 test files: generate, manifestLoader, planFiles, themeRegistry
-  ✓ packages/template-engine/ — fully implemented
-      index.ts         — loadManifest() + resolveSlots() + re-exports
-      resolveTokens.ts — full flat token map: business, branding, SEO, social, deployment, location
-      interpolate.ts   — {{token}} string replacement with passthrough for unknown keys
-      conditional.ts   — evaluateConditional(): presence/equality test + not inversion
-      renderTemplate.ts — one-step convenience: resolveTokens + interpolate
-      __tests__/       — 4 test files covering all modules
-  ✓ templates/ — all 8 plated.template.json manifests complete
-      restaurant (10 531 B) · cafe (6 599 B) · bar (7 552 B) · bakery (7 770 B)
-      catering (7 332 B) · food-truck (8 067 B) · food-stand (5 836 B) · ghost-kitchen (7 447 B)
-  ✓ styles/ — all 6 variables.css files complete (3 variants each: default/warm/cool)
-      hearth · canvas · midnight · market · coast · ember
+Already complete (carried from Phase 1, Jul 6–7, 2026):
+  ✓ packages/generator/        — full generate() pipeline
+  ✓ packages/template-engine/  — loadManifest, resolveSlots, interpolate, conditional
+  ✓ packages/cli/              — bin, router, launch/new/export/preview/validate commands
+  ✓ packages/asset-tools/      — favicons, WebP, OG image, color extraction
+  ✓ packages/builder/src/wizard/ — all 8 steps complete
+  ✓ packages/builder/electron/main.ts + preload.ts + bg-worker.html
+  ✓ templates/ — all 8 plated.template.json manifests
+  ✓ styles/    — all 6 variables.css (3 variants each)
+  ✓ turbo.json — pipeline correct (type-check, test cache:false, clean task)
 
-Remaining Phase 1 items:
-  □ packages/cli/ — CLI wired to spawn Electron binary (npx plated entry point)
-  □ Turborepo pipeline: generator build verified end-to-end
+Remaining Phase 2 items:
+  □ packages/builder/electron/ipc/
+      export.ts    — calls generate() + asset-tools + seo-tools, zips output, returns path
+      save.ts      — writes project.plated.json to user-chosen directory
+      load.ts      — reads and validates project.plated.json
+      file.ts      — native open/save file dialog wrappers
+      ai.ts        — proxies Gemini API calls with user's GEMINI_API_KEY
+      pdf.ts       — jsPDF menu PDF generation
+      qr.ts        — qrcode generation (PNG buffer → IPC)
+  □ packages/builder/src/editor/
+      BlockEditor   — @dnd-kit drag-and-drop: blocks reorder within sections
+      SectionPanel  — section visibility toggle + section reorder
+      BlockToolbar  — per-block config panel (overlayOpacity, ctaLabel, etc.)
+      EditorCanvas  — live preview iframe of generated site
+  □ packages/builder/src/media/
+      MediaLibrary  — upload, browse, select existing assets
+      ImageCropper  — react-image-crop integration
+      BgRemover     — UI wrapper for bg-worker.html IPC round-trip
+  □ packages/builder/src/App.tsx — wire wizard → editor transition
+      After Step 8 complete → show block editor with live preview
+      Project save/load from title bar menu
+      Export button → IPC export → success toast with output path
+  □ packages/pdf-tools/ — jsPDF menu export implementation
+      generateMenuPdf(schema) → Buffer
+      Sections: header, categories, items with prices + dietary tags
+      Page break logic for long menus
+  □ packages/builder/electron/preview.ts
+      Spawn Astro preview server (or sirv static) on random port
+      Return URL to renderer → open in BrowserView
+  □ In-app preview window (BrowserView or BrowserWindow)
+      Triggered from editor toolbar: "Preview Site"
+      Shows live Astro output in-app (no external browser required)
 
-Note: Wizard UI is substantially complete ahead of the Phase 2 schedule.
-      Phase 2 will focus on block DnD editor, media library, and remaining
-      template/style stubs rather than rebuilding the wizard from scratch.
-      Generator pipeline and all supporting data files are complete well
-      ahead of the Jul–Sep Phase 1 target.
+Note: The wizard UI is fully complete ahead of schedule. Phase 2 focus is
+      entirely on the editor, IPC handlers, media tools, and preview window.
+      Do NOT re-implement or refactor wizard steps — they are done.
 ```
 
 ---
@@ -454,9 +456,9 @@ Note: Wizard UI is substantially complete ahead of the Phase 2 schedule.
 After loading this file, confirm in DISPATCH:
 
 ```
-Project: Plated v4.2
+Project: Plated v4.3
 Stack: TypeScript · Astro 5 · Electron · React 19+Vite · Supabase · Gemini · sharp · satori · Turborepo
-Phase: 1 — Generator Core
+Phase: 2 — Local Builder
 Product: Restaurant website builder — Electron Local (offline) + SaaS Hub (PLATED_DOMAIN)
 Rules active: 20
 Decisions locked: 15
@@ -472,5 +474,5 @@ Do NOT suggest: Tauri, Next.js, Python, Docker, Puppeteer, Contentful, Sanity, O
 
 ---
 
-*Version: 4.2 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
-*Last updated: July 7, 2026 — Phase 1 generator + template-engine complete. CLI remaining.*
+*Version: 4.3 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
+*Last updated: July 7, 2026 — Phase 1 complete. Phase 2 active.*
