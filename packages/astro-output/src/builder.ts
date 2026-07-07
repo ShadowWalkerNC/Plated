@@ -1,28 +1,73 @@
+/**
+ * builder.ts — orchestrates generation of a complete Astro project.
+ *
+ * Pipeline:
+ *   1. Look up the TemplateManifest for schema.businessType.
+ *   2. If a manifest exists, use renderManifestPages() to generate pages
+ *      from its declared page/section/block structure.
+ *   3. If no manifest is registered (e.g. during early development),
+ *      fall back to the legacy heuristic page builders so the generator
+ *      never produces a broken output.
+ *   4. Always generate the structural files (layout, components, styles,
+ *      config, robots, manifest, etc.).
+ */
 import type { ProjectSchema } from '@plated/types';
-import type { AstroFile } from './types.js';
-import { buildPackageJson }   from './files/packageJson.js';
-import { buildAstroConfig }   from './files/astroConfig.js';
-import { buildTsConfig }      from './files/tsconfig.js';
-import { buildBaseLayout }    from './layouts/Base.js';
-import { buildIndexPage }     from './pages/index.js';
-import { buildMenuPage }      from './pages/menu.js';
-import { buildAboutPage }     from './pages/about.js';
-import { buildContactPage }   from './pages/contact.js';
-import { buildGlobalCss }     from './styles/global.js';
-import { buildThemeCss }      from './styles/theme.js';
-import { buildRobotsTxt }     from './files/robots.js';
-import { buildSiteManifest }  from './files/manifest.js';
-import { buildNavComponent }  from './components/Nav.js';
+import type { AstroFile }    from './types.js';
+import { buildPackageJson }    from './files/packageJson.js';
+import { buildAstroConfig }    from './files/astroConfig.js';
+import { buildTsConfig }       from './files/tsconfig.js';
+import { buildBaseLayout }     from './layouts/Base.js';
+import { buildGlobalCss }      from './styles/global.js';
+import { buildThemeCss }       from './styles/theme.js';
+import { buildRobotsTxt }      from './files/robots.js';
+import { buildSiteManifest }   from './files/manifest.js';
+import { buildNavComponent }   from './components/Nav.js';
 import { buildFooterComponent } from './components/Footer.js';
-import { buildHeroComponent } from './components/Hero.js';
-import { buildMenuComponent } from './components/MenuSection.js';
+import { buildHeroComponent }  from './components/Hero.js';
+import { buildMenuComponent }  from './components/MenuSection.js';
 import { buildHoursComponent } from './components/HoursSection.js';
 import { buildLocationComponent } from './components/LocationSection.js';
-import { buildSocialComponent } from './components/SocialLinks.js';
-import { buildGalleryComponent } from './components/Gallery.js';
+import { buildSocialComponent }   from './components/SocialLinks.js';
+import { buildGalleryComponent }  from './components/Gallery.js';
+import { buildCtaComponent }      from './components/CtaSection.js';
+import { buildTestimonialsComponent } from './components/Testimonials.js';
+import { buildSpecialsComponent }     from './components/Specials.js';
+import { buildEventsListComponent }   from './components/EventsList.js';
+import { buildDeliveryLinksComponent } from './components/DeliveryLinks.js';
+import { buildReservationComponent }  from './components/ReservationWidget.js';
+import { buildBlogListComponent }     from './components/BlogListSection.js';
+import { buildPressSectionComponent } from './components/PressSection.js';
+// Fallback heuristic page builders
+import { buildIndexPage }   from './pages/index.js';
+import { buildMenuPage }    from './pages/menu.js';
+import { buildAboutPage }   from './pages/about.js';
+import { buildContactPage } from './pages/contact.js';
+import { renderManifestPages } from './renderPage.js';
 
-export function buildAstroProject(schema: ProjectSchema): AstroFile[] {
-  const files: AstroFile[] = [
+// ── Manifest registry ────────────────────────────────────────────────────────
+// In production the full manifest objects are imported from
+// packages/builder/src/manifests/*.json (built by the builder package).
+// Here we keep a lightweight lazy registry keyed by businessType so that
+// astro-output does not take a hard dependency on the builder package.
+//
+// Entries are registered by calling registerManifest() from outside,
+// e.g. in packages/generator/src/index.ts after importing the manifests.
+import type { TemplateManifest } from '@plated/types';
+
+const MANIFEST_REGISTRY = new Map<string, TemplateManifest>();
+
+/**
+ * registerManifest — call this before buildAstroProject() to opt a
+ * businessType into manifest-driven page rendering.
+ */
+export function registerManifest(manifest: TemplateManifest): void {
+  MANIFEST_REGISTRY.set(manifest.businessType, manifest);
+}
+
+// ── Structural files (always emitted) ────────────────────────────────────────
+
+function buildStructuralFiles(schema: ProjectSchema): AstroFile[] {
+  return [
     buildPackageJson(schema),
     buildAstroConfig(schema),
     buildTsConfig(),
@@ -30,6 +75,23 @@ export function buildAstroProject(schema: ProjectSchema): AstroFile[] {
     buildGlobalCss(schema),
     buildThemeCss(schema),
     buildBaseLayout(schema),
+    // Chrome / Safari PWA support
+    buildRobotsTxt(schema),
+    buildSiteManifest(schema),
+    // Machine-readable project snapshot
+    { path: 'public/plated-site.json', content: JSON.stringify(schema, null, 2) + '\n' },
+    // README
+    {
+      path: 'README.md',
+      content: `# ${schema.business.name}\n\nGenerated by [Plated](https://plated.app).\n\n## Development\n\n\`\`\`bash\nnpm install\nnpm run dev\n\`\`\`\n\n## Build\n\n\`\`\`bash\nnpm run build\n\`\`\`\n`,
+    },
+  ];
+}
+
+// ── Astro component files (always emitted, used by both paths) ───────────────
+
+function buildComponentFiles(schema: ProjectSchema): AstroFile[] {
+  return [
     buildNavComponent(schema),
     buildFooterComponent(schema),
     buildHeroComponent(schema),
@@ -38,47 +100,88 @@ export function buildAstroProject(schema: ProjectSchema): AstroFile[] {
     buildLocationComponent(schema),
     buildSocialComponent(schema),
     buildGalleryComponent(schema),
-    buildIndexPage(schema),
-    buildMenuPage(schema),
-    buildContactPage(schema),
-    buildRobotsTxt(schema),
-    buildSiteManifest(schema),
-    { path: 'public/plated-site.json', content: JSON.stringify(schema, null, 2) + '\n' },
-    { path: 'README.md', content: `# ${schema.business.name}\n\nGenerated by [Plated](https://plated.app).\n\n## Development\n\n\`\`\`bash\nnpm install\nnpm run dev\n\`\`\`\n\n## Build\n\n\`\`\`bash\nnpm run build\n\`\`\`\n` },
+    buildCtaComponent(schema),
+    buildTestimonialsComponent(schema),
+    buildSpecialsComponent(schema),
+    buildEventsListComponent(schema),
+    buildDeliveryLinksComponent(schema),
+    buildReservationComponent(schema),
+    buildBlogListComponent(schema),
+    buildPressSectionComponent(schema),
+  ];
+}
+
+// ── Content collection pages (blog posts, events) ────────────────────────────
+
+function buildContentPages(schema: ProjectSchema): AstroFile[] {
+  const out: AstroFile[] = [];
+
+  // Blog index + posts
+  if (schema.blog?.length) {
+    const posts = schema.blog;
+    const items = posts
+      .map((p) =>
+        `  <article class="blog-card">\n    <a href="/blog/${p.slug}"><h2>${p.title}</h2></a>\n    ${p.excerpt ? `<p>${p.excerpt}</p>` : ''}\n    ${p.publishedAt ? `<time>${p.publishedAt}</time>` : ''}\n  </article>`
+      ).join('\n');
+    out.push({
+      path: 'src/pages/blog/index.astro',
+      content: `---\nimport Base from '../../layouts/Base.astro';\n---\n<Base title="Blog - ${schema.business.name}">\n  <section class="section blog-index">\n    <div class="container">\n      <h1>Blog</h1>\n${items}\n    </div>\n  </section>\n</Base>\n`,
+    });
+    for (const post of posts) {
+      out.push({
+        path: `src/pages/blog/${post.slug}.astro`,
+        content: `---\nimport Base from '../../../layouts/Base.astro';\n---\n<Base title="${post.title} - ${schema.business.name}">\n  <article class="section blog-post">\n    <div class="container prose">\n      <h1>${post.title}</h1>\n      ${post.publishedAt ? `<time class="post-date">${post.publishedAt}</time>` : ''}\n      <div class="post-body">${post.body}</div>\n    </div>\n  </article>\n</Base>\n`,
+      });
+    }
+  }
+
+  // Events page
+  if (schema.events?.length) {
+    const events = schema.events;
+    const items  = events
+      .map((e) =>
+        `  <div class="event-card">\n    <h3>${e.title}</h3>\n    ${e.eventDate ? `<time>${e.eventDate}</time>` : ''}\n    ${e.description ? `<p>${e.description}</p>` : ''}\n    ${e.ticketUrl ? `<a class="btn btn-sm" href="${e.ticketUrl}" target="_blank" rel="noreferrer">Tickets</a>` : ''}\n  </div>`
+      ).join('\n');
+    out.push({
+      path: 'src/pages/events.astro',
+      content: `---\nimport Base from '../layouts/Base.astro';\n---\n<Base title="Events - ${schema.business.name}">\n  <section class="section events-page">\n    <div class="container">\n      <h1>Events</h1>\n${items}\n    </div>\n  </section>\n</Base>\n`,
+    });
+  }
+
+  return out;
+}
+
+// ── Main export ───────────────────────────────────────────────────────────────
+
+/**
+ * buildAstroProject — entry point for @plated/generator.
+ *
+ * Returns a flat array of { path, content } objects ready to be written
+ * to disk by the generator package.
+ */
+export function buildAstroProject(schema: ProjectSchema): AstroFile[] {
+  const files: AstroFile[] = [
+    ...buildStructuralFiles(schema),
+    ...buildComponentFiles(schema),
+    ...buildContentPages(schema),
   ];
 
-  if (schema.blog?.length)               files.push(buildBlogIndex(schema), ...buildBlogPosts(schema));
-  if (schema.events?.length)             files.push(buildEventsPage(schema));
-  if (schema.business.description)       files.push(buildAboutPage(schema));
+  // ── Page generation ────────────────────────────────────────────────────────
+  const manifest = MANIFEST_REGISTRY.get(schema.businessType);
+
+  if (manifest) {
+    // Manifest-driven: pages are derived from the registered template manifest
+    files.push(...renderManifestPages(schema, manifest));
+  } else {
+    // Heuristic fallback: emit the classic hardcoded pages so the generator
+    // always produces a working site even without a registered manifest.
+    files.push(buildIndexPage(schema));
+    files.push(buildMenuPage(schema));
+    files.push(buildContactPage(schema));
+    if (schema.business.description) {
+      files.push(buildAboutPage(schema));
+    }
+  }
 
   return files;
-}
-
-function buildBlogIndex(schema: ProjectSchema): AstroFile {
-  const posts = schema.blog ?? [];
-  const items = posts.map((p) =>
-    `  <article class="blog-card">\n    <a href="/blog/${p.slug}"><h2>${p.title}</h2></a>\n    ${p.excerpt ? `<p>${p.excerpt}</p>` : ''}\n    ${p.publishedAt ? `<time>${p.publishedAt}</time>` : ''}\n  </article>`
-  ).join('\n');
-  return {
-    path: 'src/pages/blog/index.astro',
-    content: `---\nimport Base from '../../layouts/Base.astro';\n---\n<Base title="Blog - ${schema.business.name}">\n  <section class="section blog-index">\n    <div class="container">\n      <h1>Blog</h1>\n${items}\n    </div>\n  </section>\n</Base>\n`,
-  };
-}
-
-function buildBlogPosts(schema: ProjectSchema): AstroFile[] {
-  return (schema.blog ?? []).map((post) => ({
-    path: `src/pages/blog/${post.slug}.astro`,
-    content: `---\nimport Base from '../../../layouts/Base.astro';\n---\n<Base title="${post.title} - ${schema.business.name}">\n  <article class="section blog-post">\n    <div class="container prose">\n      <h1>${post.title}</h1>\n      ${post.publishedAt ? `<time class="post-date">${post.publishedAt}</time>` : ''}\n      <div class="post-body">${post.body}</div>\n    </div>\n  </article>\n</Base>\n`,
-  }));
-}
-
-function buildEventsPage(schema: ProjectSchema): AstroFile {
-  const events = schema.events ?? [];
-  const items = events.map((e) =>
-    `  <div class="event-card">\n    <h3>${e.title}</h3>\n    ${e.eventDate ? `<time>${e.eventDate}</time>` : ''}\n    ${e.description ? `<p>${e.description}</p>` : ''}\n    ${e.ticketUrl ? `<a class="btn btn-sm" href="${e.ticketUrl}" target="_blank" rel="noreferrer">Tickets</a>` : ''}\n  </div>`
-  ).join('\n');
-  return {
-    path: 'src/pages/events.astro',
-    content: `---\nimport Base from '../layouts/Base.astro';\n---\n<Base title="Events - ${schema.business.name}">\n  <section class="section events-page">\n    <div class="container">\n      <h1>Events</h1>\n${items}\n    </div>\n  </section>\n</Base>\n`,
-  };
 }
