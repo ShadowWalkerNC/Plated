@@ -1,9 +1,10 @@
-// Plated CLI — command router
+// Plated CLI -- command router
 
-import { cmdLaunch } from './commands/launch.js';
-import { cmdNew } from './commands/new.js';
-import { cmdExport } from './commands/export.js';
-import { cmdPreview } from './commands/preview.js';
+import { cmdLaunch }   from './commands/launch.js';
+import { cmdNew }      from './commands/new.js';
+import { cmdExport }   from './commands/export.js';
+import { cmdPreview }  from './commands/preview.js';
+import { cmdValidate } from './commands/validate.js';
 import { printHelp, printVersion } from './help.js';
 
 export async function runCli(argv: string[]): Promise<void> {
@@ -23,6 +24,10 @@ export async function runCli(argv: string[]): Promise<void> {
 
     case 'preview':
       return cmdPreview(rest);
+
+    case 'validate':
+    case 'check':
+      return cmdValidate(rest);
 
     case '--version':
     case '-v':
