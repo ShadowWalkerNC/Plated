@@ -1,0 +1,100 @@
+/* Coast — Airy, bright, hospitality-forward
+ * Personality: Seafood restaurants, beach bars, brunch spots, outdoor dining.
+ * White-and-sky palette with oceanic blues. Lora gives it warmth without heaviness.
+ *
+ * Variants: default (ocean blue) | warm (sunset coral) | cool (seafoam mint)
+ */
+
+/* ── Default (Ocean Blue) ──────────────────────────────── */
+[data-theme="coast"],
+[data-theme="coast"][data-variant="default"] {
+  /* Backgrounds */
+  --color-bg-base:     #f6fbff;
+  --color-bg-surface:  #eaf4fd;
+  --color-bg-elevated: #d8ecf8;
+
+  /* Text */
+  --color-text-primary:   #081828;
+  --color-text-secondary: #143050;
+  --color-text-muted:     #4a6c8c;
+  --color-text-inverse:   #f6fbff;
+
+  /* Brand */
+  --color-accent-primary:   #1a6ea8;
+  --color-accent-secondary: #4fa8e0;
+  --color-accent-pale:      rgba(26, 110, 168, 0.10);
+
+  /* Borders */
+  --color-border:        #a4cce8;
+  --color-border-subtle: #c8e4f4;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(8, 24, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(8, 24, 40, 0.09);
+  --shadow-lg: 0 8px 28px rgba(8, 24, 40, 0.13);
+
+  /* Typography */
+  --font-sans:    'Lora', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Lora', 'Georgia', serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   1rem;
+  --radius-full: 9999px;
+}
+
+/* ── Warm (Sunset Coral) ───────────────────────────────── */
+[data-theme="coast"][data-variant="warm"] {
+  --color-bg-base:     #fff8f5;
+  --color-bg-surface:  #fdeee8;
+  --color-bg-elevated: #faddcc;
+
+  --color-text-primary:   #28100a;
+  --color-text-secondary: #502018;
+  --color-text-muted:     #8a5040;
+  --color-text-inverse:   #fff8f5;
+
+  --color-accent-primary:   #d04a28;
+  --color-accent-secondary: #f07050;
+  --color-accent-pale:      rgba(208, 74, 40, 0.10);
+
+  --color-border:        #f0b8a0;
+  --color-border-subtle: #f8d4c0;
+
+  --font-sans:    'Lora', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Lora', 'Georgia', serif;
+}
+
+/* ── Cool (Seafoam Mint) ───────────────────────────────── */
+[data-theme="coast"][data-variant="cool"] {
+  --color-bg-base:     #f4fdf9;
+  --color-bg-surface:  #e4f7ee;
+  --color-bg-elevated: #ceeee0;
+
+  --color-text-primary:   #061812;
+  --color-text-secondary: #0e3024;
+  --color-text-muted:     #2e6a52;
+  --color-text-inverse:   #f4fdf9;
+
+  --color-accent-primary:   #1a8c60;
+  --color-accent-secondary: #40c488;
+  --color-accent-pale:      rgba(26, 140, 96, 0.10);
+
+  --color-border:        #84d0ae;
+  --color-border-subtle: #aee4cc;
+
+  --font-sans:    'Lora', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Lora', 'Georgia', serif;
+}

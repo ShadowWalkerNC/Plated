@@ -1,0 +1,101 @@
+/* Market — Fresh, casual, ingredient-forward
+ * Personality: Farmers-market cafes, healthy bowls, bakeries, brunch spots.
+ * Light creamy backgrounds with botanical greens and natural earthy accents.
+ * Playfair Display gives editorial warmth without full serif weight.
+ *
+ * Variants: default (botanical green) | warm (golden honey) | cool (berry)
+ */
+
+/* ── Default (Botanical Green) ─────────────────────────── */
+[data-theme="market"],
+[data-theme="market"][data-variant="default"] {
+  /* Backgrounds */
+  --color-bg-base:     #f7f9f4;
+  --color-bg-surface:  #eef4e8;
+  --color-bg-elevated: #e0ecda;
+
+  /* Text */
+  --color-text-primary:   #101e0c;
+  --color-text-secondary: #243020;
+  --color-text-muted:     #4e6a48;
+  --color-text-inverse:   #f7f9f4;
+
+  /* Brand */
+  --color-accent-primary:   #3a7a2c;
+  --color-accent-secondary: #74b860;
+  --color-accent-pale:      rgba(58, 122, 44, 0.10);
+
+  /* Borders */
+  --color-border:        #b8d0aa;
+  --color-border-subtle: #d4e8c8;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(16, 30, 12, 0.07);
+  --shadow-md: 0 4px 12px rgba(16, 30, 12, 0.10);
+  --shadow-lg: 0 8px 24px rgba(16, 30, 12, 0.14);
+
+  /* Typography */
+  --font-sans:    'Playfair Display', 'Georgia', serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.25rem;
+  --radius-full: 9999px;
+}
+
+/* ── Warm (Golden Honey) ───────────────────────────────── */
+[data-theme="market"][data-variant="warm"] {
+  --color-bg-base:     #fdf9ef;
+  --color-bg-surface:  #f8f0da;
+  --color-bg-elevated: #f0e4c0;
+
+  --color-text-primary:   #1e1408;
+  --color-text-secondary: #3c2c10;
+  --color-text-muted:     #7a5e24;
+  --color-text-inverse:   #fdf9ef;
+
+  --color-accent-primary:   #c88a10;
+  --color-accent-secondary: #e8b840;
+  --color-accent-pale:      rgba(200, 138, 16, 0.10);
+
+  --color-border:        #d8c490;
+  --color-border-subtle: #ecddb0;
+
+  --font-sans:    'Playfair Display', 'Georgia', serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+}
+
+/* ── Cool (Berry) ──────────────────────────────────────── */
+[data-theme="market"][data-variant="cool"] {
+  --color-bg-base:     #faf7fc;
+  --color-bg-surface:  #f2ecf8;
+  --color-bg-elevated: #e8dcf4;
+
+  --color-text-primary:   #140c1e;
+  --color-text-secondary: #2c1e3c;
+  --color-text-muted:     #6a4e84;
+  --color-text-inverse:   #faf7fc;
+
+  --color-accent-primary:   #7c3aac;
+  --color-accent-secondary: #b46adc;
+  --color-accent-pale:      rgba(124, 58, 172, 0.10);
+
+  --color-border:        #c8a8dc;
+  --color-border-subtle: #dcc8ee;
+
+  --font-sans:    'Playfair Display', 'Georgia', serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+}

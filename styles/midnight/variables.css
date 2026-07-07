@@ -1,0 +1,101 @@
+/* Midnight — Dark, premium, moody
+ * Personality: Fine dining, cocktail bars, upscale supper clubs.
+ * Deep near-black backgrounds, gold/amber accents, luxury serif display.
+ * All three variants stay dark — only the accent hue shifts.
+ *
+ * Variants: default (gold) | warm (copper) | cool (platinum/silver)
+ */
+
+/* ── Default (Gold) ────────────────────────────────────── */
+[data-theme="midnight"],
+[data-theme="midnight"][data-variant="default"] {
+  /* Backgrounds */
+  --color-bg-base:     #0e0c0a;
+  --color-bg-surface:  #181410;
+  --color-bg-elevated: #241e18;
+
+  /* Text */
+  --color-text-primary:   #f0e8d8;
+  --color-text-secondary: #c8bca8;
+  --color-text-muted:     #7a6e5c;
+  --color-text-inverse:   #0e0c0a;
+
+  /* Brand */
+  --color-accent-primary:   #c8a84a;
+  --color-accent-secondary: #e8c870;
+  --color-accent-pale:      rgba(200, 168, 74, 0.14);
+
+  /* Borders */
+  --color-border:        #3a3028;
+  --color-border-subtle: #2a2420;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.60);
+
+  /* Typography */
+  --font-sans:    'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Cormorant Garamond', 'Palatino Linotype', serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm:   0.25rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   0.75rem;
+  --radius-full: 9999px;
+}
+
+/* ── Warm (Copper) ─────────────────────────────────────── */
+[data-theme="midnight"][data-variant="warm"] {
+  --color-bg-base:     #100a08;
+  --color-bg-surface:  #1c1008;
+  --color-bg-elevated: #281810;
+
+  --color-text-primary:   #f2e4d4;
+  --color-text-secondary: #caa88a;
+  --color-text-muted:     #7a5038;
+  --color-text-inverse:   #100a08;
+
+  --color-accent-primary:   #b86a2a;
+  --color-accent-secondary: #e0944a;
+  --color-accent-pale:      rgba(184, 106, 42, 0.14);
+
+  --color-border:        #3c2418;
+  --color-border-subtle: #2c1810;
+
+  --font-sans:    'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Cormorant Garamond', 'Palatino Linotype', serif;
+}
+
+/* ── Cool (Platinum/Silver) ────────────────────────────── */
+[data-theme="midnight"][data-variant="cool"] {
+  --color-bg-base:     #0a0c10;
+  --color-bg-surface:  #12161e;
+  --color-bg-elevated: #1c2230;
+
+  --color-text-primary:   #dce8f4;
+  --color-text-secondary: #a8b8cc;
+  --color-text-muted:     #5a6a7e;
+  --color-text-inverse:   #0a0c10;
+
+  --color-accent-primary:   #8ab0d4;
+  --color-accent-secondary: #c0d8f0;
+  --color-accent-pale:      rgba(138, 176, 212, 0.14);
+
+  --color-border:        #28344a;
+  --color-border-subtle: #1c2638;
+
+  --font-sans:    'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Cormorant Garamond', 'Palatino Linotype', serif;
+}

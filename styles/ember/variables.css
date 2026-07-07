@@ -1,0 +1,102 @@
+/* Ember — Bold, dramatic, fire-lit
+ * Personality: Steakhouses, BBQ joints, wood-fired pizza, craft burger bars.
+ * Near-black charcoal backgrounds with fire-orange and red accents.
+ * Oswald's condensed uppercase feel communicates confidence and heat.
+ * All three variants stay dark/dramatic.
+ *
+ * Variants: default (fire orange) | warm (deep red/crimson) | cool (electric yellow)
+ */
+
+/* ── Default (Fire Orange) ─────────────────────────────── */
+[data-theme="ember"],
+[data-theme="ember"][data-variant="default"] {
+  /* Backgrounds */
+  --color-bg-base:     #141210;
+  --color-bg-surface:  #1e1a16;
+  --color-bg-elevated: #2a2420;
+
+  /* Text */
+  --color-text-primary:   #f4ece0;
+  --color-text-secondary: #d0b898;
+  --color-text-muted:     #8a7060;
+  --color-text-inverse:   #141210;
+
+  /* Brand */
+  --color-accent-primary:   #e8581a;
+  --color-accent-secondary: #f08840;
+  --color-accent-pale:      rgba(232, 88, 26, 0.15);
+
+  /* Borders */
+  --color-border:        #3c3028;
+  --color-border-subtle: #2e2620;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 10px 36px rgba(0, 0, 0, 0.65);
+
+  /* Typography */
+  --font-sans:    'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: 'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii — intentionally tighter, angular feel */
+  --radius-sm:   0.125rem;
+  --radius-md:   0.25rem;
+  --radius-lg:   0.5rem;
+  --radius-full: 9999px;
+}
+
+/* ── Warm (Deep Crimson) ───────────────────────────────── */
+[data-theme="ember"][data-variant="warm"] {
+  --color-bg-base:     #120c0a;
+  --color-bg-surface:  #1c1008;
+  --color-bg-elevated: #281810;
+
+  --color-text-primary:   #f4e4d8;
+  --color-text-secondary: #cca088;
+  --color-text-muted:     #8a5848;
+  --color-text-inverse:   #120c0a;
+
+  --color-accent-primary:   #c0200a;
+  --color-accent-secondary: #e84c28;
+  --color-accent-pale:      rgba(192, 32, 10, 0.15);
+
+  --color-border:        #3c2018;
+  --color-border-subtle: #2e180e;
+
+  --font-sans:    'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: 'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+}
+
+/* ── Cool (Electric Yellow / Mustard) ──────────────────── */
+[data-theme="ember"][data-variant="cool"] {
+  --color-bg-base:     #101210;
+  --color-bg-surface:  #181c16;
+  --color-bg-elevated: #22281e;
+
+  --color-text-primary:   #f0f0d8;
+  --color-text-secondary: #c8c890;
+  --color-text-muted:     #848460;
+  --color-text-inverse:   #101210;
+
+  --color-accent-primary:   #d4b800;
+  --color-accent-secondary: #f0d840;
+  --color-accent-pale:      rgba(212, 184, 0, 0.15);
+
+  --color-border:        #38380a;
+  --color-border-subtle: #2c2c08;
+
+  --font-sans:    'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: 'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+}
