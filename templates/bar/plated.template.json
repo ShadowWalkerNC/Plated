@@ -3,8 +3,8 @@
   "businessType": "bar",
   "displayName": "Bar",
   "description": "Craft bar, cocktail lounge, or pub with drinks menu, weekly events, specials board, and social feed. Dark-mode-first design.",
-  "defaultStyle": "obsidian",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "defaultStyle": "midnight",
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
     { "field": "business.name",        "type": "text",     "required": true,  "label": "Bar Name",                  "hint": "The name above the door.",                                                              "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Craft cocktails. No rules.\"",                                                   "wizardStep": 1 },
@@ -29,19 +29,19 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","specials","social.instagram"],
       "sections": [
-        { "id": "bar-hero",      "name": "Hero",           "order": 0, "visible": true, "blocks": [
+        { "id": "bar-hero",     "name": "Hero",            "order": 0, "visible": true, "blocks": [
           { "id": "b-bar-hero",      "type": "hero",        "order": 0, "visible": true, "config": { "overlayOpacity": 0.6, "ctaLabel": "See the Menu", "ctaHref": "/drinks" } }
         ]},
-        { "id": "bar-specials",  "name": "Specials",       "order": 1, "visible": true, "blocks": [
+        { "id": "bar-specials", "name": "Specials",        "order": 1, "visible": true, "blocks": [
           { "id": "b-bar-specials",  "type": "specials",    "order": 0, "visible": true, "config": {} }
         ]},
-        { "id": "bar-events",    "name": "Upcoming Events","order": 2, "visible": true, "blocks": [
+        { "id": "bar-events",   "name": "Upcoming Events", "order": 2, "visible": true, "blocks": [
           { "id": "b-bar-events",    "type": "events-list", "order": 0, "visible": true, "config": { "maxItems": 3 } }
         ]},
-        { "id": "bar-social",    "name": "Instagram",      "order": 3, "visible": true, "blocks": [
+        { "id": "bar-social",   "name": "Instagram",       "order": 3, "visible": true, "blocks": [
           { "id": "b-bar-social",    "type": "social-feed", "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
         ]},
-        { "id": "bar-hours",     "name": "Hours & Map",    "order": 4, "visible": true, "blocks": [
+        { "id": "bar-hours",    "name": "Hours & Map",     "order": 4, "visible": true, "blocks": [
           { "id": "b-bar-hours",     "type": "hours",       "order": 0, "visible": true, "config": {} },
           { "id": "b-bar-map",       "type": "map",         "order": 1, "visible": true, "config": { "height": 300 } }
         ]}

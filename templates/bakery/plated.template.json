@@ -3,8 +3,8 @@
   "businessType": "bakery",
   "displayName": "Bakery",
   "description": "Artisan bakery or pastry shop with product menu, gallery, online pre-order CTA, and about story. Soft warm aesthetic by default.",
-  "defaultStyle": "bloom",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "defaultStyle": "market",
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
     { "field": "business.name",        "type": "text",     "required": true,  "label": "Bakery Name",               "hint": "The name on your storefront.",                                                           "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Baked with love since 2012\"",                                                  "wizardStep": 1 },
@@ -27,24 +27,24 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","menu","social.instagram"],
       "sections": [
-        { "id": "bk-hero",      "name": "Hero",           "order": 0, "visible": true, "blocks": [
-          { "id": "b-bk-hero",      "type": "hero",        "order": 0, "visible": true, "config": { "overlayOpacity": 0.25, "ctaLabel": "Shop Our Menu", "ctaHref": "/menu" } }
+        { "id": "bk-hero",    "name": "Hero",           "order": 0, "visible": true, "blocks": [
+          { "id": "b-bk-hero",    "type": "hero",         "order": 0, "visible": true, "config": { "overlayOpacity": 0.25, "ctaLabel": "Shop Our Menu", "ctaHref": "/menu" } }
         ]},
-        { "id": "bk-menu",      "name": "Featured Items", "order": 1, "visible": true, "blocks": [
-          { "id": "b-bk-menu",      "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
+        { "id": "bk-menu",    "name": "Featured Items",  "order": 1, "visible": true, "blocks": [
+          { "id": "b-bk-menu",    "type": "menu-preview",  "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
         ]},
-        { "id": "bk-order",     "name": "Pre-Order CTA",  "order": 2, "visible": true, "blocks": [
-          { "id": "b-bk-order",     "type": "cta",          "order": 0, "visible": true, "config": { "label": "Place a Custom Order", "href": "/order" } }
+        { "id": "bk-order",   "name": "Pre-Order CTA",   "order": 2, "visible": true, "blocks": [
+          { "id": "b-bk-order",   "type": "cta",           "order": 0, "visible": true, "config": { "label": "Place a Custom Order", "href": "/order" } }
         ]},
-        { "id": "bk-gallery",   "name": "Gallery",        "order": 3, "visible": true, "blocks": [
-          { "id": "b-bk-gallery",   "type": "gallery",      "order": 0, "visible": true, "config": { "columns": 3 } }
+        { "id": "bk-gallery", "name": "Gallery",          "order": 3, "visible": true, "blocks": [
+          { "id": "b-bk-gallery", "type": "gallery",       "order": 0, "visible": true, "config": { "columns": 3 } }
         ]},
-        { "id": "bk-social",    "name": "Instagram",      "order": 4, "visible": true, "blocks": [
-          { "id": "b-bk-social",    "type": "social-feed",  "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
+        { "id": "bk-social",  "name": "Instagram",        "order": 4, "visible": true, "blocks": [
+          { "id": "b-bk-social",  "type": "social-feed",   "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
         ]},
-        { "id": "bk-hours",     "name": "Hours & Map",    "order": 5, "visible": true, "blocks": [
-          { "id": "b-bk-hours",     "type": "hours",        "order": 0, "visible": true, "config": {} },
-          { "id": "b-bk-map",       "type": "map",          "order": 1, "visible": true, "config": { "height": 280 } }
+        { "id": "bk-hours",   "name": "Hours & Map",      "order": 5, "visible": true, "blocks": [
+          { "id": "b-bk-hours",   "type": "hours",         "order": 0, "visible": true, "config": {} },
+          { "id": "b-bk-map",     "type": "map",           "order": 1, "visible": true, "config": { "height": 280 } }
         ]}
       ]
     },

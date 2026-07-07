@@ -3,8 +3,8 @@
   "businessType": "food-truck",
   "displayName": "Food Truck",
   "description": "Mobile food business with rotating schedule, daily location updates, menu, gallery, and social feed. Optimised for Instagram and Google Maps.",
-  "defaultStyle": "spark",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "defaultStyle": "ember",
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
     { "field": "business.name",        "type": "text",     "required": true,  "label": "Truck Name",               "hint": "The name on the side of your truck.",                                                    "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Seoul food, street speed\"",                                                      "wizardStep": 1 },
@@ -16,8 +16,8 @@
     { "field": "branding.heroImageUrl","type": "image",    "required": false, "label": "Hero Photo",                "hint": "Your truck in action. Minimum 1600x900.",                                               "wizardStep": 6 },
     { "field": "branding.primaryColor","type": "text",     "required": false, "label": "Primary Brand Color",       "hint": "Hex code e.g. #e84e2a.",                                                               "wizardStep": 6 },
     { "field": "menu",                 "type": "menu",     "required": false, "label": "Menu",                      "hint": "Add your rotating menu items.",                                                         "wizardStep": 5 },
-    { "field": "events",               "type": "schedule", "required": false, "label": "Weekly Schedule / Stops",   "hint": "Where you’ll be this week — market, lot, event.",                                      "wizardStep": 4 },
-    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Your truck’s Instagram — key for discovery.",                                           "wizardStep": 3 },
+    { "field": "events",               "type": "schedule", "required": false, "label": "Weekly Schedule / Stops",   "hint": "Where you'll be this week — market, lot, event.",                                      "wizardStep": 4 },
+    { "field": "social.instagram",     "type": "text",     "required": false, "label": "Instagram URL",             "hint": "Your truck's Instagram — key for discovery.",                                           "wizardStep": 3 },
     { "field": "social.facebook",      "type": "text",     "required": false, "label": "Facebook Page URL",         "hint": "Optional.",                                                                            "wizardStep": 3 },
     { "field": "social.tiktok",        "type": "text",     "required": false, "label": "TikTok URL",                "hint": "Short-form video is huge for food trucks.",                                            "wizardStep": 3 },
     { "field": "social.googleBusiness","type": "text",     "required": false, "label": "Google Business Profile",   "hint": "Your Google Maps listing.",                                                           "wizardStep": 3 },
@@ -31,19 +31,19 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","branding.logoUrl","events","social.instagram"],
       "sections": [
-        { "id": "ft-hero",     "name": "Hero",           "order": 0, "visible": true, "blocks": [
+        { "id": "ft-hero",     "name": "Hero",          "order": 0, "visible": true, "blocks": [
           { "id": "b-ft-hero",     "type": "hero",         "order": 0, "visible": true, "config": { "overlayOpacity": 0.4, "ctaLabel": "See Where We Are", "ctaHref": "/schedule" } }
         ]},
-        { "id": "ft-schedule", "name": "This Week",      "order": 1, "visible": true, "blocks": [
-          { "id": "b-ft-sched",    "type": "events-list",  "order": 0, "visible": true, "config": { "maxItems": 5, "label": "Where We\'ll Be" } }
+        { "id": "ft-schedule", "name": "This Week",     "order": 1, "visible": true, "blocks": [
+          { "id": "b-ft-sched",    "type": "events-list", "order": 0, "visible": true, "config": { "maxItems": 5, "label": "Where We'll Be" } }
         ]},
-        { "id": "ft-menu",     "name": "Menu Preview",   "order": 2, "visible": true, "blocks": [
-          { "id": "b-ft-menu",     "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
+        { "id": "ft-menu",     "name": "Menu Preview",  "order": 2, "visible": true, "blocks": [
+          { "id": "b-ft-menu",     "type": "menu-preview","order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
         ]},
-        { "id": "ft-social",   "name": "Social Feed",   "order": 3, "visible": true, "blocks": [
-          { "id": "b-ft-social",   "type": "social-feed",  "order": 0, "visible": true, "config": { "platform": "instagram", "count": 9 } }
+        { "id": "ft-social",   "name": "Social Feed",  "order": 3, "visible": true, "blocks": [
+          { "id": "b-ft-social",   "type": "social-feed", "order": 0, "visible": true, "config": { "platform": "instagram", "count": 9 } }
         ]},
-        { "id": "ft-delivery", "name": "Order Online",  "order": 4, "visible": true, "blocks": [
+        { "id": "ft-delivery", "name": "Order Online", "order": 4, "visible": true, "blocks": [
           { "id": "b-ft-delivery", "type": "delivery-links","order": 0, "visible": true, "config": {} }
         ]}
       ]

@@ -4,7 +4,7 @@
   "displayName": "Catering",
   "description": "Full-service catering company with services overview, event gallery, testimonials, and contact / quote form. Lead-generation focused.",
   "defaultStyle": "hearth",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
     { "field": "business.name",        "type": "text",     "required": true,  "label": "Company Name",              "hint": "Your catering company name.",                                                             "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Unforgettable events, exceptional food.\"",                                       "wizardStep": 1 },
@@ -26,20 +26,20 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","specials"],
       "sections": [
-        { "id": "cat-hero",         "name": "Hero",           "order": 0, "visible": true, "blocks": [
-          { "id": "b-cat-hero",         "type": "hero",          "order": 0, "visible": true, "config": { "overlayOpacity": 0.45, "ctaLabel": "Get a Quote", "ctaHref": "/contact" } }
+        { "id": "cat-hero",         "name": "Hero",          "order": 0, "visible": true, "blocks": [
+          { "id": "b-cat-hero",         "type": "hero",         "order": 0, "visible": true, "config": { "overlayOpacity": 0.45, "ctaLabel": "Get a Quote", "ctaHref": "/contact" } }
         ]},
-        { "id": "cat-services",     "name": "Services",        "order": 1, "visible": true, "blocks": [
-          { "id": "b-cat-services",     "type": "specials",       "order": 0, "visible": true, "config": {} }
+        { "id": "cat-services",     "name": "Services",       "order": 1, "visible": true, "blocks": [
+          { "id": "b-cat-services",     "type": "specials",      "order": 0, "visible": true, "config": {} }
         ]},
-        { "id": "cat-testimonials", "name": "Testimonials",    "order": 2, "visible": true, "blocks": [
-          { "id": "b-cat-testimonials", "type": "testimonials",   "order": 0, "visible": true, "config": {} }
+        { "id": "cat-testimonials", "name": "Testimonials",   "order": 2, "visible": true, "blocks": [
+          { "id": "b-cat-testimonials", "type": "testimonials",  "order": 0, "visible": true, "config": {} }
         ]},
-        { "id": "cat-gallery",      "name": "Gallery",          "order": 3, "visible": true, "blocks": [
-          { "id": "b-cat-gallery",      "type": "gallery",        "order": 0, "visible": true, "config": { "columns": 3 } }
+        { "id": "cat-gallery",      "name": "Gallery",         "order": 3, "visible": true, "blocks": [
+          { "id": "b-cat-gallery",      "type": "gallery",       "order": 0, "visible": true, "config": { "columns": 3 } }
         ]},
-        { "id": "cat-cta",          "name": "Get a Quote CTA",  "order": 4, "visible": true, "blocks": [
-          { "id": "b-cat-cta",          "type": "cta",            "order": 0, "visible": true, "config": { "label": "Request a Quote", "href": "/contact" } }
+        { "id": "cat-cta",          "name": "Get a Quote CTA", "order": 4, "visible": true, "blocks": [
+          { "id": "b-cat-cta",          "type": "cta",           "order": 0, "visible": true, "config": { "label": "Request a Quote", "href": "/contact" } }
         ]}
       ]
     },
@@ -47,10 +47,10 @@
       "id": "services", "path": "/services", "title": "Services", "optional": false,
       "usesSlots": ["specials","menu"],
       "sections": [
-        { "id": "cat-svc-list",  "name": "What We Offer",   "order": 0, "visible": true, "blocks": [
+        { "id": "cat-svc-list",  "name": "What We Offer", "order": 0, "visible": true, "blocks": [
           { "id": "b-cat-svc-list",  "type": "specials",     "order": 0, "visible": true, "config": {} }
         ]},
-        { "id": "cat-svc-menus", "name": "Sample Menus",   "order": 1, "visible": true, "blocks": [
+        { "id": "cat-svc-menus", "name": "Sample Menus",  "order": 1, "visible": true, "blocks": [
           { "id": "b-cat-svc-menus", "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 99, "showPrices": false } }
         ]}
       ]

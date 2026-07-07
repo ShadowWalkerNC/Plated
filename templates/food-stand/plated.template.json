@@ -3,12 +3,12 @@
   "businessType": "food-stand",
   "displayName": "Food Stand",
   "description": "Market stall, pop-up, or permanent food stand. Minimal pages: home with menu and location, a full menu page, and contact.",
-  "defaultStyle": "spark",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "defaultStyle": "ember",
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
-    { "field": "business.name",        "type": "text",     "required": true,  "label": "Stand Name",                "hint": "Your stand’s name — short and memorable.",                                              "wizardStep": 1 },
+    { "field": "business.name",        "type": "text",     "required": true,  "label": "Stand Name",                "hint": "Your stand's name — short and memorable.",                                              "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Fresh tamales every Saturday.\"",                                               "wizardStep": 1 },
-    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Stand",         "hint": "What you sell, where you’re found, your story.",                                       "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Stand",         "hint": "What you sell, where you're found, your story.",                                       "wizardStep": 1 },
     { "field": "business.phone",       "type": "text",     "required": false, "label": "Phone / Text Number",       "hint": "For pre-orders and inquiries.",                                                         "wizardStep": 1 },
     { "field": "business.email",       "type": "text",     "required": false, "label": "Email",                     "hint": "Optional contact email.",                                                               "wizardStep": 1 },
     { "field": "branding.logoUrl",     "type": "image",    "required": false, "label": "Logo / Banner Art",         "hint": "PNG or SVG. Minimum 512x512.",                                                         "wizardStep": 6 },
@@ -26,15 +26,15 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","menu","locations"],
       "sections": [
-        { "id": "fs-hero",    "name": "Hero",         "order": 0, "visible": true, "blocks": [
-          { "id": "b-fs-hero",    "type": "hero",        "order": 0, "visible": true, "config": { "overlayOpacity": 0.35, "ctaLabel": "See the Menu", "ctaHref": "/menu" } }
+        { "id": "fs-hero",  "name": "Hero",         "order": 0, "visible": true, "blocks": [
+          { "id": "b-fs-hero",  "type": "hero",         "order": 0, "visible": true, "config": { "overlayOpacity": 0.35, "ctaLabel": "See the Menu", "ctaHref": "/menu" } }
         ]},
-        { "id": "fs-menu",    "name": "Menu Preview", "order": 1, "visible": true, "blocks": [
-          { "id": "b-fs-menu",    "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
+        { "id": "fs-menu",  "name": "Menu Preview", "order": 1, "visible": true, "blocks": [
+          { "id": "b-fs-menu",  "type": "menu-preview", "order": 0, "visible": true, "config": { "maxCategories": 2, "showPrices": true } }
         ]},
-        { "id": "fs-hours",   "name": "Find Us",      "order": 2, "visible": true, "blocks": [
-          { "id": "b-fs-hours",   "type": "hours",        "order": 0, "visible": true, "config": {} },
-          { "id": "b-fs-map",     "type": "map",          "order": 1, "visible": true, "config": { "height": 280 } }
+        { "id": "fs-hours", "name": "Find Us",      "order": 2, "visible": true, "blocks": [
+          { "id": "b-fs-hours", "type": "hours",         "order": 0, "visible": true, "config": {} },
+          { "id": "b-fs-map",   "type": "map",           "order": 1, "visible": true, "config": { "height": 280 } }
         ]}
       ]
     },

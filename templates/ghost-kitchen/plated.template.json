@@ -3,12 +3,12 @@
   "businessType": "ghost-kitchen",
   "displayName": "Ghost Kitchen",
   "description": "Delivery-only or virtual restaurant. Landing page focused on ordering CTAs, delivery platform links, menu, and brand story.",
-  "defaultStyle": "steel",
-  "compatibleStyles": ["hearth", "spark", "steel", "bloom", "obsidian", "ghost"],
+  "defaultStyle": "canvas",
+  "compatibleStyles": ["hearth", "canvas", "midnight", "market", "coast", "ember"],
   "slots": [
     { "field": "business.name",        "type": "text",     "required": true,  "label": "Brand Name",                "hint": "The name customers see on DoorDash, Uber Eats, etc.",                                    "wizardStep": 1 },
     { "field": "business.tagline",     "type": "text",     "required": false, "label": "Tagline",                   "hint": "e.g. \"Restaurant quality. Delivery speed.\"",                                          "wizardStep": 1 },
-    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Brand",         "hint": "What you make, why it’s great, your concept.",                                        "wizardStep": 1 },
+    { "field": "business.description", "type": "richtext", "required": true,  "label": "About Your Brand",         "hint": "What you make, why it's great, your concept.",                                        "wizardStep": 1 },
     { "field": "business.phone",       "type": "text",     "required": false, "label": "Phone / Text",              "hint": "Optional — mainly for catering inquiries.",                                            "wizardStep": 1 },
     { "field": "business.email",       "type": "text",     "required": false, "label": "Email",                     "hint": "For catering and wholesale.",                                                           "wizardStep": 1 },
     { "field": "business.cuisineType", "type": "text",     "required": false, "label": "Cuisine Type",              "hint": "e.g. Smash Burgers, Vegan Wings, Ramen.",                                              "wizardStep": 1 },
@@ -30,16 +30,16 @@
       "id": "home", "path": "/", "title": "Home", "optional": false,
       "usesSlots": ["business.name","business.tagline","branding.heroImageUrl","social.doordash","social.ubereats","social.grubhub","social.chownow"],
       "sections": [
-        { "id": "gk-hero",     "name": "Hero",           "order": 0, "visible": true, "blocks": [
+        { "id": "gk-hero",     "name": "Hero",          "order": 0, "visible": true, "blocks": [
           { "id": "b-gk-hero",     "type": "hero",          "order": 0, "visible": true, "config": { "overlayOpacity": 0.4, "ctaLabel": "Order Now", "ctaHref": "/order" } }
         ]},
-        { "id": "gk-delivery", "name": "Order Online",   "order": 1, "visible": true, "blocks": [
-          { "id": "b-gk-delivery", "type": "delivery-links", "order": 0, "visible": true, "config": {} }
+        { "id": "gk-delivery", "name": "Order Online",  "order": 1, "visible": true, "blocks": [
+          { "id": "b-gk-delivery", "type": "delivery-links","order": 0, "visible": true, "config": {} }
         ]},
-        { "id": "gk-menu",     "name": "Menu Preview",   "order": 2, "visible": true, "blocks": [
+        { "id": "gk-menu",     "name": "Menu Preview",  "order": 2, "visible": true, "blocks": [
           { "id": "b-gk-menu",     "type": "menu-preview",  "order": 0, "visible": true, "config": { "maxCategories": 3, "showPrices": true } }
         ]},
-        { "id": "gk-social",   "name": "Social Feed",   "order": 3, "visible": true, "blocks": [
+        { "id": "gk-social",   "name": "Social Feed",  "order": 3, "visible": true, "blocks": [
           { "id": "b-gk-social",   "type": "social-feed",   "order": 0, "visible": true, "config": { "platform": "instagram", "count": 6 } }
         ]}
       ]
@@ -58,7 +58,7 @@
       "usesSlots": ["social.doordash","social.ubereats","social.grubhub","social.chownow"],
       "sections": [
         { "id": "gk-order", "name": "Where to Order", "order": 0, "visible": true, "blocks": [
-          { "id": "b-gk-delivery-full", "type": "delivery-links", "order": 0, "visible": true, "config": {} },
+          { "id": "b-gk-delivery-full", "type": "delivery-links","order": 0, "visible": true, "config": {} },
           { "id": "b-gk-order-cta",     "type": "cta",            "order": 1, "visible": true, "config": { "label": "View Full Menu", "href": "/menu" } }
         ]}
       ]
