@@ -8,6 +8,13 @@ export function buildBaseLayout(schema: ProjectSchema): AstroFile {
   const favicon   = schema.branding.faviconSourceUrl || '';
   const gaId      = schema.extensions?.analytics?.ga4?.measurementId ?? '';
 
+  // Theme attributes — baked statically at generation time.
+  // The CSS in src/styles/theme.css uses [data-theme][data-variant] selectors
+  // so these two attributes on <html> are what activate the right token set.
+  const themeId   = schema.styleTemplate ?? 'hearth';
+  const variant   = schema.colorTheme    ?? 'default';
+  const darkMode  = schema.darkMode === true ? ' class="dark"' : '';
+
   const gaSnippet = gaId ? `
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
@@ -30,7 +37,7 @@ const {
 } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="${themeId}" data-variant="${variant}"${darkMode}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

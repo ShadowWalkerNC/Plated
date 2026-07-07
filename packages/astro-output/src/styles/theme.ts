@@ -1,107 +1,108 @@
+/**
+ * theme.ts — embeds a theme's variables.css into the generated Astro project.
+ *
+ * Strategy:
+ *   At generation time (Node.js context), we read the selected theme's
+ *   variables.css from disk and embed it verbatim into src/styles/theme.css.
+ *   The CSS uses [data-theme][data-variant] selectors which are matched by the
+ *   data-theme / data-variant attributes on <html> (set in Base.astro).
+ *
+ *   If the file is missing we emit a minimal fallback :root {} block so the
+ *   generator never throws — this makes dry-run and unit tests safe.
+ */
+import { readFileSync } from 'node:fs';
+import { resolve }     from 'node:path';
+import { existsSync }  from 'node:fs';
 import type { ProjectSchema } from '@plated/types';
-import type { AstroFile } from '../types.js';
+import type { AstroFile }    from '../types.js';
 
-const THEME_TOKENS: Record<string, string> = {
-  hearth: `
-  --color-bg:           #fdf8f2;
-  --color-surface:      #fff9f2;
-  --color-border:       rgba(74,47,35,0.12);
-  --color-text:         #1e1612;
-  --color-text-muted:   #7a6254;
-  --color-primary:      #8a4b2f;
-  --color-primary-fg:   #fff8f2;
-  --color-accent:       #c98f4a;
-  --font-display:       'Cormorant Garamond', Georgia, serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         0.5rem;
-  --radius-card:        1.25rem;`,
+/** Minimal fallback token set when variables.css cannot be found on disk. */
+const FALLBACK_TOKENS = `
+/* Plated — fallback tokens (theme file not found at build time) */
+:root {
+  --color-bg-base:          #fafafa;
+  --color-bg-surface:       #f4f4f4;
+  --color-bg-elevated:      #ebebeb;
+  --color-text-primary:     #111111;
+  --color-text-secondary:   #444444;
+  --color-text-muted:       #888888;
+  --color-text-inverse:     #ffffff;
+  --color-accent-primary:   #2563eb;
+  --color-accent-secondary: #60a5fa;
+  --color-accent-pale:      rgba(37,99,235,0.10);
+  --color-border:           #d1d5db;
+  --color-border-subtle:    #e5e7eb;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 10px rgba(0,0,0,0.09);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.13);
+  --font-sans:    system-ui, sans-serif;
+  --font-display: system-ui, sans-serif;
+  --font-mono:    'Courier New', monospace;
+  --space-1:  0.25rem; --space-2:  0.5rem;  --space-3:  0.75rem;
+  --space-4:  1rem;    --space-6:  1.5rem;  --space-8:  2rem;
+  --space-12: 3rem;    --space-16: 4rem;
+  --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-full: 9999px;
+}
+`;
 
-  spark: `
-  --color-bg:           #ffffff;
-  --color-surface:      #f8f8f8;
-  --color-border:       #e5e5e5;
-  --color-text:         #1a1a1a;
-  --color-text-muted:   #666666;
-  --color-primary:      #1a1a1a;
-  --color-primary-fg:   #ffffff;
-  --color-accent:       #555555;
-  --font-display:       'Inter', system-ui, sans-serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         0.375rem;
-  --radius-card:        0.75rem;`,
-
-  steel: `
-  --color-bg:           #0e0e0e;
-  --color-surface:      #181818;
-  --color-border:       rgba(255,255,255,0.08);
-  --color-text:         #f0ebe6;
-  --color-text-muted:   rgba(240,235,230,0.55);
-  --color-primary:      #c8856e;
-  --color-primary-fg:   #0e0e0e;
-  --color-accent:       #e8a87c;
-  --font-display:       'Cormorant Garamond', Georgia, serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         999px;
-  --radius-card:        1rem;`,
-
-  bloom: `
-  --color-bg:           #fdfaf4;
-  --color-surface:      #fff9ee;
-  --color-border:       #ddd5c4;
-  --color-text:         #1e1a14;
-  --color-text-muted:   #7a6e5a;
-  --color-primary:      #3d7a4f;
-  --color-primary-fg:   #ffffff;
-  --color-accent:       #e07b39;
-  --font-display:       'Playfair Display', Georgia, serif;
-  --font-body:          'Source Sans 3', system-ui, sans-serif;
-  --radius-btn:         0.5rem;
-  --radius-card:        1.25rem;`,
-
-  obsidian: `
-  --color-bg:           #120a07;
-  --color-surface:      #1e1108;
-  --color-border:       rgba(255,120,40,0.12);
-  --color-text:         #fdf0e8;
-  --color-text-muted:   rgba(253,240,232,0.6);
-  --color-primary:      #e85d20;
-  --color-primary-fg:   #fdf0e8;
-  --color-accent:       #f5a623;
-  --font-display:       'Oswald', Impact, sans-serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         0.375rem;
-  --radius-card:        0.75rem;`,
-
-  ghost: `
-  --color-bg:           #f7fbfe;
-  --color-surface:      #ffffff;
-  --color-border:       #cde4f0;
-  --color-text:         #162433;
-  --color-text-muted:   #5a7a8e;
-  --color-primary:      #1b6fa8;
-  --color-primary-fg:   #ffffff;
-  --color-accent:       #f0a855;
-  --font-display:       'Lora', Georgia, serif;
-  --font-body:          'Inter', system-ui, sans-serif;
-  --radius-btn:         999px;
-  --radius-card:        1.25rem;`,
-};
+/**
+ * Resolves the absolute path to a theme's variables.css.
+ * Mirrors the logic in packages/generator/src/themeRegistry.ts but
+ * expressed relative to this file so astro-output has no circular dep.
+ */
+function resolveVariablesCss(themeId: string): string {
+  // 1. Env override (set by Electron / production build)
+  const envDir = process.env['PLATED_STYLES_DIR'];
+  if (envDir) {
+    const c = `${envDir}/${themeId}/variables.css`;
+    if (existsSync(c)) return c;
+  }
+  // 2. Repo-relative from packages/astro-output/src/styles/
+  return resolve(
+    typeof __dirname !== 'undefined'
+      ? __dirname
+      : new URL('.', import.meta.url).pathname,
+    '../../../../styles',
+    themeId,
+    'variables.css',
+  );
+}
 
 export function buildThemeCss(schema: ProjectSchema): AstroFile {
   const themeId  = schema.styleTemplate ?? 'hearth';
-  const tokens   = THEME_TOKENS[themeId] ?? THEME_TOKENS['hearth']!;
-  const primary   = schema.branding.primaryColor;
-  const secondary = schema.branding.secondaryColor;
-  const accent    = schema.branding.accentColor;
+  const cssPath  = resolveVariablesCss(themeId);
 
-  const overrides = [
-    primary   ? `  --color-primary:   ${primary};`   : '',
-    secondary ? `  --color-bg:        ${secondary};` : '',
-    accent    ? `  --color-accent:    ${accent};`    : '',
-  ].filter(Boolean).join('\n');
+  let variablesCss: string;
+  try {
+    variablesCss = readFileSync(cssPath, 'utf-8');
+  } catch {
+    console.warn(
+      `[plated] theme variables.css not found for "${themeId}" at ${cssPath}. Using fallback tokens.`,
+    );
+    variablesCss = FALLBACK_TOKENS;
+  }
+
+  // ── Brand colour overrides ───────────────────────────────────────────────
+  // If the user chose custom brand colours in the wizard, they win over the
+  // theme defaults. We inject them as a [data-theme] override block so they
+  // take precedence without duplicating the full token set.
+  const overrides: string[] = [];
+  if (schema.branding.primaryColor) {
+    overrides.push(`  --color-accent-primary:   ${schema.branding.primaryColor};`);
+  }
+  if (schema.branding.secondaryColor) {
+    overrides.push(`  --color-bg-surface:       ${schema.branding.secondaryColor};`);
+  }
+  if (schema.branding.accentColor) {
+    overrides.push(`  --color-accent-secondary: ${schema.branding.accentColor};`);
+  }
+
+  const overrideBlock = overrides.length
+    ? `\n/* ── Brand colour overrides (from wizard) ── */\n[data-theme="${themeId}"] {\n${overrides.join('\n')}\n}\n`
+    : '';
 
   return {
-    path: 'src/styles/theme.css',
-    content: `:root {${tokens}\n${overrides ? overrides + '\n' : ''}}\n`,
+    path:    'src/styles/theme.css',
+    content: `/* Generated by Plated — do not edit. Theme: ${themeId} */\n${variablesCss}${overrideBlock}`,
   };
 }

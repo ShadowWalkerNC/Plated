@@ -12,18 +12,22 @@ export type BusinessType =
   | 'ghost-kitchen';
 
 /**
- * StyleTemplate — 6 visual styles.
- * Each injects CSS variables ONLY — zero content logic.
+ * StyleTemplate — 6 visual styles that exist in styles/<id>/variables.css.
+ * Each injects CSS custom-property tokens only — zero content logic.
+ * (Decision 3 — Template Decoupling)
  */
 export type StyleTemplate =
   | 'hearth'
-  | 'spark'
-  | 'steel'
-  | 'bloom'
-  | 'obsidian'
-  | 'ghost';
+  | 'canvas'
+  | 'midnight'
+  | 'market'
+  | 'coast'
+  | 'ember';
 
-/** 3 color theme variants per style */
+/** Alias used by the generator's theme registry */
+export type ThemeId = StyleTemplate;
+
+/** 3 color theme variants per style — map to [data-variant] in variables.css */
 export type ColorTheme = 'default' | 'warm' | 'cool';
 
 export type SlotType =
