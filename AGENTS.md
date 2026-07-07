@@ -10,7 +10,7 @@
 
 ```
 Project:      Plated
-Version:      4.1
+Version:      4.2
 Description:  Full-featured guided website builder for the restaurant and hospitality industry.
               Two modes: Local Builder (Electron desktop app, offline-capable, static Astro zip
               export) and SaaS Hub (PLATED_DOMAIN — live editing, Supabase-backed, mobile-first).
@@ -72,7 +72,7 @@ CDN/Cache:          Cloudflare (edge cache + purge on content save)
 SaaS hosting:       Railway (persistent Node.js server)
 Forms (SaaS):       Supabase table + Resend
 Forms (Local):      Netlify Forms or Formspree (in deploy instructions)
-Extensions:         packages/extensions/ — JSON config + npm plugin registry
+Extensions:         packages/extensions/ — JSON config + npm plugin resolver
 Integrations:       packages/integrations/ — Square, Meta, Google, Apple Maps, Yelp
 Background removal: @imgly/background-removal (no API key required)
 Image crop:         react-image-crop
@@ -221,21 +221,21 @@ plated/
 │       ├── editor/           ← Block-level DnD editor (SaaS)
 │       └── renderer/         ← Tenant-aware site renderer
 ├── templates/
-│   ├── restaurant/
-│   ├── food-truck/
-│   ├── bar/
-│   ├── cafe/
-│   ├── bakery/
-│   ├── catering/
-│   ├── food-stand/
-│   └── ghost-kitchen/
+│   ├── restaurant/           ← plated.template.json ✓
+│   ├── food-truck/           ← plated.template.json ✓
+│   ├── bar/                  ← plated.template.json ✓
+│   ├── cafe/                 ← plated.template.json ✓
+│   ├── bakery/               ← plated.template.json ✓
+│   ├── catering/             ← plated.template.json ✓
+│   ├── food-stand/           ← plated.template.json ✓
+│   └── ghost-kitchen/        ← plated.template.json ✓
 ├── styles/
-│   ├── hearth/
-│   ├── spark/
-│   ├── steel/
-│   ├── bloom/
-│   ├── obsidian/
-│   └── ghost/
+│   ├── hearth/               ← variables.css ✓  (warm, rustic, editorial — serif)
+│   ├── canvas/               ← variables.css ✓  (clean, minimal, system-font)
+│   ├── midnight/             ← variables.css ✓  (dark, premium, moody — gold accents)
+│   ├── market/               ← variables.css ✓  (fresh, botanical, Playfair Display)
+│   ├── coast/                ← variables.css ✓  (airy, bright, hospitality — Lora)
+│   └── ember/                ← variables.css ✓  (bold, dramatic, fire-lit — Oswald)
 ├── docs/
 ├── turbo.json
 ├── pnpm-workspace.yaml
@@ -397,7 +397,7 @@ Goal:      Build packages/generator/ and packages/template-engine/.
            CLI spawns Electron binary.
 Timeline:  Jul–Sep 2026
 
-Completed so far (Jul 6–7, 2026):
+Completed (Jul 6–7, 2026):
   ✓ packages/asset-tools/ — fully implemented
       generateFavicons   — ICO (16+32) + Apple 180 + Android 192/512, pure-Node ICO builder
       optimizeImage      — WebP output + blur placeholder data URL
@@ -416,18 +416,35 @@ Completed so far (Jul 6–7, 2026):
       @imgly/background-removal → ArrayBuffer → IPC round-trip
   ✓ MenuBuilder.module.css — confirmed complete (all 25+ classes present)
   ✓ README.md v5.1 — stack, wizard, features, roadmap all updated
+  ✓ packages/generator/ — fully implemented
+      index.ts         — generate(): loadManifests → buildAstroProject → write to disk
+      manifestLoader.ts — imports all 8 template JSONs, registers with astro-output (idempotent)
+      themeRegistry.ts — all 6 themes with swatches/fonts/bestFor, resolveStyleFile()
+      astro-output/    — buildAstroProject(), renderManifestPages(), all 16 components,
+                         Base layout, global.ts + theme.ts, 5 file builders, 4 fallback pages
+      __tests__/       — 4 test files: generate, manifestLoader, planFiles, themeRegistry
+  ✓ packages/template-engine/ — fully implemented
+      index.ts         — loadManifest() + resolveSlots() + re-exports
+      resolveTokens.ts — full flat token map: business, branding, SEO, social, deployment, location
+      interpolate.ts   — {{token}} string replacement with passthrough for unknown keys
+      conditional.ts   — evaluateConditional(): presence/equality test + not inversion
+      renderTemplate.ts — one-step convenience: resolveTokens + interpolate
+      __tests__/       — 4 test files covering all modules
+  ✓ templates/ — all 8 plated.template.json manifests complete
+      restaurant (10 531 B) · cafe (6 599 B) · bar (7 552 B) · bakery (7 770 B)
+      catering (7 332 B) · food-truck (8 067 B) · food-stand (5 836 B) · ghost-kitchen (7 447 B)
+  ✓ styles/ — all 6 variables.css files complete (3 variants each: default/warm/cool)
+      hearth · canvas · midnight · market · coast · ember
 
 Remaining Phase 1 items:
-  □ packages/generator/ — full generate() implementation: ProjectSchema → Astro file output
-  □ packages/template-engine/ — plated.template.json reader + block/slot mapper
-  □ templates/restaurant/ — complete plated.template.json manifest
-  □ styles/hearth/ — complete variables.css tokens
-  □ packages/cli/ — CLI wired to spawn Electron binary
+  □ packages/cli/ — CLI wired to spawn Electron binary (npx plated entry point)
   □ Turborepo pipeline: generator build verified end-to-end
 
 Note: Wizard UI is substantially complete ahead of the Phase 2 schedule.
       Phase 2 will focus on block DnD editor, media library, and remaining
       template/style stubs rather than rebuilding the wizard from scratch.
+      Generator pipeline and all supporting data files are complete well
+      ahead of the Jul–Sep Phase 1 target.
 ```
 
 ---
@@ -437,7 +454,7 @@ Note: Wizard UI is substantially complete ahead of the Phase 2 schedule.
 After loading this file, confirm in DISPATCH:
 
 ```
-Project: Plated v4.1
+Project: Plated v4.2
 Stack: TypeScript · Astro 5 · Electron · React 19+Vite · Supabase · Gemini · sharp · satori · Turborepo
 Phase: 1 — Generator Core
 Product: Restaurant website builder — Electron Local (offline) + SaaS Hub (PLATED_DOMAIN)
@@ -455,5 +472,5 @@ Do NOT suggest: Tauri, Next.js, Python, Docker, Puppeteer, Contentful, Sanity, O
 
 ---
 
-*Version: 4.1 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
-*Last updated: July 7, 2026 — Phase 1 wizard progress documented.*
+*Version: 4.2 | Extends: ShadowWalkerNC/.github/AGENTS.md | Project: Plated*
+*Last updated: July 7, 2026 — Phase 1 generator + template-engine complete. CLI remaining.*
