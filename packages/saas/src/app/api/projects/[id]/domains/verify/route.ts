@@ -1,9 +1,7 @@
 import { auth }                from '@clerk/nextjs/server';
 import { NextResponse }        from 'next/server';
 import { checkAndMarkVerified } from '@/lib/domains/verify';
-import { db }                  from '@/lib/db/client';
-import { customDomains }       from '@/lib/db/schema';
-import { eq, and }             from 'drizzle-orm';
+import { getCustomDomain }     from '@/lib/db/queries';
 import { addDomainToVercel, addDomainToNetlify } from '@/lib/domains/providers';
 
 interface Ctx { params: { id: string } }
@@ -16,17 +14,11 @@ export async function POST(req: Request, { params: _params }: Ctx) {
 
   const result = await checkAndMarkVerified(domainId, userId);
   if (!result.verified) {
-    return NextResponse.json({ verified: false, reason: result.reason }, { status: 200 });
+    return NextResponse.json({ verified: false, reason: result.reason });
   }
 
-  // After verification, push domain to the last-used deploy provider if known
-  const rows = await db
-    .select()
-    .from(customDomains)
-    .where(and(eq(customDomains.id, domainId), eq(customDomains.userId, userId)))
-    .limit(1);
-
-  const domainRow = rows[0];
+  // After DNS passes, register the domain with the provider used in the last deploy
+  const domainRow = await getCustomDomain(domainId, userId);
   if (domainRow?.provider && domainRow?.providerDomainId) {
     if (domainRow.provider === 'vercel') {
       await addDomainToVercel(domainRow.domain, domainRow.providerDomainId).catch(() => {});

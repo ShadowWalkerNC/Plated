@@ -6,7 +6,7 @@ import {
 import type { NewProject } from './schema.js';
 import type { ProjectSchema } from '@plated/types';
 
-// ── Projects ───────────────────────────────────────────────────────────────
+// -- Projects -----------------------------------------------------------------
 
 export async function getProjectsByUser(userId: string) {
   return db
@@ -21,6 +21,20 @@ export async function getProject(id: string, userId: string) {
     .select()
     .from(projects)
     .where(and(eq(projects.id, id), eq(projects.userId, userId)))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+/**
+ * Fetch a project by ID without an ownership check.
+ * Used only by internal/server-side paths (e.g. sites renderer) where
+ * the project ID comes from a trusted DB lookup, not user input.
+ */
+export async function getPublishedProject(id: string) {
+  const rows = await db
+    .select()
+    .from(projects)
+    .where(and(eq(projects.id, id), eq(projects.isPublished, true)))
     .limit(1);
   return rows[0] ?? null;
 }
@@ -52,7 +66,7 @@ export async function deleteProject(id: string, userId: string) {
   await db.delete(projects).where(and(eq(projects.id, id), eq(projects.userId, userId)));
 }
 
-// ── Deployments ───────────────────────────────────────────────────────────
+// -- Deployments --------------------------------------------------------------
 
 export async function getDeploymentsByProject(projectId: string) {
   return db
@@ -80,12 +94,11 @@ export async function updateDeploymentStatus(
   return rows[0] ?? null;
 }
 
-// ── Subscriptions ──────────────────────────────────────────────────────────
+// -- Subscriptions ------------------------------------------------------------
 
 /**
- * Returns the user’s active (or most recent) subscription row, or null
- * if they have never subscribed. The billing page and canDeploy gate use
- * this to render the current plan.
+ * Returns the user's active (or most recent) subscription row, or null
+ * if they have never subscribed.
  */
 export async function getSubscription(userId: string) {
   const rows = await db
@@ -98,8 +111,9 @@ export async function getSubscription(userId: string) {
 }
 
 /**
- * Upsert a subscription row keyed on userId. Called by the Stripe webhook
- * on checkout.session.completed and customer.subscription.updated.
+ * Upsert a subscription row keyed on userId.
+ * Called by the Stripe webhook on checkout.session.completed and
+ * customer.subscription.updated.
  */
 export async function upsertSubscription(
   data: typeof subscriptions.$inferInsert,
@@ -136,7 +150,7 @@ export async function cancelSubscription(stripeSubId: string) {
   return rows[0] ?? null;
 }
 
-// ── Custom domains ──────────────────────────────────────────────────────────
+// -- Custom domains -----------------------------------------------------------
 
 export async function getCustomDomainsByProject(projectId: string) {
   return db
@@ -152,6 +166,20 @@ export async function getCustomDomain(id: string, userId: string) {
     .select()
     .from(customDomains)
     .where(and(eq(customDomains.id, id), eq(customDomains.userId, userId)))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+/**
+ * Look up a verified custom domain by its hostname.
+ * Used by the sites renderer -- no userId needed because the domain
+ * itself is the trust boundary (only verified domains are returned).
+ */
+export async function getVerifiedDomainByHost(host: string) {
+  const rows = await db
+    .select()
+    .from(customDomains)
+    .where(and(eq(customDomains.domain, host), eq(customDomains.verified, true)))
     .limit(1);
   return rows[0] ?? null;
 }
@@ -179,18 +207,14 @@ export async function deleteCustomDomain(id: string, userId: string) {
     .where(and(eq(customDomains.id, id), eq(customDomains.userId, userId)));
 }
 
-// ── User data removal (GDPR / account deletion) ─────────────────────────────
+// -- User data removal (GDPR / account deletion) ------------------------------
 
 /**
- * Hard-delete all rows owned by userId across every table.
- * Cascades from Drizzle side (projects have ON DELETE CASCADE for
- * deployments and customDomains; subscriptions are deleted explicitly).
- *
- * Called by the Clerk user.deleted webhook.
+ * Hard-delete all rows owned by userId.
+ * Subscriptions are deleted explicitly; projects cascade-delete
+ * deployments and customDomains via FK ON DELETE CASCADE.
  */
 export async function deleteUserData(userId: string) {
-  // Subscriptions don’t cascade from projects, so delete them first.
   await db.delete(subscriptions).where(eq(subscriptions.userId, userId));
-  // Projects cascade-delete deployments and customDomains via FK.
   await db.delete(projects).where(eq(projects.userId, userId));
 }

@@ -1,27 +1,26 @@
-import { auth }           from '@clerk/nextjs/server';
-import { NextResponse }   from 'next/server';
-import { db }             from '@/lib/db/client';
-import { customDomains }  from '@/lib/db/schema';
-import { eq, and }        from 'drizzle-orm';
+import { auth }               from '@clerk/nextjs/server';
+import { NextResponse }       from 'next/server';
 import { canUseCustomDomain } from '@/lib/stripe/gates';
-import { randomBytes }    from 'node:crypto';
+import {
+  getCustomDomainsByProject,
+  createCustomDomain,
+  deleteCustomDomain,
+} from '@/lib/db/queries';
+import { randomBytes } from 'node:crypto';
 
 interface Ctx { params: { id: string } }
 
-// GET — list domains for a project
+// GET - list domains for a project
 export async function GET(_req: Request, { params }: Ctx) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const rows = await db
-    .select()
-    .from(customDomains)
-    .where(and(eq(customDomains.projectId, params.id), eq(customDomains.userId, userId)));
-
-  return NextResponse.json({ domains: rows });
+  const domains = await getCustomDomainsByProject(params.id);
+  // filter to caller's own domains (belt-and-suspenders ownership check)
+  return NextResponse.json({ domains: domains.filter((d) => d.userId === userId) });
 }
 
-// POST — add a new domain
+// POST - add a new custom domain
 export async function POST(req: Request, { params }: Ctx) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -30,33 +29,32 @@ export async function POST(req: Request, { params }: Ctx) {
   if (!gate.allowed) return NextResponse.json({ error: gate.reason }, { status: 403 });
 
   const { domain } = await req.json() as { domain: string };
-  const cleaned = domain.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const cleaned = domain.trim().toLowerCase()
+    .replace(/^https?:\/\//, '')
+    .replace(/\/$/, '');
 
   if (!isValidDomain(cleaned)) {
     return NextResponse.json({ error: 'Invalid domain name.' }, { status: 400 });
   }
 
-  const token = randomBytes(20).toString('hex');
-
-  const rows = await db.insert(customDomains).values({
+  const token     = randomBytes(20).toString('hex');
+  const domainRow = await createCustomDomain({
     projectId:         params.id,
     userId,
     domain:            cleaned,
     verificationToken: token,
-  }).returning();
+  });
 
-  return NextResponse.json({ domain: rows[0] }, { status: 201 });
+  return NextResponse.json({ domain: domainRow }, { status: 201 });
 }
 
-// DELETE — remove a domain
-export async function DELETE(req: Request, { params }: Ctx) {
+// DELETE - remove a domain
+export async function DELETE(req: Request, _ctx: Ctx) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { domainId } = await req.json() as { domainId: string };
-
-  await db.delete(customDomains)
-    .where(and(eq(customDomains.id, domainId), eq(customDomains.userId, userId)));
+  await deleteCustomDomain(domainId, userId);
 
   return NextResponse.json({ ok: true });
 }
