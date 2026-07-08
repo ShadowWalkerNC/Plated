@@ -1,287 +1,144 @@
 /**
- * useEditorStore — Zustand store for the block DnD editor.
+ * useEditorStore.ts — Zustand store for the block DnD editor.
  *
- * Owns pages[], activePage index, selected/hovered block IDs.
- * All mutations keep displayOrder integers in sync.
- * onChange(pages) is called after every mutation so the caller
- * can flush changes back into useWizardStore via updateSchema.
+ * Owns the mutable copy of sections/blocks that the editor manipulates.
+ * Syncs back to the main WizardStore via updateSchema() when mutations occur.
+ *
+ * Rule: ALL section/block mutations go through this store.
+ * The WizardStore is the persistence layer; this store is the edit layer.
  */
-import { create } from 'zustand';
+import { create }           from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import type { TemplateSection, BlockSchema, BlockType } from '@plated/types';
-
-export interface EditorPage {
-  id: string;
-  path: string;
-  title: string;
-  sections: TemplateSection[];
-}
+import type { BlockSchema, TemplateSection } from '@plated/types';
+import { useWizardStore }   from '../store/useWizardStore.js';
+import { arrayMove }        from '@dnd-kit/sortable';
 
 export interface EditorStore {
-  pages: EditorPage[];
-  activePageId: string | null;
-  selectedBlockId: string | null;
-  hoveredBlockId:  string | null;
+  // State
+  sections:      TemplateSection[];
+  activeBlockId: string | null;   // currently selected block
+  activeSectionId: string | null; // currently focused/expanded section
+  isDirty:       boolean;
 
-  // Init
-  initFromPages: (pages: EditorPage[], onChange: (pages: EditorPage[]) => void) => void;
+  // Initialise from the current ProjectSchema pages[0].sections
+  initFromSchema: () => void;
 
-  // Navigation
-  setActivePage:  (pageId: string) => void;
-  selectBlock:    (blockId: string | null) => void;
-  hoverBlock:     (blockId: string | null) => void;
+  // Section actions
+  reorderSections:   (fromIndex: number, toIndex: number) => void;
+  toggleSection:     (sectionId: string) => void;
+  setActiveSection:  (sectionId: string | null) => void;
 
-  // Block moves within a section
-  moveBlock: (sectionId: string, fromIndex: number, toIndex: number) => void;
+  // Block actions
+  reorderBlocks:     (sectionId: string, fromIndex: number, toIndex: number) => void;
+  toggleBlock:       (sectionId: string, blockId: string) => void;
+  setActiveBlock:    (blockId: string | null) => void;
+  updateBlockConfig: (blockId: string, patch: Record<string, unknown>) => void;
 
-  // Block moves across sections
-  moveSectionBlock: (
-    fromSectionId: string, fromIndex: number,
-    toSectionId:   string, toIndex:   number,
-  ) => void;
-
-  // Block mutations
-  toggleBlockVisible:  (blockId: string) => void;
-  updateBlockConfig:   (blockId: string, patch: Record<string, unknown>) => void;
-  addBlock:            (sectionId: string, type: BlockType) => void;
-  removeBlock:         (blockId: string) => void;
-  duplicateBlock:      (blockId: string) => void;
-  moveBlockUp:         (blockId: string) => void;
-  moveBlockDown:       (blockId: string) => void;
-
-  // Section mutations
-  reorderSection:      (fromIndex: number, toIndex: number) => void;
-  toggleSectionVisible:(sectionId: string) => void;
-}
-
-let _onChange: ((pages: EditorPage[]) => void) | null = null;
-
-function notify(pages: EditorPage[]) {
-  _onChange?.(pages);
-}
-
-function reindex(blocks: BlockSchema[]): BlockSchema[] {
-  return blocks.map((b, i) => ({ ...b, order: i }));
-}
-
-function mutatePage(
-  pages: EditorPage[],
-  pageId: string | null,
-  fn: (page: EditorPage) => EditorPage,
-): EditorPage[] {
-  return pages.map((p) => (p.id === pageId ? fn(p) : p));
-}
-
-function mutateSection(
-  page: EditorPage,
-  sectionId: string,
-  fn: (s: TemplateSection) => TemplateSection,
-): EditorPage {
-  return {
-    ...page,
-    sections: page.sections.map((s) => (s.id === sectionId ? fn(s) : s)),
-  };
+  // Flush mutations back to WizardStore
+  flushToSchema: () => void;
 }
 
 export const useEditorStore = create<EditorStore>()(
   subscribeWithSelector((set, get) => ({
-    pages: [],
-    activePageId:    null,
-    selectedBlockId: null,
-    hoveredBlockId:  null,
+    sections:        [],
+    activeBlockId:   null,
+    activeSectionId: null,
+    isDirty:         false,
 
-    initFromPages: (pages, onChange) => {
-      _onChange = onChange;
-      set({ pages, activePageId: pages[0]?.id ?? null });
+    // ── initFromSchema ──────────────────────────────────────────────────────
+    initFromSchema: () => {
+      const schema   = useWizardStore.getState().schema;
+      // Editor works on the first page for now (home page)
+      const sections = (schema as any)?.pages?.[0]?.sections ?? [];
+      // Deep clone so we don't mutate the store reference
+      set({ sections: JSON.parse(JSON.stringify(sections)), isDirty: false });
     },
 
-    setActivePage:  (pageId) => set({ activePageId: pageId, selectedBlockId: null }),
-    selectBlock:    (blockId) => set({ selectedBlockId: blockId }),
-    hoverBlock:     (blockId) => set({ hoveredBlockId: blockId }),
-
-    moveBlock: (sectionId, fromIndex, toIndex) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) =>
-        mutateSection(page, sectionId, (s) => {
-          const blocks = [...s.blocks];
-          const [moved] = blocks.splice(fromIndex, 1);
-          blocks.splice(toIndex, 0, moved);
-          return { ...s, blocks: reindex(blocks) };
-        }),
-      );
-      set({ pages: next });
-      notify(next);
-    },
-
-    moveSectionBlock: (fromSectionId, fromIndex, toSectionId, toIndex) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => {
-        let movedBlock: BlockSchema | null = null;
-        const withRemoval = {
-          ...page,
-          sections: page.sections.map((s) => {
-            if (s.id !== fromSectionId) return s;
-            const blocks = [...s.blocks];
-            [movedBlock] = blocks.splice(fromIndex, 1);
-            return { ...s, blocks: reindex(blocks) };
-          }),
-        };
-        if (!movedBlock) return page;
-        const block = movedBlock;
-        return {
-          ...withRemoval,
-          sections: withRemoval.sections.map((s) => {
-            if (s.id !== toSectionId) return s;
-            const blocks = [...s.blocks];
-            blocks.splice(toIndex, 0, block);
-            return { ...s, blocks: reindex(blocks) };
-          }),
-        };
+    // ── Section reorder ─────────────────────────────────────────────────────
+    reorderSections: (fromIndex, toIndex) => {
+      set((s) => {
+        const next = arrayMove([...s.sections], fromIndex, toIndex).map(
+          (sec, i) => ({ ...sec, order: i }),
+        );
+        return { sections: next, isDirty: true };
       });
-      set({ pages: next });
-      notify(next);
+      get().flushToSchema();
     },
 
-    toggleBlockVisible: (blockId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => ({
-          ...s,
-          blocks: s.blocks.map((b) =>
-            b.id === blockId ? { ...b, visible: !b.visible } : b,
-          ),
-        })),
+    toggleSection: (sectionId) => {
+      set((s) => ({
+        sections: s.sections.map((sec) =>
+          sec.id === sectionId ? { ...sec, visible: !sec.visible } : sec,
+        ),
+        isDirty: true,
       }));
-      set({ pages: next });
-      notify(next);
+      get().flushToSchema();
     },
+
+    setActiveSection: (sectionId) => set({ activeSectionId: sectionId }),
+
+    // ── Block reorder ────────────────────────────────────────────────────────
+    reorderBlocks: (sectionId, fromIndex, toIndex) => {
+      set((s) => ({
+        sections: s.sections.map((sec) => {
+          if (sec.id !== sectionId) return sec;
+          const next = arrayMove([...sec.blocks], fromIndex, toIndex).map(
+            (b, i) => ({ ...b, order: i }),
+          );
+          return { ...sec, blocks: next };
+        }),
+        isDirty: true,
+      }));
+      get().flushToSchema();
+    },
+
+    toggleBlock: (sectionId, blockId) => {
+      set((s) => ({
+        sections: s.sections.map((sec) => {
+          if (sec.id !== sectionId) return sec;
+          return {
+            ...sec,
+            blocks: sec.blocks.map((b) =>
+              b.id === blockId ? { ...b, visible: !b.visible } : b,
+            ),
+          };
+        }),
+        isDirty: true,
+      }));
+      get().flushToSchema();
+    },
+
+    setActiveBlock: (blockId) => set({ activeBlockId: blockId }),
 
     updateBlockConfig: (blockId, patch) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => ({
-          ...s,
-          blocks: s.blocks.map((b) =>
-            b.id === blockId ? { ...b, config: { ...b.config, ...patch } } : b,
+      set((s) => ({
+        sections: s.sections.map((sec) => ({
+          ...sec,
+          blocks: sec.blocks.map((b) =>
+            b.id === blockId
+              ? { ...b, config: { ...b.config, ...patch } }
+              : b,
           ),
         })),
+        isDirty: true,
       }));
-      set({ pages: next });
-      notify(next);
+      get().flushToSchema();
     },
 
-    addBlock: (sectionId, type) => {
-      const { pages, activePageId } = get();
-      const newBlock: BlockSchema = {
-        id: crypto.randomUUID(),
-        type,
-        order: 999,
-        visible: true,
-        config: {},
-      };
-      const next = mutatePage(pages, activePageId, (page) =>
-        mutateSection(page, sectionId, (s) => ({
-          ...s,
-          blocks: reindex([...s.blocks, newBlock]),
-        })),
-      );
-      set({ pages: next });
-      notify(next);
-    },
-
-    removeBlock: (blockId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => ({
-          ...s,
-          blocks: reindex(s.blocks.filter((b) => b.id !== blockId)),
-        })),
-      }));
-      set({ pages: next, selectedBlockId: null });
-      notify(next);
-    },
-
-    duplicateBlock: (blockId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => {
-          const idx = s.blocks.findIndex((b) => b.id === blockId);
-          if (idx === -1) return s;
-          const copy: BlockSchema = {
-            ...s.blocks[idx],
-            id: crypto.randomUUID(),
-            config: { ...s.blocks[idx].config },
-          };
-          const blocks = [...s.blocks];
-          blocks.splice(idx + 1, 0, copy);
-          return { ...s, blocks: reindex(blocks) };
-        }),
-      }));
-      set({ pages: next });
-      notify(next);
-    },
-
-    moveBlockUp: (blockId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => {
-          const idx = s.blocks.findIndex((b) => b.id === blockId);
-          if (idx <= 0) return s;
-          const blocks = [...s.blocks];
-          [blocks[idx - 1], blocks[idx]] = [blocks[idx], blocks[idx - 1]];
-          return { ...s, blocks: reindex(blocks) };
-        }),
-      }));
-      set({ pages: next });
-      notify(next);
-    },
-
-    moveBlockDown: (blockId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) => {
-          const idx = s.blocks.findIndex((b) => b.id === blockId);
-          if (idx === -1 || idx >= s.blocks.length - 1) return s;
-          const blocks = [...s.blocks];
-          [blocks[idx], blocks[idx + 1]] = [blocks[idx + 1], blocks[idx]];
-          return { ...s, blocks: reindex(blocks) };
-        }),
-      }));
-      set({ pages: next });
-      notify(next);
-    },
-
-    reorderSection: (fromIndex, toIndex) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => {
-        const sections = [...page.sections];
-        const [moved] = sections.splice(fromIndex, 1);
-        sections.splice(toIndex, 0, moved);
-        return {
-          ...page,
-          sections: sections.map((s, i) => ({ ...s, order: i })),
-        };
-      });
-      set({ pages: next });
-      notify(next);
-    },
-
-    toggleSectionVisible: (sectionId) => {
-      const { pages, activePageId } = get();
-      const next = mutatePage(pages, activePageId, (page) => ({
-        ...page,
-        sections: page.sections.map((s) =>
-          s.id === sectionId ? { ...s, visible: !s.visible } : s,
-        ),
-      }));
-      set({ pages: next });
-      notify(next);
+    // ── flushToSchema ────────────────────────────────────────────────────────
+    // Writes the current editor sections back into WizardStore so auto-save
+    // and export always work from the latest state.
+    flushToSchema: () => {
+      const { sections } = get();
+      const schema = useWizardStore.getState().schema as any;
+      if (!schema?.pages?.[0]) return;
+      useWizardStore.getState().updateSchema({
+        pages: [
+          { ...schema.pages[0], sections },
+          ...schema.pages.slice(1),
+        ],
+      } as any);
+      set({ isDirty: false });
     },
   }))
 );

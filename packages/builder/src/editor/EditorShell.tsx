@@ -1,184 +1,108 @@
 /**
- * EditorShell — full-window layout for the block DnD editor.
+ * EditorShell.tsx — Root layout for the block DnD editor.
  *
- * Layout:
- *   Header bar (top):
- *     ← Back to wizard | Page tabs | [Preview] | Save button
- *   Body (flex row):
- *     SectionList (220px) | BlockCanvas (flex 1) | BlockInspector (300px)
+ * Layout: 3-column CSS Grid
+ *   [SectionPanel 240px] | [BlockEditor flex-1] | [BlockToolbar 280px]
  *
- * Initialises useEditorStore from the current wizard schema on mount.
- * onChange flushes section mutations back into useWizardStore so the
- * generator always sees the latest block order/visibility/config.
- *
- * Preview behaviour:
- *   - "Preview" button in the header opens a dedicated BrowserWindow
- *     served by a local http server on a random port.
- *   - While the preview window is open, every schema save triggers
- *     reloadPreview() so the window stays in sync.
+ * Header bar: project name | Save | Preview | Export
  */
-import { useEffect, useRef }      from 'react';
-import { useWizardStore }         from '../store/useWizardStore.js';
-import { useEditorStore }         from './useEditorStore.js';
-import { BlockCanvas }            from './BlockCanvas.js';
-import { SectionList }            from './SectionList.js';
-import { BlockInspector }         from './BlockInspector.js';
-import { usePreview }             from '../hooks/usePreview.js';
-import type { EditorPage }        from './useEditorStore.js';
-import type { TemplatePage }      from '@plated/types';
-import styles from './EditorShell.module.css';
-
-/** Convert TemplatePage[] (from schema or manifest) → EditorPage[] */
-function toEditorPages(pages: TemplatePage[]): EditorPage[] {
-  return pages.map((p) => ({
-    id:       p.id,
-    path:     p.path,
-    title:    p.title,
-    sections: p.sections,
-  }));
-}
+import { useEffect, useCallback }   from 'react';
+import { useWizardStore }           from '../store/useWizardStore.js';
+import { useEditorStore }           from './useEditorStore.js';
+import { SectionPanel }             from './SectionPanel.js';
+import { BlockEditor }              from './BlockEditor.js';
+import { BlockToolbar }             from './BlockToolbar.js';
+import styles                       from './EditorShell.module.css';
 
 export function EditorShell() {
-  const schema        = useWizardStore((s) => s.schema);
-  const updateSchema  = useWizardStore((s) => s.updateSchema);
-  const setScreen     = useWizardStore((s) => s.setScreen);
-  const filePath      = useWizardStore((s) => s.projectFilePath);
-  const isDirty       = useWizardStore((s) => s.isDirty);
-  const markClean     = useWizardStore((s) => s.markClean);
+  const schema          = useWizardStore((s) => s.schema);
+  const projectFilePath = useWizardStore((s) => s.projectFilePath);
+  const wizardIsDirty   = useWizardStore((s) => s.isDirty);
+  const setScreen       = useWizardStore((s) => s.setScreen);
+  const markClean       = useWizardStore((s) => s.markClean);
+  const initFromSchema  = useEditorStore((s) => s.initFromSchema);
+  const editorIsDirty   = useEditorStore((s) => s.isDirty);
 
-  const initFromPages  = useEditorStore((s) => s.initFromPages);
-  const pages          = useEditorStore((s) => s.pages);
-  const activePageId   = useEditorStore((s) => s.activePageId);
-  const setActivePage  = useEditorStore((s) => s.setActivePage);
+  const businessName = (schema as any)?.business?.name || 'Untitled project';
+  const isDirty = wizardIsDirty || editorIsDirty;
 
-  const {
-    loading:     previewLoading,
-    isOpen:      previewIsOpen,
-    error:       previewError,
-    openPreview,
-    reloadPreview,
-    closePreview,
-  } = usePreview();
+  // Bootstrap editor from the current schema on mount
+  useEffect(() => { initFromSchema(); }, [initFromSchema]);
 
-  // Keep a stable ref to schema so the auto-reload effect always sees latest
-  const schemaRef = useRef(schema);
-  useEffect(() => { schemaRef.current = schema; }, [schema]);
-
-  // Grab pages from the schema's template sections.
-  const schemaPages: TemplatePage[] = (schema as unknown as { pages?: TemplatePage[] }).pages ?? [
-    {
-      id:       'home',
-      path:     '/',
-      title:    'Home',
-      optional: false,
-      sections: [],
-      usesSlots: [],
-    },
-  ];
-
-  // Init editor store on mount
-  useEffect(() => {
-    initFromPages(
-      toEditorPages(schemaPages),
-      (updatedPages) => {
-        updateSchema({
-          pages: updatedPages as unknown as TemplatePage[],
-        } as Parameters<typeof updateSchema>[0]);
-      },
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Auto-reload preview whenever the schema changes and the window is open
-  const prevSchemaRef = useRef<typeof schema | null>(null);
-  useEffect(() => {
-    if (!previewIsOpen) return;
-    if (prevSchemaRef.current === schema) return;
-    prevSchemaRef.current = schema;
-    void reloadPreview(schema);
-  }, [schema, previewIsOpen, reloadPreview]);
-
-  async function handleSave() {
-    if (!filePath) return;
-    try {
-      await window.plated.saveProject(schema, filePath);
-      markClean();
-    } catch (err) {
-      console.error('[EditorShell] save failed', err);
+  // ── Save ──────────────────────────────────────────────────────────────────
+  const handleSave = useCallback(async () => {
+    let filePath = projectFilePath;
+    if (!filePath) {
+      // First save — open save dialog via dialog:saveFile IPC
+      const result = await (window as any).plated.saveFile({
+        title:       'Save project',
+        defaultPath: `${businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.plated.json`,
+        filters:     [{ name: 'Plated Project', extensions: ['plated.json', 'json'] }],
+      });
+      if (!result) return;
+      filePath = result;
     }
-  }
+    await (window as any).plated.saveProject(schema, filePath);
+    useWizardStore.getState().setProjectFilePath(filePath);
+    markClean();
+  }, [schema, projectFilePath, businessName, markClean]);
 
-  async function handlePreview() {
-    if (previewIsOpen) {
-      await closePreview();
-    } else {
-      await openPreview(schema);
-    }
-  }
+  // ── Preview ───────────────────────────────────────────────────────────────
+  const handlePreview = useCallback(async () => {
+    await (window as any).plated.previewOpen(schema);
+  }, [schema]);
 
-  const previewLabel = previewLoading
-    ? 'Building…'
-    : previewIsOpen
-      ? 'Close Preview'
-      : 'Preview ▶';
+  // ── Export ────────────────────────────────────────────────────────────────
+  const handleExport = useCallback(() => {
+    setScreen('export');
+  }, [setScreen]);
 
   return (
     <div className={styles.shell}>
-      {/* ─── Header ────────────────────────────────────────────────── */}
+      {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className={styles.header}>
         <button
           className={styles.backBtn}
           onClick={() => setScreen('wizard')}
-          type="button"
+          aria-label="Back to wizard"
         >
-          ← Wizard
+          ←
         </button>
 
-        <div className={styles.pageTabs}>
-          {pages.map((page) => (
-            <button
-              key={page.id}
-              className={`${styles.pageTab} ${page.id === activePageId ? styles.pageTabActive : ''}`}
-              onClick={() => setActivePage(page.id)}
-              type="button"
-            >
-              {page.title}
-            </button>
-          ))}
-        </div>
+        <span className={styles.projectName}>
+          {businessName}
+          {isDirty && <span className={styles.dirtyDot} aria-label="Unsaved changes" />}
+        </span>
 
         <div className={styles.headerActions}>
-          {previewError && (
-            <span className={styles.previewError} title={previewError}>
-              ⚠️ Preview error
-            </span>
-          )}
-          <button
-            className={`${styles.previewBtn} ${previewIsOpen ? styles.previewBtnActive : ''}`}
-            onClick={() => void handlePreview()}
-            disabled={previewLoading}
-            type="button"
-            title={previewIsOpen ? 'Close the preview window' : 'Open site preview in a new window'}
-          >
-            {previewLabel}
+          <button className={styles.btnGhost} onClick={handlePreview}>
+            Preview
           </button>
-
           <button
-            className={`${styles.saveBtn} ${isDirty ? styles.saveBtnDirty : ''}`}
-            onClick={() => void handleSave()}
-            disabled={!isDirty || !filePath}
-            type="button"
+            className={`${styles.btnGhost} ${isDirty ? styles.btnDirty : ''}`}
+            onClick={handleSave}
           >
-            {isDirty ? 'Save ●' : 'Saved'}
+            {isDirty ? 'Save*' : 'Saved'}
+          </button>
+          <button className={styles.btnPrimary} onClick={handleExport}>
+            Export site
           </button>
         </div>
       </header>
 
-      {/* ─── Body ─────────────────────────────────────────────────── */}
+      {/* ── 3-column body ─────────────────────────────────────────────── */}
       <div className={styles.body}>
-        <SectionList />
-        <BlockCanvas />
-        <BlockInspector />
+        <aside className={styles.sidebar}>
+          <SectionPanel />
+        </aside>
+
+        <main className={styles.canvas}>
+          <BlockEditor />
+        </main>
+
+        <aside className={styles.toolbar}>
+          <BlockToolbar />
+        </aside>
       </div>
     </div>
   );

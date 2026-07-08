@@ -1,137 +1,460 @@
-/* EditorShell — full-window editor chrome */
+/* ============================================================
+   EditorShell.module.css — All styles for the block DnD editor
+   Plated Builder · Local desktop app (min-width: 1024px)
+   ============================================================ */
 
+/* ── Shell layout ─────────────────────────────────────────────────────────── */
 .shell {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: var(--color-bg-base, #fcf8f3);
+  background: var(--color-bg, #f7f6f2);
+  color: var(--color-text, #28251d);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.875rem;
 }
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
-
+/* ── Header ──────────────────────────────────────────────────────────────── */
 .header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  height: 52px;
+  gap: 0.75rem;
+  height: 48px;
   padding: 0 1rem;
-  border-bottom: 1px solid var(--color-border, #e8e0d5);
-  background: var(--color-bg-elevated, #fff);
+  border-bottom: 1px solid var(--color-border, #d4d1ca);
+  background: var(--color-surface, #f9f8f5);
   flex-shrink: 0;
-  -webkit-app-region: drag;
-}
-
-.header > * {
-  -webkit-app-region: no-drag;
+  z-index: 10;
 }
 
 .backBtn {
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--color-border, #e8e0d5);
-  border-radius: 6px;
-  font-size: 0.8rem;
-  background: transparent;
+  background: none;
+  border: none;
   cursor: pointer;
-  color: var(--color-text-secondary, #6b5e4e);
+  font-size: 1.125rem;
+  color: var(--color-text-muted, #7a7974);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  line-height: 1;
+  transition: color 150ms, background 150ms;
+}
+.backBtn:hover { background: var(--color-surface-offset, #f3f0ec); color: var(--color-text, #28251d); }
+
+.projectName {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.875rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.dirtyDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-warning, #964219);
   flex-shrink: 0;
 }
-.backBtn:hover { background: var(--color-bg-hover, #f5f0ea); }
-
-.pageTabs {
-  display: flex;
-  gap: 0.25rem;
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.pageTabs::-webkit-scrollbar { display: none; }
-
-.pageTab {
-  padding: 0.35rem 0.75rem;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-text-secondary, #6b5e4e);
-  white-space: nowrap;
-}
-.pageTab:hover { background: var(--color-bg-hover, #f5f0ea); }
-.pageTabActive {
-  background: var(--color-bg-base, #fcf8f3);
-  border-color: var(--color-border, #e8e0d5);
-  color: var(--color-text-primary, #1a1008);
-  font-weight: 600;
-}
-
-/* ── Header right-hand actions ────────────────────────────────────────── */
 
 .headerActions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;
 }
 
-.previewError {
-  font-size: 0.75rem;
-  color: var(--color-error, #c0392b);
-  cursor: help;
+.btnGhost {
+  background: none;
+  border: 1px solid var(--color-border, #d4d1ca);
+  border-radius: 0.375rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  color: var(--color-text, #28251d);
+  transition: background 150ms, border-color 150ms;
 }
+.btnGhost:hover { background: var(--color-surface-offset, #f3f0ec); }
+.btnDirty { border-color: var(--color-warning, #964219); color: var(--color-warning, #964219); }
 
-.previewBtn {
-  padding: 0.35rem 0.85rem;
-  border: 1px solid var(--color-accent-primary, #b45309);
-  border-radius: 6px;
-  font-size: 0.82rem;
+.btnPrimary {
+  background: var(--color-primary, #01696f);
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.3rem 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
-  background: transparent;
-  color: var(--color-accent-primary, #b45309);
-  white-space: nowrap;
-  transition: background 120ms, color 120ms;
+  transition: background 150ms;
 }
-.previewBtn:hover:not(:disabled) {
-  background: var(--color-accent-primary, #b45309);
-  color: #fff;
-}
-.previewBtn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.previewBtnActive {
-  background: var(--color-accent-primary, #b45309);
-  color: #fff;
-}
+.btnPrimary:hover { background: var(--color-primary-hover, #0c4e54); }
 
-.saveBtn {
-  padding: 0.35rem 0.85rem;
-  border: 1px solid var(--color-border, #e8e0d5);
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-text-secondary, #6b5e4e);
-  white-space: nowrap;
-}
-.saveBtn:disabled { opacity: 0.45; cursor: not-allowed; }
-.saveBtnDirty {
-  border-color: var(--color-accent-primary, #b45309);
-  color: var(--color-accent-primary, #b45309);
-}
-.saveBtnDirty:hover {
-  background: var(--color-accent-primary, #b45309);
-  color: #fff;
-}
-
-/* ── Body ────────────────────────────────────────────────────────────────── */
-
+/* ── 3-column body ────────────────────────────────────────────────────────── */
 .body {
-  display: flex;
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
   flex: 1;
   overflow: hidden;
 }
+
+.sidebar {
+  border-right: 1px solid var(--color-border, #d4d1ca);
+  overflow-y: auto;
+  background: var(--color-surface, #f9f8f5);
+}
+
+.canvas {
+  overflow-y: auto;
+  background: var(--color-bg, #f7f6f2);
+  padding: 1.5rem;
+}
+
+.toolbar {
+  border-left: 1px solid var(--color-border, #d4d1ca);
+  overflow-y: auto;
+  background: var(--color-surface, #f9f8f5);
+}
+
+/* ── SectionPanel ─────────────────────────────────────────────────────────── */
+.sectionPanel {
+  padding: 0.75rem 0;
+}
+
+.panelHeading {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #7a7974);
+  padding: 0 0.875rem 0.5rem;
+  margin: 0;
+}
+
+.sectionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background 120ms, border-color 120ms;
+  user-select: none;
+}
+.sectionRow:hover { background: var(--color-surface-offset, #f3f0ec); }
+.sectionRowActive {
+  background: var(--color-primary-highlight, #cedcd8);
+  border-left-color: var(--color-primary, #01696f);
+}
+.sectionRowHidden { opacity: 0.5; }
+.sectionRowDragOverlay {
+  background: var(--color-surface-2, #fbfbf9);
+  box-shadow: 0 4px 16px oklch(0.2 0.01 80 / 0.12);
+  border-radius: 0.375rem;
+}
+
+.sectionName {
+  flex: 1;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  font-size: 1rem;
+  color: var(--color-text-muted, #7a7974);
+  transition: transform 150ms;
+  display: inline-block;
+  line-height: 1;
+}
+.chevronOpen { transform: rotate(90deg); }
+
+/* ── Shared: drag handle + eye button ──────────────────────────────────────── */
+.dragHandle {
+  cursor: grab;
+  color: var(--color-text-faint, #bab9b4);
+  font-size: 0.9rem;
+  padding: 0.125rem;
+  line-height: 1;
+  flex-shrink: 0;
+  touch-action: none;
+}
+.dragHandle:active { cursor: grabbing; }
+
+.eyeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  padding: 0.125rem;
+  line-height: 1;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+  transition: background 120ms;
+}
+.eyeBtn:hover { background: var(--color-surface-dynamic, #e6e4df); }
+
+/* ── BlockEditor canvas ────────────────────────────────────────────────────── */
+.blockCanvas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 100%;
+}
+
+.emptyCanvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.5rem;
+  color: var(--color-text-muted, #7a7974);
+}
+.emptyCanvasHint { font-size: 0.8125rem; color: var(--color-text-faint, #bab9b4); }
+
+.sectionBlock {
+  background: var(--color-surface, #f9f8f5);
+  border: 1px solid var(--color-border, #d4d1ca);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  background: var(--color-surface-2, #fbfbf9);
+  user-select: none;
+  transition: background 120ms;
+}
+.sectionHeader:hover { background: var(--color-surface-offset, #f3f0ec); }
+.sectionHeaderOpen { background: var(--color-primary-highlight, #cedcd8); }
+
+.sectionHeaderName {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.sectionChevron {
+  color: var(--color-text-muted, #7a7974);
+  font-size: 1rem;
+  transition: transform 150ms;
+  display: inline-block;
+  line-height: 1;
+}
+
+.sectionVisualDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dotVisible  { background: var(--color-success, #437a22); }
+.dotHidden   { background: var(--color-text-faint, #bab9b4); }
+
+.blockList {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.emptySection {
+  padding: 0.75rem 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-faint, #bab9b4);
+  font-style: italic;
+}
+
+/* ── Block row ────────────────────────────────────────────────────────────── */
+.blockRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.625rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--color-surface, #f9f8f5);
+  transition: background 120ms, border-color 120ms;
+  user-select: none;
+}
+.blockRow:hover { background: var(--color-surface-offset, #f3f0ec); }
+.blockRowSelected {
+  background: var(--color-primary-highlight, #cedcd8);
+  border-color: var(--color-primary, #01696f);
+}
+.blockRowHidden { opacity: 0.45; }
+.blockRowDragOverlay {
+  background: var(--color-surface-2, #fbfbf9);
+  box-shadow: 0 4px 16px oklch(0.2 0.01 80 / 0.12);
+}
+
+.blockTypeBadge {
+  flex: 1;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: var(--font-mono, monospace);
+  color: var(--color-text-muted, #7a7974);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectedMarker {
+  font-size: 0.75rem;
+  color: var(--color-primary, #01696f);
+  flex-shrink: 0;
+}
+
+/* ── BlockToolbar (right panel) ───────────────────────────────────────────── */
+.toolbarEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1.5rem;
+}
+.toolbarEmptyHint {
+  font-size: 0.8125rem;
+  color: var(--color-text-faint, #bab9b4);
+  text-align: center;
+  max-width: 20ch;
+}
+
+.toolbarHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.875rem;
+  border-bottom: 1px solid var(--color-border, #d4d1ca);
+}
+
+.toolbarBlockType {
+  font-weight: 700;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--color-primary, #01696f);
+}
+
+.toolbarBlockId {
+  font-size: 0.6875rem;
+  color: var(--color-text-faint, #bab9b4);
+  font-family: var(--font-mono, monospace);
+}
+
+.toolbarFields {
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.noConfig {
+  font-size: 0.8125rem;
+  color: var(--color-text-faint, #bab9b4);
+  font-style: italic;
+}
+
+/* ── Form fields ─────────────────────────────────────────────────────────── */
+.fieldRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #7a7974);
+  letter-spacing: 0.02em;
+}
+
+.fieldInput {
+  background: var(--color-surface-2, #fbfbf9);
+  border: 1px solid var(--color-border, #d4d1ca);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text, #28251d);
+  width: 100%;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.fieldInput:focus {
+  outline: none;
+  border-color: var(--color-primary, #01696f);
+  box-shadow: 0 0 0 2px var(--color-primary-highlight, #cedcd8);
+}
+
+.fieldTextarea {
+  background: var(--color-surface-2, #fbfbf9);
+  border: 1px solid var(--color-border, #d4d1ca);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text, #28251d);
+  width: 100%;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.fieldTextarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #01696f);
+  box-shadow: 0 0 0 2px var(--color-primary-highlight, #cedcd8);
+}
+
+.fieldPre {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono, monospace);
+  background: var(--color-surface-offset, #f3f0ec);
+  border: 1px solid var(--color-border, #d4d1ca);
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.5rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--color-text-muted, #7a7974);
+}
+
+.colorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.colorSwatch {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+}
+
+/* ── Toggle button ────────────────────────────────────────────────────────── */
+.toggleBtn {
+  width: 52px;
+  height: 26px;
+  border-radius: 9999px;
+  border: none;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 150ms;
+}
+.toggleOn  { background: var(--color-primary, #01696f); color: #fff; }
+.toggleOff { background: var(--color-surface-dynamic, #e6e4df); color: var(--color-text-muted, #7a7974); }
