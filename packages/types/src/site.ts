@@ -23,10 +23,18 @@ export interface SiteRecord {
 export type SiteTier = 'self_serve' | 'managed' | 'white_glove';
 export type BillingStatus = 'active' | 'paused' | 'cancelled';
 export type SiteStatus = 'draft' | 'published';
+export type SiteMode = 'saas' | 'local';
 
 /**
  * ContentPostRecord — Supabase content_posts table row.
  */
 export interface ContentPostRecord {
   id: string;
-  site
+  siteId: string;
+  title: string;
+  slug: string;
+  content: string;
+  status: SiteStatus;
+  createdAt: string;
+  updatedAt: string;
+}

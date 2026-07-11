@@ -28,7 +28,7 @@ const OG_H = 630;
 // ---- Font loader ------------------------------------------------------------
 
 async function tryLoadFont(): Promise<ArrayBuffer | null> {
-  const base = dirname(fileURLToPath(import.meta.url));
+  const base = __dirname;
   const candidates = [
     join(base, '../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff'),
     join(base, '../../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff'),

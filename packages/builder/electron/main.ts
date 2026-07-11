@@ -17,7 +17,7 @@ import { registerBackgroundHandlers }   from './ipc/background.js';
 import { registerPreviewHandlers }      from './ipc/preview.js';
 
 const isDev = !app.isPackaged;
-const VITE_DEV_URL = 'http://localhost:5173';
+const VITE_DEV_URL = 'http://localhost:5180';
 
 let mainWindow:   BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;

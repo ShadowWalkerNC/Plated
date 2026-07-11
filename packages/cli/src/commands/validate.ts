@@ -1,7 +1,7 @@
 // Plated CLI -- validate command: check a project file for structural errors
 import { readFile } from 'node:fs/promises';
 import { resolve }  from 'node:path';
-import { isValidTheme } from '@plated/generator/themeRegistry';
+import { isValidTheme } from '@plated/generator';
 import type { ProjectSchema } from '@plated/types';
 
 const KNOWN_BUSINESS_TYPES = [
@@ -12,7 +12,7 @@ const KNOWN_BUSINESS_TYPES = [
 interface Check {
   label:   string;
   pass:    boolean;
-  detail?: string;
+  detail?: string | undefined;
 }
 
 export async function cmdValidate(args: string[]): Promise<void> {

@@ -1,7 +1,7 @@
 import { useState }    from 'react';
 import { useExport }   from '../hooks/useExport';
 import { useNetwork }  from '../hooks/useNetwork';
-import type { ProjectSchema } from '@nexcms/types';
+import type { ProjectSchema } from '@plated/types';
 import styles from './ExportPanel.module.css';
 
 interface Props { schema: ProjectSchema; }

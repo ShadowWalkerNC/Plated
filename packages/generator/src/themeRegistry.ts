@@ -184,10 +184,7 @@ export function resolveStyleFile(themeId: ThemeId, _variant?: ThemeVariant): str
 
   // 2. Repo-relative: packages/generator/src/ -> ../../../styles/<id>/
   const repoRelative = resolve(
-    // import.meta.url is not available in CommonJS, so we use __dirname
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore — __dirname is available in both CJS and ts-node/esm shim
-    typeof __dirname !== 'undefined' ? __dirname : new URL('.', import.meta.url).pathname,
+    __dirname,
     '../../../styles',
     themeId,
     filename,

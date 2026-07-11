@@ -180,7 +180,7 @@ export function MediaLibrary({ field, onSelect, onClose }: MediaLibraryProps) {
           <input
             className={styles.searchInput}
             type="search"
-            placeholder="Search Unsplash… e.g. \"restaurant interior\""
+            placeholder='Search Unsplash… e.g. "restaurant interior"'
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus

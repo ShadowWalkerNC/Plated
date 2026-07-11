@@ -391,7 +391,7 @@ export function generateSchemaOrg(schema: ProjectSchema): SchemaOrgGraph {
         addressRegion:    loc.state    || undefined,
         postalCode:       loc.zip      || undefined,
         addressCountry:   loc.country  || undefined,
-      }
+      } as any
     : undefined;
 
   // ── Opening hours ─────────────────────────────────────────────────────────

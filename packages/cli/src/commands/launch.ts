@@ -7,10 +7,10 @@ import { fileURLToPath } from 'node:url';
 export async function cmdLaunch(): Promise<void> {
   console.log('\uD83D\uDE80 Starting Plated Builder...');
 
-  const require = createRequire(import.meta.url);
+  const req = require;
   let electronBin: string;
   try {
-    const electronPkg = require.resolve('electron/index.js', {
+    const electronPkg = req.resolve('electron/index.js', {
       paths: [resolveBuilderRoot()],
     });
     const electronDir = dirname(electronPkg);
@@ -43,6 +43,5 @@ export async function cmdLaunch(): Promise<void> {
 }
 
 function resolveBuilderRoot(): string {
-  const thisFile = fileURLToPath(import.meta.url);
-  return join(dirname(thisFile), '..', '..', '..', 'builder');
+  return join(__dirname, '..', '..', '..', 'builder');
 }

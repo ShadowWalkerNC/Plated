@@ -2,13 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "composite": true
   },
   "include": ["src"],
   "references": [
     { "path": "../types" },
     { "path": "../template-engine" },
     { "path": "../asset-tools" },
-    { "path": "../seo-tools" }
+    { "path": "../seo-tools" },
+    { "path": "../astro-output" }
   ]
 }

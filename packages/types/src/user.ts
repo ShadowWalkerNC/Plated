@@ -1,6 +1,6 @@
 /**
  * UserRecord — Supabase `users` table row shape.
- * Extends Supabase Auth user with NexCMS-specific fields.
+ * Extends Supabase Auth user with Plated-specific fields.
  */
 export interface UserRecord {
   id: string;

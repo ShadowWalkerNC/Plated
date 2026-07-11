@@ -1,6 +1,6 @@
-# Contributing to NexCMS
+# Contributing to Plated
 
-NexCMS is open source (MIT) and welcomes contributions — templates, styles, integrations, plugins, bug reports, and code.
+Plated is open source (MIT) and welcomes contributions — templates, styles, integrations, plugins, bug reports, and code.
 
 **Before writing any code, read `AGENTS.md` in full.** It contains 15 locked architectural decisions and 20 hard rules.
 
@@ -12,8 +12,8 @@ NexCMS is open source (MIT) and welcomes contributions — templates, styles, in
 # Prerequisites: Node.js 22+, pnpm 9+, Bun (for dev runtime)
 
 # Clone the repo
-git clone https://github.com/ShadowWalkerNC/NexCMS.git
-cd NexCMS
+git clone https://github.com/ShadowWalkerNC/Plated.git
+cd Plated
 
 # Install all dependencies
 pnpm install
@@ -123,7 +123,7 @@ Optional longer description.
 
 ## Adding a New Template
 
-1. Create `templates/[business-type]/` with `nexcms.template.json` manifest
+1. Create `templates/[business-type]/` with `plated.template.json` manifest
 2. Define all pages, sections, and blocks — zero styling
 3. Add to the business type registry in `packages/types/`
 4. Add wizard Step 7 thumbnail asset
@@ -131,9 +131,9 @@ Optional longer description.
 
 ## Writing a Plugin
 
-1. Create a new npm package named `nexcms-plugin-[name]`
-2. Export a default `NexCMSPlugin` object (see `packages/types/` for the interface)
-3. Include a `nexcms-plugin.json` manifest at the root
+1. Create a new npm package named `plated-plugin-[name]`
+2. Export a default `PlatedPlugin` object (see `packages/types/` for the interface)
+3. Include a `plated-plugin.json` manifest at the root
 4. Test against the extension registry in `packages/extensions/`
 5. Publish to npm and submit a PR to add to the official plugin catalog
 

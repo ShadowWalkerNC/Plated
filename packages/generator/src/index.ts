@@ -74,3 +74,5 @@ export async function generate(
     return { success: false, outputDir, filesWritten: 0, errors, warnings };
   }
 }
+
+export * from './themeRegistry.js';

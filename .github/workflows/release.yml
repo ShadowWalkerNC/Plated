@@ -33,13 +33,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build workspace packages
-        run: pnpm --filter @nexcms/types build || true
+        run: pnpm --filter @plated/types build || true
 
       - name: Build astro-output
-        run: pnpm --filter @nexcms/astro-output build || true
+        run: pnpm --filter @plated/astro-output build || true
 
       - name: Build generator
-        run: pnpm --filter @nexcms/generator build || true
+        run: pnpm --filter @plated/generator build || true
 
       - name: Build & package Electron app
         env:
@@ -62,6 +62,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: NexCMS-Builder-${{ matrix.os }}
+          name: Plated-Builder-${{ matrix.os }}
           path: packages/builder/release/**
           if-no-files-found: warn

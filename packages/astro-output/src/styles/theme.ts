@@ -59,9 +59,7 @@ function resolveVariablesCss(themeId: string): string {
   }
   // 2. Repo-relative from packages/astro-output/src/styles/
   return resolve(
-    typeof __dirname !== 'undefined'
-      ? __dirname
-      : new URL('.', import.meta.url).pathname,
+    __dirname,
     '../../../../styles',
     themeId,
     'variables.css',

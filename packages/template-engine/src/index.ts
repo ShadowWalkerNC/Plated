@@ -5,9 +5,10 @@
 import { readFile } from 'node:fs/promises';
 import { join }     from 'node:path';
 import type { TemplateManifest, ProjectSchema } from '@plated/types';
+import { resolveTokens } from './resolveTokens.js';
 
 export type { Condition }  from './conditional.js';
-export { resolveTokens }   from './resolveTokens.js';
+export { resolveTokens };
 export { interpolate }     from './interpolate.js';
 export { evaluateConditional } from './conditional.js';
 export { renderTemplate }  from './renderTemplate.js';
@@ -48,7 +49,7 @@ export function resolveSlots(
     } else {
       // For complex slots (menu, hours, location, etc.)
       // resolve by dot-path traversal on the raw schema object.
-      result[slot.field] = getByPath(schema as Record<string, unknown>, slot.field);
+      result[slot.field] = getByPath(schema as unknown as Record<string, unknown>, slot.field);
     }
   }
 

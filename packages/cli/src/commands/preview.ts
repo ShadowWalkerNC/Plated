@@ -38,8 +38,9 @@ function parseFlags(args: string[]): Record<string, string> {
   const flags: Record<string, string> = {};
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg.startsWith('--') || arg.startsWith('-')) {
-      flags[arg] = args[i + 1] && !args[i + 1].startsWith('-') ? args[++i] : '';
+    if (arg && (arg.startsWith('--') || arg.startsWith('-'))) {
+      const next = args[i + 1];
+      flags[arg] = next && !next.startsWith('-') ? args[++i]! : '';
     }
   }
   return flags;

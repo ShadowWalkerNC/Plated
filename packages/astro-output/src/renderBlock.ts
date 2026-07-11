@@ -127,7 +127,7 @@ const map: BlockRenderer = (schema) => {
   const mapsUrl = loc?.googleMapsUrl ?? '';
   if (!mapsUrl) return '<!-- plated:map — no googleMapsUrl -->';
   // Embed as a simple map link section; users can upgrade to an iframe embed
-  const addr = [loc.address1, loc.city, loc.state, loc.zip].filter(Boolean).join(', ');
+  const addr = loc ? [loc.address1, loc.city, loc.state, loc.zip].filter(Boolean).join(', ') : '';
   return [
     `<section class="section block-map">`,
     `  <div class="container">`,

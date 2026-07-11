@@ -22,14 +22,14 @@ import type { TemplateManifest } from '@plated/types';
 // Paths are relative to this file: packages/generator/src/
 // → ../../.. goes to repo root → templates/<type>/plated.template.json
 
-import restaurantManifest  from '../../../templates/restaurant/plated.template.json'   assert { type: 'json' };
-import cafeManifest        from '../../../templates/cafe/plated.template.json'          assert { type: 'json' };
-import barManifest         from '../../../templates/bar/plated.template.json'           assert { type: 'json' };
-import bakeryManifest      from '../../../templates/bakery/plated.template.json'        assert { type: 'json' };
-import cateringManifest    from '../../../templates/catering/plated.template.json'      assert { type: 'json' };
-import foodTruckManifest   from '../../../templates/food-truck/plated.template.json'    assert { type: 'json' };
-import foodStandManifest   from '../../../templates/food-stand/plated.template.json'    assert { type: 'json' };
-import ghostKitchenManifest from '../../../templates/ghost-kitchen/plated.template.json' assert { type: 'json' };
+import restaurantManifest  from '../../../templates/restaurant/plated.template.json';
+import cafeManifest        from '../../../templates/cafe/plated.template.json';
+import barManifest         from '../../../templates/bar/plated.template.json';
+import bakeryManifest      from '../../../templates/bakery/plated.template.json';
+import cateringManifest    from '../../../templates/catering/plated.template.json';
+import foodTruckManifest   from '../../../templates/food-truck/plated.template.json';
+import foodStandManifest   from '../../../templates/food-stand/plated.template.json';
+import ghostKitchenManifest from '../../../templates/ghost-kitchen/plated.template.json';
 
 // ── Registry ───────────────────────────────────────────────────────────────
 // Cast through `unknown` first so TypeScript accepts the JSON type as

@@ -9,7 +9,7 @@ export function createDefaultSchema(name: string): ProjectSchema {
     updatedAt: new Date().toISOString(),
     businessType: 'restaurant',
     styleTemplate: 'hearth',
-    colorTheme: 'light',
+    colorTheme: 'default',
     darkMode: false,
     business: {
       name,

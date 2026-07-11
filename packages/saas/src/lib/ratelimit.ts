@@ -10,12 +10,12 @@ export const apiRatelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(60, '1 m'),
   analytics: true,
-  prefix: 'nexcms:api',
+  prefix: 'plated:api',
 });
 
 export const deployRatelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, '1 h'),
   analytics: true,
-  prefix: 'nexcms:deploy',
+  prefix: 'plated:deploy',
 });

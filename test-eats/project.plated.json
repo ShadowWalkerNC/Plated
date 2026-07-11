@@ -1,0 +1,68 @@
+{
+  "id": "a2339535-0ccf-4ca6-9111-ee1b806306a2",
+  "schemaVersion": "2.0",
+  "createdAt": "2026-07-11T17:46:44.263Z",
+  "updatedAt": "2026-07-11T17:46:44.264Z",
+  "businessType": "restaurant",
+  "styleTemplate": "hearth",
+  "colorTheme": "default",
+  "darkMode": false,
+  "business": {
+    "name": "test-eats",
+    "tagline": "",
+    "description": "",
+    "phone": "",
+    "email": "",
+    "cuisineType": "",
+    "existingWebsite": ""
+  },
+  "branding": {
+    "logoUrl": "",
+    "heroImageUrl": "",
+    "heroVideoUrl": "",
+    "primaryColor": "#8a4b2f",
+    "secondaryColor": "#f4ede4",
+    "accentColor": "#c98f4a",
+    "faviconSourceUrl": ""
+  },
+  "locations": [],
+  "primaryLocationIndex": 0,
+  "menu": {
+    "categories": []
+  },
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "twitter": "",
+    "tiktok": "",
+    "youtube": "",
+    "googleBusiness": "",
+    "yelp": "",
+    "tripadvisor": "",
+    "doordash": "",
+    "ubereats": "",
+    "grubhub": "",
+    "toast": "",
+    "chownow": "",
+    "opentable": ""
+  },
+  "integrations": {},
+  "seo": {
+    "siteTitle": "test-eats",
+    "metaDescription": "",
+    "googleVerification": "",
+    "bingVerification": "",
+    "headSnippet": "",
+    "bodyStartSnippet": "",
+    "bodyEndSnippet": ""
+  },
+  "extensions": {},
+  "deployment": {
+    "subdomain": "",
+    "customDomain": ""
+  },
+  "blog": [],
+  "events": [],
+  "specials": [],
+  "press": []
+}

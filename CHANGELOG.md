@@ -83,7 +83,7 @@ All SaaS, subscription, and feature-bloat plans removed.
 - Added MIT, CulinaryOS native, and status badges
 
 #### styles/README.md v5.0
-- Renamed from `# NexCMS Themes` → `# Plated Themes`
+- Renamed from `# Plated Themes`
 - Content unchanged — all 6 themes already correctly documented
 
 #### pitch/index.html v5.0
