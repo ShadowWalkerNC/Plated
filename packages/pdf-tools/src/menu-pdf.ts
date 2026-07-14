@@ -86,7 +86,7 @@ export function generateMenuPdf(
 
   const categories = menu.categories
     .slice()
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+    .sort((a: MenuCategory, b: MenuCategory) => a.displayOrder - b.displayOrder);
 
   for (const cat of categories) {
     // ─── Check if we need a new page ──────────────────────────────
@@ -115,8 +115,8 @@ export function generateMenuPdf(
 
     // ─── Items ────────────────────────────────────────────────────
     const items = cat.items
-      .filter((i) => i.available)
-      .sort((a, b) => a.displayOrder - b.displayOrder);
+      .filter((i: MenuItem) => i.available)
+      .sort((a: MenuItem, b: MenuItem) => a.displayOrder - b.displayOrder);
 
     for (const item of items) {
       if (y > H - 24) {
@@ -176,7 +176,7 @@ function renderItem(
 
   // Dietary tags
   if (item.dietaryTags?.length) {
-    const tagStr = item.dietaryTags.map((t) => DIETARY_LABELS[t]).join('  ');
+    const tagStr = item.dietaryTags.map((t: DietaryTag) => DIETARY_LABELS[t]).join('  ');
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(120, 98, 84);

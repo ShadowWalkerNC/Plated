@@ -19,6 +19,10 @@ import { registerPreviewHandlers }      from './ipc/preview.js';
 const isDev = !app.isPackaged;
 const VITE_DEV_URL = 'http://localhost:5180';
 
+if (!isDev) {
+  process.env['PLATED_STYLES_DIR'] = join(process.resourcesPath, 'styles');
+}
+
 let mainWindow:   BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;
 

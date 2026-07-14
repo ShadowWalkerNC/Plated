@@ -26,7 +26,6 @@ export interface QrOptions {
 
 function qrBaseOptions(opts: QrOptions = {}) {
   return {
-    type:   'png' as const,
     width:  opts.size ?? 400,
     margin: opts.margin ?? 2,
     color: {

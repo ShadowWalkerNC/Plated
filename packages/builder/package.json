@@ -19,6 +19,13 @@
     "copyright":   "Copyright © 2026 Plated",
     "directories": { "output": "release" },
     "files":       ["dist/**", "dist-electron/**", "splash.html"],
+    "extraResources": [
+      {
+        "from": "../../styles",
+        "to": "styles",
+        "filter": ["**/*"]
+      }
+    ],
     "publish": [
       {
         "provider": "github",

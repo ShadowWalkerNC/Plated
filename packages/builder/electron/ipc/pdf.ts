@@ -16,7 +16,7 @@ import type { MenuSchema }      from '@plated/types';
 export function registerPdfHandlers(ipcMain: IpcMain, dialog: Dialog): void {
   ipcMain.handle('pdf:exportMenu', async (_event, schema: MenuSchema) => {
     // Dynamic import so main.ts doesn't hard-error if pdf-tools isn't built yet.
-    let generateMenuPdf: (schema: MenuSchema) => Promise<Buffer>;
+    let generateMenuPdf: (menu: any, opts: any) => Uint8Array;
     try {
       const mod = await import('@plated/pdf-tools');
       generateMenuPdf = mod.generateMenuPdf;
@@ -24,17 +24,29 @@ export function registerPdfHandlers(ipcMain: IpcMain, dialog: Dialog): void {
       return { ok: false, reason: '@plated/pdf-tools is not yet available' };
     }
 
-    const menuTitle  = (schema as any)?.name ?? 'menu';
-    const safeName   = menuTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const business   = (schema as any)?.business;
+    const menuTitle  = business?.name ?? 'Menu';
+    const tagline    = business?.tagline;
+    const accent     = (schema as any)?.branding?.primaryColor ?? '#8a4b2f';
+    const menuSchema = (schema as any)?.menu ?? { categories: [] };
+
     const { canceled, filePath } = await dialog.showSaveDialog({
       title:       'Save PDF menu',
-      defaultPath: `${safeName}.pdf`,
+      defaultPath: `${menuTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.pdf`,
       filters:     [{ name: 'PDF Document', extensions: ['pdf'] }],
     });
     if (canceled || !filePath) return { ok: false, reason: 'cancelled' };
 
-    const buffer = await generateMenuPdf(schema);
-    await writeFile(filePath, buffer);
-    return { ok: true, filePath };
+    try {
+      const pdfBytes = generateMenuPdf(menuSchema, {
+        restaurantName: menuTitle,
+        tagline,
+        accentColor: accent,
+      });
+      await writeFile(filePath, Buffer.from(pdfBytes));
+      return { ok: true, filePath };
+    } catch (err) {
+      return { ok: false, reason: err instanceof Error ? err.message : String(err) };
+    }
   });
 }

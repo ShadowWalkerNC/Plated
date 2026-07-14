@@ -6,7 +6,8 @@
  *   generate:dryRun → returns the file plan without writing anything
  */
 import type { IpcMain } from 'electron';
-import { generate, dryRun } from '@plated/generator';
+import { generate } from '@plated/generator';
+import { buildAstroProject } from '@plated/astro-output';
 import type { ProjectSchema } from '@plated/types';
 
 export function registerGeneratorHandlers(ipcMain: IpcMain): void {
@@ -14,18 +15,17 @@ export function registerGeneratorHandlers(ipcMain: IpcMain): void {
   ipcMain.handle('generate', async (_event, payload: {
     schema: ProjectSchema;
     outputDir: string;
-    includeSource?: boolean;
   }) => {
-    const { schema, outputDir, includeSource = false } = payload;
-    const files = await generate(schema, outputDir, { includeSource });
-    return { ok: true, fileCount: files.length, outputDir };
+    const { schema, outputDir } = payload;
+    const res = await generate(schema, outputDir);
+    return { ok: res.success, fileCount: res.filesWritten, outputDir, errors: res.errors };
   });
 
   // ── generate:dryRun ─────────────────────────────────────────────────────────
   ipcMain.handle('generate:dryRun', async (_event, payload: {
     schema: ProjectSchema;
   }) => {
-    const files = await dryRun(payload.schema);
+    const files = buildAstroProject(payload.schema);
     return { ok: true, files: files.map(f => f.path) };
   });
 }

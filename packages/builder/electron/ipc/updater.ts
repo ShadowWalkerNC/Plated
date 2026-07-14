@@ -11,12 +11,12 @@
  */
 import type { IpcMain }   from 'electron';
 import { app }            from 'electron';
-import type { AutoUpdater } from 'electron-updater';
+import type { AppUpdater } from 'electron-updater';
 import type { BrowserWindow } from 'electron';
 
 export function registerUpdateHandlers(
   ipcMain: IpcMain,
-  autoUpdater: AutoUpdater,
+  autoUpdater: AppUpdater,
   mainWindow: BrowserWindow | null,
 ): void {
   // ── updater:check ─────────────────────────────────────────────────────────────

@@ -112,14 +112,34 @@ const mockPlatedApi: PlatedApi = {
   },
   saveProject: async (schema, filePath) => {
     console.log('Mock saveProject called', schema, filePath);
+    try {
+      localStorage.setItem(`plated_project_${filePath}`, JSON.stringify(schema));
+      const recentsRaw = localStorage.getItem('plated_recent_projects') || '[]';
+      const recents = JSON.parse(recentsRaw) as string[];
+      if (!recents.includes(filePath)) {
+        recents.unshift(filePath);
+        localStorage.setItem('plated_recent_projects', JSON.stringify(recents.slice(0, 10)));
+      }
+    } catch (e) {
+      console.error('Failed to save project in mock storage', e);
+    }
   },
   loadProject: async (filePath) => {
     console.log('Mock loadProject called', filePath);
-    throw new Error('Not implemented in mock browser mode');
+    const item = localStorage.getItem(`plated_project_${filePath}`);
+    if (item) {
+      return JSON.parse(item);
+    }
+    throw new Error(`Project file "${filePath}" not found in mock storage.`);
   },
   getRecentProjects: async () => {
     console.log('Mock getRecentProjects called');
-    return [];
+    try {
+      const recentsRaw = localStorage.getItem('plated_recent_projects') || '[]';
+      return JSON.parse(recentsRaw);
+    } catch {
+      return [];
+    }
   },
   exportZip: async (schema) => {
     console.log('Mock exportZip called', schema);
