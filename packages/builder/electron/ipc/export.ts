@@ -7,12 +7,10 @@
  */
 import type { IpcMain, Dialog } from 'electron';
 import { generate }  from '@plated/generator';
+import { buildAstroProject } from '@plated/astro-output';
 import { writeZip }  from '../zip.js';
 import type { ProjectSchema } from '@plated/types';
-import { cp, rm, mkdir } from 'node:fs/promises';
-import { join, basename } from 'node:path';
-import { tmpdir }         from 'node:os';
-import { randomUUID }     from 'node:crypto';
+import { join } from 'node:path';
 
 export function registerExportHandlers(ipcMain: IpcMain, dialog: Dialog): void {
   // ── export:zip ────────────────────────────────────────────────────────────────
@@ -27,14 +25,12 @@ export function registerExportHandlers(ipcMain: IpcMain, dialog: Dialog): void {
     });
     if (canceled || !filePath) return { ok: false, reason: 'cancelled' };
 
-    // 2. Generate to temp dir
-    const tmpOut = join(tmpdir(), `plated-export-${randomUUID()}`);
     try {
-      const files = await generate(schema, tmpOut, { includeSource: true });
+      const files = buildAstroProject(schema);
       await writeZip(files, filePath);
       return { ok: true, filePath, fileCount: files.length };
-    } finally {
-      await rm(tmpOut, { recursive: true, force: true });
+    } catch (err) {
+      return { ok: false, reason: err instanceof Error ? err.message : String(err) };
     }
   });
 
@@ -52,15 +48,14 @@ export function registerExportHandlers(ipcMain: IpcMain, dialog: Dialog): void {
     const safeName     = businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const destDir      = join(filePaths[0], safeName);
 
-    // 2. Generate to temp dir then move
-    const tmpOut = join(tmpdir(), `plated-export-${randomUUID()}`);
     try {
-      const files = await generate(schema, tmpOut, { includeSource: true });
-      await mkdir(destDir, { recursive: true });
-      await cp(tmpOut, destDir, { recursive: true });
-      return { ok: true, destDir, fileCount: files.length };
-    } finally {
-      await rm(tmpOut, { recursive: true, force: true });
+      const res = await generate(schema, destDir);
+      if (!res.success) {
+        return { ok: false, reason: res.errors.join(', ') };
+      }
+      return { ok: true, destDir, fileCount: res.filesWritten };
+    } catch (err) {
+      return { ok: false, reason: err instanceof Error ? err.message : String(err) };
     }
   });
 }
