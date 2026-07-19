@@ -1,9 +1,9 @@
 import { eq, and, desc } from 'drizzle-orm';
-import { db }             from './client.js';
+import { db }             from './client';
 import {
   projects, deployments, subscriptions, customDomains,
-} from './schema.js';
-import type { NewProject } from './schema.js';
+} from './schema';
+import type { NewProject } from './schema';
 import type { ProjectSchema } from '@plated/types';
 
 // -- Projects -----------------------------------------------------------------
