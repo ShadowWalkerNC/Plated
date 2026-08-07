@@ -1,160 +1,148 @@
 /**
- * BlockToolbar.tsx — Right panel config editor for the selected block.
- *
- * Shows the block's type-specific fields based on block.config.
- * Generic field types derived from the config key name / value type:
- *   - boolean   → toggle
- *   - number    → number input
- *   - string starting with '#' → colour picker
- *   - string (url hint)        → URL input
- *   - string (long/contains spaces) → textarea
- *   - string                   → text input
- *
- * All edits call useEditorStore.updateBlockConfig() which immediately
- * flushes back to WizardStore.
+ * BlockToolbar — right inspector for the selected block.
+ * Level-2 fields (Open SaaS-inspired) on shadcn primitives.
  */
-import { useCallback }      from 'react';
-import { useEditorStore }   from './useEditorStore.js';
+import { useCallback } from 'react';
 import type { BlockSchema } from '@plated/types';
-import styles               from './EditorShell.module.css';
+import { useEditorStore } from './useEditorStore.js';
+import { BuilderPanel } from '@/components/builder';
+import { ThemePanel } from '@/components/builder';
+import {
+  TextField,
+  TextAreaField,
+  NumberField,
+  SwitchField,
+  ColorField,
+  SliderField,
+} from '@/components/fields';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
-// ── Field renderers ─────────────────────────────────────────────────────────
-function FieldLabel({ label }: { label: string }) {
-  return <label className={styles.fieldLabel}>{label}</label>;
+function humanize(key: string): string {
+  return key.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase());
 }
 
-function BoolField({
-  label, value, onChange,
-}: { label: string; value: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <div className={styles.fieldRow}>
-      <FieldLabel label={label} />
-      <button
-        className={`${styles.toggleBtn} ${value ? styles.toggleOn : styles.toggleOff}`}
-        onClick={() => onChange(!value)}
-        aria-pressed={value}
-      >
-        {value ? 'On' : 'Off'}
-      </button>
-    </div>
-  );
-}
-
-function NumberField({
-  label, value, onChange,
-}: { label: string; value: number; onChange: (v: number) => void }) {
-  return (
-    <div className={styles.fieldRow}>
-      <FieldLabel label={label} />
-      <input
-        className={styles.fieldInput}
-        type="number"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-      />
-    </div>
-  );
-}
-
-function ColorField({
-  label, value, onChange,
-}: { label: string; value: string; onChange: (v: string) => void }) {
-  return (
-    <div className={styles.fieldRow}>
-      <FieldLabel label={label} />
-      <div className={styles.colorRow}>
-        <input
-          type="color"
-          value={value}
-          className={styles.colorSwatch}
-          onChange={(e) => onChange(e.target.value)}
-        />
-        <input
-          className={styles.fieldInput}
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="#000000"
-        />
-      </div>
-    </div>
-  );
-}
-
-function TextareaField({
-  label, value, onChange,
-}: { label: string; value: string; onChange: (v: string) => void }) {
-  return (
-    <div className={styles.fieldRow}>
-      <FieldLabel label={label} />
-      <textarea
-        className={styles.fieldTextarea}
-        value={value}
-        rows={3}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
-
-function TextField({
-  label, value, onChange, type = 'text',
-}: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
-  return (
-    <div className={styles.fieldRow}>
-      <FieldLabel label={label} />
-      <input
-        className={styles.fieldInput}
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
-
-// ── Infer field type from key + value ────────────────────────────────────────
 function renderField(
   key: string,
   value: unknown,
   onChange: (v: unknown) => void,
 ): React.ReactNode {
-  const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase());
+  const label = humanize(key);
 
   if (typeof value === 'boolean') {
-    return <BoolField key={key} label={label} value={value} onChange={(v) => onChange(v)} />;
+    return (
+      <SwitchField
+        key={key}
+        name={key}
+        label={label}
+        value={value}
+        onChange={(v) => onChange(v)}
+      />
+    );
   }
+
   if (typeof value === 'number') {
-    return <NumberField key={key} label={label} value={value} onChange={(v) => onChange(v)} />;
+    const isOpacity =
+      key.toLowerCase().includes('opacity') ||
+      key.toLowerCase().includes('percent');
+    if (isOpacity) {
+      return (
+        <SliderField
+          key={key}
+          name={key}
+          label={label}
+          value={value}
+          min={0}
+          max={key.toLowerCase().includes('opacity') && value <= 1 ? 1 : 100}
+          step={key.toLowerCase().includes('opacity') && value <= 1 ? 0.05 : 1}
+          onChange={(v) => onChange(v)}
+        />
+      );
+    }
+    return (
+      <NumberField
+        key={key}
+        name={key}
+        label={label}
+        value={value}
+        onChange={(v) => onChange(v)}
+      />
+    );
   }
+
   if (typeof value === 'string') {
-    if (value.startsWith('#') || key.toLowerCase().includes('color') || key.toLowerCase().includes('colour')) {
-      return <ColorField key={key} label={label} value={value} onChange={(v) => onChange(v)} />;
+    if (
+      value.startsWith('#') ||
+      key.toLowerCase().includes('color') ||
+      key.toLowerCase().includes('colour')
+    ) {
+      return (
+        <ColorField
+          key={key}
+          name={key}
+          label={label}
+          value={value}
+          onChange={(v) => onChange(v)}
+        />
+      );
     }
-    if (key.toLowerCase().includes('url') || key.toLowerCase().includes('src') || key.toLowerCase().includes('href')) {
-      return <TextField key={key} label={label} value={value} onChange={(v) => onChange(v as string)} type="url" />;
+    if (
+      key.toLowerCase().includes('url') ||
+      key.toLowerCase().includes('src') ||
+      key.toLowerCase().includes('href')
+    ) {
+      return (
+        <TextField
+          key={key}
+          name={key}
+          label={label}
+          value={value}
+          type="url"
+          onChange={(v) => onChange(v)}
+        />
+      );
     }
-    if (value.length > 80 || key.toLowerCase().includes('text') || key.toLowerCase().includes('description')) {
-      return <TextareaField key={key} label={label} value={value} onChange={(v) => onChange(v)} />;
+    if (
+      value.length > 80 ||
+      key.toLowerCase().includes('text') ||
+      key.toLowerCase().includes('description')
+    ) {
+      return (
+        <TextAreaField
+          key={key}
+          name={key}
+          label={label}
+          value={value}
+          onChange={(v) => onChange(v)}
+        />
+      );
     }
-    return <TextField key={key} label={label} value={value} onChange={(v) => onChange(v as string)} />;
+    return (
+      <TextField
+        key={key}
+        name={key}
+        label={label}
+        value={value}
+        onChange={(v) => onChange(v)}
+      />
+    );
   }
-  // Fallback for arrays / objects — show JSON
+
   return (
-    <div className={styles.fieldRow} key={key}>
-      <FieldLabel label={label} />
-      <pre className={styles.fieldPre}>{JSON.stringify(value, null, 2)}</pre>
+    <div key={key} className="flex flex-col gap-1">
+      <p className="text-xs font-semibold text-muted-foreground">{label}</p>
+      <pre className="overflow-x-auto rounded-md border border-border bg-muted/40 p-2 font-mono text-[0.6875rem] text-muted-foreground whitespace-pre-wrap break-all">
+        {JSON.stringify(value, null, 2)}
+      </pre>
     </div>
   );
 }
 
-// ── BlockToolbar ──────────────────────────────────────────────────────────────
 export function BlockToolbar() {
-  const activeBlockId    = useEditorStore((s) => s.activeBlockId);
-  const sections         = useEditorStore((s) => s.sections);
+  const activeBlockId = useEditorStore((s) => s.activeBlockId);
+  const sections = useEditorStore((s) => s.sections);
   const updateBlockConfig = useEditorStore((s) => s.updateBlockConfig);
 
-  // Find the active block across all sections
   const activeBlock: BlockSchema | undefined = sections
     .flatMap((s) => s.blocks)
     .find((b) => b.id === activeBlockId);
@@ -169,46 +157,53 @@ export function BlockToolbar() {
 
   if (!activeBlock) {
     return (
-      <div className={styles.toolbarEmpty}>
-        <p className={styles.toolbarEmptyHint}>Select a block to edit its settings.</p>
-      </div>
+      <BuilderPanel title="Inspector" empty="Select a block to edit its settings.">
+        <ThemePanel />
+      </BuilderPanel>
     );
   }
 
   const configEntries = Object.entries(activeBlock.config);
 
   return (
-    <div className={styles.toolbar}>
-      <div className={styles.toolbarHeader}>
-        <span className={styles.toolbarBlockType}>{activeBlock.type}</span>
-        <span className={styles.toolbarBlockId}>#{activeBlock.id.slice(0, 6)}</span>
+    <BuilderPanel title="Inspector">
+      <div className="mb-3 flex items-baseline justify-between gap-2">
+        <Badge variant="secondary" className="font-mono text-[0.7rem]">
+          {activeBlock.type}
+        </Badge>
+        <span className="font-mono text-[0.6875rem] text-muted-foreground">
+          #{activeBlock.id.slice(0, 6)}
+        </span>
       </div>
 
-      <div className={styles.toolbarFields}>
-        {/* Visibility as a first-class toggle */}
-        <BoolField
+      <div className="flex flex-col gap-3.5">
+        <SwitchField
+          name="visible"
           label="Visible"
           value={activeBlock.visible}
-          onChange={(v) => {
+          onChange={() => {
             const sectionId = sections.find((s) =>
               s.blocks.some((b) => b.id === activeBlock.id),
             )?.id;
             if (sectionId) {
               useEditorStore.getState().toggleBlock(sectionId, activeBlock.id);
             }
-            // Keep TS happy — v is unused here since toggleBlock handles it
-            void v;
           }}
         />
 
-        {configEntries.length === 0 && (
-          <p className={styles.noConfig}>No configurable fields for this block.</p>
-        )}
+        {configEntries.length === 0 ? (
+          <p className="text-xs text-muted-foreground italic">
+            No configurable fields for this block.
+          </p>
+        ) : null}
 
         {configEntries.map(([key, val]) =>
           renderField(key, val, (newVal) => handleChange(key, newVal)),
         )}
       </div>
-    </div>
+
+      <Separator className="my-4" />
+      <ThemePanel />
+    </BuilderPanel>
   );
 }
