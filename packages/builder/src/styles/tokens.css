@@ -1,7 +1,7 @@
 /**
  * Builder UI Tokens
  * Imports brand-level tokens then adds builder-specific layout tokens.
- * Import order in main entry: tokens.css → base.css → component styles
+ * Import order in main entry: globals.css → tokens.css → base.css
  */
 @import '../../../../brand/tokens.css';
 

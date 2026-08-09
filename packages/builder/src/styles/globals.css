@@ -1,0 +1,179 @@
+/**
+ * Builder global styles — Tailwind CSS v4 + shadcn/ui.
+ *
+ * Theme tokens map onto Plated brand tokens (`brand/tokens.css`) so
+ * shadcn components share the same cream / ember / ink palette as the
+ * existing CSS-module UI. Wizard steps stay on CSS modules; new surfaces
+ * should prefer `@/components/ui/*`.
+ *
+ * Import order in index.tsx: globals.css → tokens.css → base.css
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: "Cormorant Garamond", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Multiplicative radius scale (shadcn CLI v4). Base is --radius below. */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * shadcn semantic tokens → Plated brand tokens.
+ * Brand vars (`--app-*`) are defined in brand/tokens.css via tokens.css.
+ */
+:root {
+  --radius: 0.625rem;
+
+  --background: var(--app-bg);
+  --foreground: var(--app-text);
+
+  --card: var(--app-surface);
+  --card-foreground: var(--app-text);
+
+  --popover: var(--app-surface);
+  --popover-foreground: var(--app-text);
+
+  --primary: var(--app-accent);
+  --primary-foreground: var(--app-accent-fg);
+
+  --secondary: var(--plated-cream-dim);
+  --secondary-foreground: var(--app-text);
+
+  --muted: var(--app-sidebar);
+  --muted-foreground: var(--app-text-muted);
+
+  --accent: var(--app-accent-subtle);
+  --accent-foreground: var(--app-accent);
+
+  --destructive: var(--app-error);
+
+  --border: var(--app-border);
+  --input: var(--app-border-strong);
+  --ring: var(--app-accent);
+
+  --chart-1: var(--app-accent);
+  --chart-2: var(--app-gold);
+  --chart-3: var(--app-success);
+  --chart-4: var(--app-info);
+  --chart-5: var(--app-warning);
+
+  --sidebar: var(--app-sidebar);
+  --sidebar-foreground: var(--app-text);
+  --sidebar-primary: var(--app-accent);
+  --sidebar-primary-foreground: var(--app-accent-fg);
+  --sidebar-accent: var(--app-sidebar-active);
+  --sidebar-accent-foreground: var(--app-text);
+  --sidebar-border: var(--app-border);
+  --sidebar-ring: var(--app-accent);
+}
+
+/* Electron respects system preference; `.dark` supports explicit toggle later. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--app-bg);
+    --foreground: var(--app-text);
+    --card: var(--app-surface);
+    --card-foreground: var(--app-text);
+    --popover: var(--app-surface);
+    --popover-foreground: var(--app-text);
+    --primary: var(--app-accent);
+    --primary-foreground: var(--app-accent-fg);
+    --secondary: var(--app-surface-raised);
+    --secondary-foreground: var(--app-text);
+    --muted: var(--app-sidebar);
+    --muted-foreground: var(--app-text-muted);
+    --accent: var(--app-accent-subtle);
+    --accent-foreground: var(--app-accent);
+    --destructive: var(--app-error);
+    --border: var(--app-border);
+    --input: var(--app-border-strong);
+    --ring: var(--app-accent);
+    --sidebar: var(--app-sidebar);
+    --sidebar-foreground: var(--app-text);
+    --sidebar-primary: var(--app-accent);
+    --sidebar-primary-foreground: var(--app-accent-fg);
+    --sidebar-accent: var(--app-sidebar-active);
+    --sidebar-accent-foreground: var(--app-text);
+    --sidebar-border: var(--app-border);
+    --sidebar-ring: var(--app-accent);
+  }
+}
+
+.dark {
+  --background: var(--app-bg);
+  --foreground: var(--app-text);
+  --card: var(--app-surface);
+  --card-foreground: var(--app-text);
+  --popover: var(--app-surface);
+  --popover-foreground: var(--app-text);
+  --primary: var(--app-accent);
+  --primary-foreground: var(--app-accent-fg);
+  --secondary: var(--app-surface-raised);
+  --secondary-foreground: var(--app-text);
+  --muted: var(--app-sidebar);
+  --muted-foreground: var(--app-text-muted);
+  --accent: var(--app-accent-subtle);
+  --accent-foreground: var(--app-accent);
+  --destructive: var(--app-error);
+  --border: var(--app-border);
+  --input: var(--app-border-strong);
+  --ring: var(--app-accent);
+  --sidebar: var(--app-sidebar);
+  --sidebar-foreground: var(--app-text);
+  --sidebar-primary: var(--app-accent);
+  --sidebar-primary-foreground: var(--app-accent-fg);
+  --sidebar-accent: var(--app-sidebar-active);
+  --sidebar-accent-foreground: var(--app-text);
+  --sidebar-border: var(--app-border);
+  --sidebar-ring: var(--app-accent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}

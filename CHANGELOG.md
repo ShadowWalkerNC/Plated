@@ -4,6 +4,27 @@ Format: [Conventional Commits](https://www.conventionalcommits.org/) — `type(s
 
 ---
 
+## [Unreleased — Phase 2: Local Builder]
+
+### feat(builder): composable shadcn UI kit (Open SaaS / OpenShip inspired)
+
+- Layered chrome: `ui` (primitives) → `fields` → `builder` → EditorShell
+- Live `ThemeProvider` + `ThemePanel` (accent / density / color mode) via CSS variables
+- Block inspector rebuilt on Level-2 fields (text, textarea, number, switch, color, slider)
+- `EditorHeader` / `BuilderPanel` Level-3 chrome; toasts via sonner (no next-themes)
+- Ecosystem notes: Open SaaS composability + OpenShip dashboard patterns (no stack swap)
+
+### feat(builder): shadcn/ui + Tailwind CSS v4
+
+- Initialized shadcn/ui (`radix-nova`) in `@plated/builder` with Tailwind CSS v4 via `@tailwindcss/vite`.
+- Theme CSS variables map onto Plated brand tokens (`--app-*`) so components share cream / ember / ink.
+- Added core primitives: button, input, label, textarea, select, checkbox, switch, dialog, sheet,
+  dropdown-menu, tabs, card, badge, separator, tooltip, scroll-area, alert, skeleton, popover.
+- Barrel export at `src/components/ui/index.ts`. App wrapped in `TooltipProvider`.
+- `OfflineBadge` migrated to shadcn `Badge` as the first consumer. Wizard CSS modules unchanged.
+
+---
+
 ## [Unreleased — Phase 1: Generator Core]
 
 > Jul–Sep 2026. In progress.

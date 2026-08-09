@@ -16,3 +16,8 @@ export type {
   BlockSchema,
   TemplatePage,
 } from './template.js';
+export type {
+  BuilderAccentPreset,
+  BuilderThemeConfig,
+  BuilderFieldProps,
+} from './builder-ui.js';
