@@ -24,8 +24,10 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        # version input intentionally omitted: pnpm/action-setup reads the pin
+        # from the "packageManager" field in package.json (the single source of
+        # truth). An explicit version here conflicts with it and fails CI with
+        # ERR_PNPM_BAD_PM_VERSION ("Multiple versions of pnpm specified").
 
       - name: Setup Node
         uses: actions/setup-node@v4
